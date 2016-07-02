@@ -13,7 +13,7 @@ var AccessToken string
 
 func ClientCredentials() runtime.ClientAuthInfoWriter {
 	return runtime.ClientAuthInfoWriterFunc(func(r runtime.ClientRequest, _ strfmt.Registry) error {
-		r.SetHeaderParam("User-Agent", "netlify-go-cli")
+		r.SetHeaderParam("User-Agent", "netlifyctl")
 		r.SetHeaderParam("Authorization", "Bearer "+chooseAccessToken())
 		return nil
 	})

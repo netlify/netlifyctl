@@ -4,13 +4,13 @@ import (
 	"os"
 	"regexp"
 
-	"github.com/netlify/netlify-go-cli/auth"
+	"github.com/netlify/netlifyctl/auth"
 	"github.com/spf13/cobra"
 )
 
 var rootCmd = &cobra.Command{
 	Use:   "netlify",
-	Short: "CLI interface to netlify.com",
+	Short: "Command Line Interface for netlify.com",
 }
 
 // Execute configures all the commands and runs the root.
