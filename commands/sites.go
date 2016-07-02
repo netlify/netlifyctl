@@ -5,7 +5,7 @@ import (
 
 	tm "github.com/buger/goterm"
 	"github.com/netlify/netlifyctl/auth"
-	"github.com/netlify/open-api/go/plumbing"
+	"github.com/netlify/open-api/go/porcelain"
 	"github.com/spf13/cobra"
 )
 
@@ -17,18 +17,20 @@ var sitesCmd = &cobra.Command{
 }
 
 func listSites(cmd *cobra.Command, args []string) error {
-	c := plumbing.NewHTTPClient(nil)
-	resp, err := c.Operations.ListSites(nil, auth.ClientCredentials())
+	c := porcelain.NewHTTPClient(nil)
+	ctx := auth.NewContext()
+
+	sites, err := c.ListSites(ctx, nil)
 	if err != nil {
 		return err
 	}
 
-	sites := tm.NewTable(0, 10, 5, ' ', 0)
-	fmt.Fprintf(sites, "SITE\tURL")
-	for _, s := range resp.Payload {
-		fmt.Fprintf(sites, "\n%s\t%s", s.Name, s.URL)
+	table := tm.NewTable(0, 10, 5, ' ', 0)
+	fmt.Fprintf(table, "SITE\tURL")
+	for _, s := range sites {
+		fmt.Fprintf(table, "\n%s\t%s", s.Name, s.URL)
 	}
-	tm.Print(sites)
+	tm.Print(table)
 	tm.Flush()
 
 	return nil

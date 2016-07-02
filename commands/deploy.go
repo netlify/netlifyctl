@@ -18,19 +18,21 @@ var deployCmd = &cobra.Command{
 }
 
 func deploySite(cmd *cobra.Command, args []string) error {
-	site, err := configuration.Load()
+	conf, err := configuration.Load()
 	if err != nil {
 		return err
 	}
+	s := conf.Settings
 
 	// TODO: A new site won't ever have an ID.
 	//       Ask to create a new site and save ID.
 
 	c := porcelain.NewHTTPClient(nil)
+	ctx := auth.NewContext()
 
-	logrus.WithFields(logrus.Fields{"site": site.Settings.ID, "root": site.Settings.Root()}).Debug("deploy site")
+	logrus.WithFields(logrus.Fields{"site": s.ID, "root": s.Root()}).Debug("deploy site")
 
-	resp, err := c.DeploySite(site.Settings.ID, site.Settings.Root(), auth.ClientCredentials())
+	resp, err := c.DeploySite(ctx, s.ID, s.Root())
 	if err != nil {
 		return err
 	}

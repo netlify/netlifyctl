@@ -5,13 +5,19 @@ import (
 	"os"
 	"path/filepath"
 
+	logContext "github.com/docker/distribution/context"
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/strfmt"
+	"github.com/netlify/open-api/go/porcelain/context"
 )
 
 var AccessToken string
 
-func ClientCredentials() runtime.ClientAuthInfoWriter {
+func NewContext() context.Context {
+	return context.WithAuthInfo(logContext.Background(), clientCredentials())
+}
+
+func clientCredentials() runtime.ClientAuthInfoWriter {
 	return runtime.ClientAuthInfoWriterFunc(func(r runtime.ClientRequest, _ strfmt.Registry) error {
 		r.SetHeaderParam("User-Agent", "netlifyctl")
 		r.SetHeaderParam("Authorization", "Bearer "+chooseAccessToken())
