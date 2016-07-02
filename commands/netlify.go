@@ -4,7 +4,7 @@ import (
 	"os"
 	"regexp"
 
-	"github.com/calavera/netlify-go-cli/auth"
+	"github.com/netlify/netlify-go-cli/auth"
 	"github.com/spf13/cobra"
 )
 

@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	tm "github.com/buger/goterm"
-	"github.com/calavera/netlify-go-cli/auth"
+	"github.com/netlify/netlify-go-cli/auth"
 	"github.com/netlify/open-api/go/plumbing"
 	"github.com/spf13/cobra"
 )
