@@ -32,11 +32,16 @@ func deploySite(cmd *cobra.Command, args []string) error {
 
 	logrus.WithFields(logrus.Fields{"site": s.ID, "root": s.Root()}).Debug("deploy site")
 
-	resp, err := c.DeploySite(ctx, s.ID, s.Root())
+	d, err := c.DeploySite(ctx, s.ID, s.Root())
 	if err != nil {
 		return err
 	}
-	fmt.Println(resp.SiteURL)
+
+	ready, err := c.WaitUntilDeployReady(ctx, d)
+	if err != nil {
+		return err
+	}
+	fmt.Println(ready.URL)
 
 	return nil
 }
