@@ -5,6 +5,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/Sirupsen/logrus"
 	logContext "github.com/docker/distribution/context"
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/strfmt"
@@ -14,7 +15,8 @@ import (
 var AccessToken string
 
 func NewContext() context.Context {
-	return context.WithAuthInfo(logContext.Background(), clientCredentials())
+	ctx := logContext.WithLogger(logContext.Background(), logrus.NewEntry(logrus.StandardLogger()))
+	return context.WithAuthInfo(ctx, clientCredentials())
 }
 
 func clientCredentials() runtime.ClientAuthInfoWriter {
