@@ -6,11 +6,14 @@ import (
 
 	"github.com/Sirupsen/logrus"
 	"github.com/netlify/netlifyctl/auth"
+	"github.com/netlify/netlifyctl/operations"
 	"github.com/spf13/cobra"
 )
 
 var (
-	debug   bool
+	debug    bool
+	endpoint string
+
 	rootCmd = &cobra.Command{
 		Use:   "netlify",
 		Short: "Command Line Interface for netlify.com",
@@ -29,8 +32,12 @@ var (
 // Execute configures all the commands and runs the root.
 func Execute() {
 	rootCmd.SilenceUsage = true
+
+	rootCmd.PersistentFlags().StringVarP(&endpoint, "endpoint", "E", "https://api.netlify.com", "default API endpoint")
 	rootCmd.PersistentFlags().StringVarP(&auth.AccessToken, "access-token", "A", "", "access token for Netlify's API")
 	rootCmd.PersistentFlags().BoolVarP(&debug, "debug", "D", false, "enable debug tracing")
+
+	rootCmd.PersistentFlags().BoolVarP(&operations.AssumeYes, "yes", "y", false, "automatic yes to confirmation prompts")
 
 	addCommands()
 
@@ -41,11 +48,6 @@ func Execute() {
 
 		os.Exit(-1)
 	}
-}
-
-func addCommands() {
-	rootCmd.AddCommand(sitesCmd)
-	rootCmd.AddCommand(deployCmd)
 }
 
 var userErrorRegexp = regexp.MustCompile("argument|flag|shorthand")

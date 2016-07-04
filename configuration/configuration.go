@@ -29,9 +29,15 @@ func Load() (*Configuration, error) {
 		return nil, err
 	}
 
+	var c Configuration
+	c.Settings.root = pwd
+
 	single := filepath.Join(pwd, globalConfigFileName)
 	fi, err := os.Stat(single)
 	if err != nil {
+		if os.IsNotExist(err) {
+			return &c, nil
+		}
 		return nil, err
 	}
 
@@ -39,11 +45,20 @@ func Load() (*Configuration, error) {
 		return nil, fmt.Errorf("%s cannot be a directory", globalConfigFileName)
 	}
 
-	var c Configuration
 	if _, err := toml.DecodeFile(single, &c); err != nil {
 		return nil, err
 	}
-	c.Settings.root = pwd
 
 	return &c, nil
+}
+
+func Save(conf *Configuration) error {
+	single := filepath.Join(conf.Settings.Root(), globalConfigFileName)
+	f, err := os.OpenFile(single, os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0644)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	return toml.NewEncoder(f).Encode(conf)
 }

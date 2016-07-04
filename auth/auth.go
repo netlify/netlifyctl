@@ -5,21 +5,13 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/Sirupsen/logrus"
-	logContext "github.com/docker/distribution/context"
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/strfmt"
-	"github.com/netlify/open-api/go/porcelain/context"
 )
 
 var AccessToken string
 
-func NewContext() context.Context {
-	ctx := logContext.WithLogger(logContext.Background(), logrus.NewEntry(logrus.StandardLogger()))
-	return context.WithAuthInfo(ctx, clientCredentials())
-}
-
-func clientCredentials() runtime.ClientAuthInfoWriter {
+func ClientCredentials() runtime.ClientAuthInfoWriter {
 	return runtime.ClientAuthInfoWriterFunc(func(r runtime.ClientRequest, _ strfmt.Registry) error {
 		r.SetHeaderParam("User-Agent", "netlifyctl")
 		r.SetHeaderParam("Authorization", "Bearer "+chooseAccessToken())
