@@ -13,7 +13,6 @@ var AssumeYes bool
 
 func ConfirmCreateSite(cmd *cobra.Command) bool {
 	if AssumeYes {
-		fmt.Println("Creating new site")
 		return true
 	}
 
@@ -21,7 +20,7 @@ func ConfirmCreateSite(cmd *cobra.Command) bool {
 }
 
 func CreateSite(cmd *cobra.Command, client *porcelain.Netlify, ctx context.Context) (*models.Site, error) {
-	domain, err := askForInput("Type your domain or press enter to use a Netlify subdomain: ", "", validateCustomDomain)
+	domain, err := askForInput("Type your domain or press enter to use a Netlify subdomain:", "", validateCustomDomain)
 	if err != nil {
 		return nil, err
 	}
@@ -30,13 +29,33 @@ func CreateSite(cmd *cobra.Command, client *porcelain.Netlify, ctx context.Conte
 		CustomDomain: domain,
 	}
 
-	site, err := client.CreateSite(ctx, newS)
+	// Only configure DNS and TLS for custom domains.
+	// Netlify hosted sites don't need DNS entries
+	// and the connection is always over TLS.
+	withTLS := len(domain) > 0
+
+	site, err := client.CreateSite(ctx, newS, withTLS)
 	if err != nil {
 		return nil, err
 	}
 
-	if len(domain) != 0 {
-		// TODO: Register DNS with a DNS provider and Configure Let's Encrypt
+	if withTLS {
+		fmt.Println("=> Provisioning TLS certificate with Let's Encrypt")
+
+		cert, err := client.ConfigureSiteTLSCertificate(ctx, site.ID, nil)
+		if err != nil {
+			return site, err
+		}
+
+		cert, err = client.WaitUntilTLSCertificateReady(ctx, site.ID, cert)
+		if err != nil {
+			return site, err
+		}
+
+		site.ForceSsl = true
+		if err := client.UpdateSite(ctx, site); err != nil {
+			return site, err
+		}
 	}
 
 	return site, nil

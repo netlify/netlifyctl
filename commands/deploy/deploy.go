@@ -36,11 +36,18 @@ func (*deployCmd) deploySite(ctx context.Context, cmd *cobra.Command, args []str
 
 	if conf.Settings.ID == "" && operations.ConfirmCreateSite(cmd) {
 		newSite, err := operations.CreateSite(cmd, client, ctx)
+		// Ensure that the site ID is always saved,
+		// even when there is a provision error.
+		if newSite != nil {
+			conf.Settings.ID = newSite.ID
+			configuration.Save(conf)
+		}
+
 		if err != nil {
 			return err
 		}
-		conf.Settings.ID = newSite.ID
-		configuration.Save(conf)
+
+		fmt.Println("=> Domain ready, deploying assets now")
 	}
 
 	s := conf.Settings
@@ -58,7 +65,7 @@ func (*deployCmd) deploySite(ctx context.Context, cmd *cobra.Command, args []str
 	if err != nil {
 		return err
 	}
-	fmt.Println(ready.URL)
+	fmt.Printf("=> Done, your website is live in %s\n", ready.URL)
 
 	return nil
 }

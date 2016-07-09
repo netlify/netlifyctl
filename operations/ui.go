@@ -11,7 +11,7 @@ const options = " (yes/no) "
 
 func askForConfirmation(message string) bool {
 	var response string
-	fmt.Print(message + options)
+	fmt.Print("=> " + message + options)
 	_, err := fmt.Scanln(&response)
 	if err != nil {
 		return false
@@ -23,16 +23,16 @@ func askForConfirmation(message string) bool {
 	case response[0] == 'n' || response[0] == 'N':
 		return false
 	default:
-		fmt.Println("Please type `yes` or `no` and then press enter")
+		fmt.Println("=> Please type `yes` or `no` and then press enter")
 		return askForConfirmation(message)
 	}
 }
 
 func askForInput(message, defaultValue string, validate validator) (string, error) {
 	if len(defaultValue) > 0 {
-		fmt.Printf("%s (default: %s) ", message, defaultValue)
+		fmt.Printf("=> %s (default: %s) ", message, defaultValue)
 	} else {
-		fmt.Print(message)
+		fmt.Printf("=> %s ", message)
 	}
 
 	reader := bufio.NewReader(os.Stdin)
