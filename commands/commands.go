@@ -25,3 +25,12 @@ func addCommands() {
 	dCmd, dFunc := deploy.Setup()
 	rootCmd.AddCommand(setupRunE(dCmd, dFunc, middlewares))
 }
+
+// ArgumentError is for when there is a problem with the args passed in the CLI
+type ArgumentError struct {
+	errmMsg string
+}
+
+func (e ArgumentError) Error() string {
+	return e.errmMsg
+}

@@ -4,8 +4,11 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/BurntSushi/toml"
+	"github.com/spf13/pflag"
+	"github.com/spf13/viper"
 )
 
 const globalConfigFileName = "netlify.toml"
@@ -50,6 +53,42 @@ func Load() (*Configuration, error) {
 	}
 
 	return &c, nil
+}
+
+// SetupViper will setup the env prefixes and bind all the flags together
+func SetupViper(persistentFlags, localFlags *pflag.FlagSet) error {
+	viper.SetEnvPrefix("NF")
+	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_", "-", "_"))
+	viper.AutomaticEnv()
+
+	if persistentFlags != nil {
+		err := viper.BindPFlags(persistentFlags)
+		if err != nil {
+			return err
+		}
+	}
+	if localFlags != nil {
+		err := viper.BindPFlags(localFlags)
+		if err != nil {
+			return err
+		}
+	}
+
+	home := os.Getenv("HOME")
+	legacyConfigPath := filepath.Join(home, ".netlify", "config")
+	if stat, err := os.Stat(legacyConfigPath); err == nil {
+		if !stat.IsDir() {
+			viper.SetConfigFile(legacyConfigPath)
+			viper.SetConfigType("json")
+		}
+	} else {
+		viper.SetConfigName("netlify")
+		viper.AddConfigPath(".")
+		viper.AddConfigPath(home)
+		viper.AddConfigPath(filepath.Join(home, ".netlify"))
+	}
+
+	return viper.ReadInConfig()
 }
 
 func Save(conf *Configuration) error {

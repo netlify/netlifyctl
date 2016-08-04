@@ -59,31 +59,36 @@ func ClientMiddleware(cmd CommandFunc) CommandFunc {
 	return func(ctx context.Context, c *cobra.Command, args []string) error {
 		var client *porcelain.Netlify
 
-		if endpoint := c.Flag("endpoint"); endpoint != nil {
-			if v := endpoint.Value.String(); v != "" {
-				logrus.WithField("endpoint", v).Debug("setup API endpoint")
+		if endpoint, err := c.PersistentFlags().GetString("endpoint"); err != nil && endpoint != "" {
+			logrus.WithField("endpoint", endpoint).Debug("setup API endpoint")
 
-				u, err := url.Parse(v)
-				if err != nil {
-					return err
-				}
-
-				if u.Scheme == "" {
-					u.Scheme = "http"
-				}
-
-				if u.Path == "" {
-					u.Path = defaultAPIPath
-				}
-
-				transport := httptransport.New(u.Host, u.Path, []string{u.Scheme})
-				client = porcelain.New(transport, strfmt.Default)
+			u, err := url.Parse(endpoint)
+			if err != nil {
+				return err
 			}
+
+			if u.Scheme == "" {
+				u.Scheme = "http"
+			}
+
+			if u.Path == "" {
+				u.Path = defaultAPIPath
+			}
+
+			transport := httptransport.New(u.Host, u.Path, []string{u.Scheme})
+			client = porcelain.New(transport, strfmt.Default)
 		}
 
 		if client == nil {
 			logrus.WithField("endpoint", "https://api.netlify.com").Debug("setup default API endpoint")
 			client = porcelain.NewHTTPClient(nil)
+		}
+
+		if streamEndpoint, err := c.PersistentFlags().GetString("streaming"); err != nil && streamEndpoint != "" {
+			err := client.SetStreamingEndpoint(streamEndpoint)
+			if err != nil {
+				return err
+			}
 		}
 
 		ctx = context.WithClient(ctx, client)

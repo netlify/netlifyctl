@@ -1,18 +1,18 @@
 package commands
 
 import (
+	"fmt"
 	"os"
 	"regexp"
 
 	"github.com/Sirupsen/logrus"
-	"github.com/netlify/netlifyctl/auth"
+	"github.com/netlify/netlifyctl/configuration"
 	"github.com/netlify/netlifyctl/operations"
 	"github.com/spf13/cobra"
 )
 
 var (
-	debug    bool
-	endpoint string
+	debug bool
 
 	rootCmd = &cobra.Command{
 		Use:   "netlify",
@@ -33,11 +33,18 @@ var (
 func Execute() {
 	rootCmd.SilenceUsage = true
 
-	rootCmd.PersistentFlags().StringVarP(&endpoint, "endpoint", "E", "https://api.netlify.com", "default API endpoint")
-	rootCmd.PersistentFlags().StringVarP(&auth.AccessToken, "access-token", "A", "", "access token for Netlify's API")
-	rootCmd.PersistentFlags().BoolVarP(&debug, "debug", "D", false, "enable debug tracing")
+	rootCmd.PersistentFlags().StringP("endpoint", "E", "https://api.netlify.com", "default API endpoint")
+	rootCmd.PersistentFlags().StringP("streaming", "S", "wss://streaming.netlify.com", "default streaming API endpoint")
+	rootCmd.PersistentFlags().StringP("access_token", "A", "", "access token for Netlify's API")
 
+	rootCmd.PersistentFlags().BoolVarP(&debug, "debug", "D", false, "enable debug tracing")
 	rootCmd.PersistentFlags().BoolVarP(&operations.AssumeYes, "yes", "y", false, "automatic yes to confirmation prompts")
+
+	err := configuration.SetupViper(rootCmd.PersistentFlags(), rootCmd.Flags())
+	if err != nil {
+		fmt.Println("error while configuring CLI: " + err.Error())
+		os.Exit(1)
+	}
 
 	addCommands()
 
