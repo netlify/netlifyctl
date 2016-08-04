@@ -4,6 +4,7 @@ import (
 	"github.com/netlify/netlifyctl/commands/deploy"
 	"github.com/netlify/netlifyctl/commands/middleware"
 	"github.com/netlify/netlifyctl/commands/sites"
+	"github.com/netlify/netlifyctl/commands/streaming"
 	"github.com/spf13/cobra"
 )
 
@@ -25,13 +26,7 @@ func addCommands() {
 
 	dCmd, dFunc := deploy.Setup()
 	rootCmd.AddCommand(setupRunE(dCmd, dFunc, middlewares))
-}
 
-// ArgumentError is for when there is a problem with the args passed in the CLI
-type ArgumentError struct {
-	errmMsg string
-}
-
-func (e ArgumentError) Error() string {
-	return e.errmMsg
+	streamCmd, streamFunc := streaming.Setup()
+	rootCmd.AddCommand(setupRunE(streamCmd, streamFunc, middlewares))
 }

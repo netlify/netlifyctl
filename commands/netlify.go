@@ -7,6 +7,7 @@ import (
 
 	"github.com/Sirupsen/logrus"
 	"github.com/netlify/netlifyctl/configuration"
+	"github.com/netlify/netlifyctl/errors"
 	"github.com/netlify/netlifyctl/operations"
 	"github.com/spf13/cobra"
 )
@@ -60,7 +61,7 @@ func Execute() {
 var userErrorRegexp = regexp.MustCompile("argument|flag|shorthand")
 
 func isUserError(err error) bool {
-	if cErr, ok := err.(commandError); ok && cErr.isUserError() {
+	if cErr, ok := err.(errors.CommandError); ok && cErr.IsUserError() {
 		return true
 	}
 
