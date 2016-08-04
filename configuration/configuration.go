@@ -57,7 +57,7 @@ func Load() (*Configuration, error) {
 
 // SetupViper will setup the env prefixes and bind all the flags together
 func SetupViper(persistentFlags, localFlags *pflag.FlagSet) error {
-	viper.SetEnvPrefix("NF")
+	viper.SetEnvPrefix("NETLIFY")
 	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_", "-", "_"))
 	viper.AutomaticEnv()
 
