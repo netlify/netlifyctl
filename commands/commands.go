@@ -15,6 +15,7 @@ func setupRunE(cmd *cobra.Command, f middleware.CommandFunc, m []middleware.Midd
 func addCommands() {
 	middlewares := []middleware.Middleware{
 		middleware.AuthMiddleware,
+		middleware.UserAgentMiddleware,
 		middleware.ClientMiddleware,
 		middleware.LoggingMiddleware,
 	}
