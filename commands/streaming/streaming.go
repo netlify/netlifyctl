@@ -13,8 +13,8 @@ import (
 func Setup() (*cobra.Command, middleware.CommandFunc) {
 	ccmd := &cobra.Command{
 		Use:   "stream <deploy_id>",
-		Short: "stream a build log",
-		Long:  "stream your build logs for a given deploy",
+		Short: "stream a deploy log",
+		Long:  "stream your deploy log",
 	}
 
 	return ccmd, streamLogs
