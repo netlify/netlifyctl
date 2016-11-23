@@ -1,5 +1,5 @@
-hash: c524a6a4b49c40463115691261a52566b662ab177a4ce419afb31fc37b89cee8
-updated: 2016-11-23T10:32:39.532196093-08:00
+hash: 7a6677845f72a9b98e375b8a496c232fbaa033c5fb71ec409d8ffa88d7e66d08
+updated: 2016-11-23T15:45:09.704771882-08:00
 imports:
 - name: github.com/asaskevich/govalidator
   version: 7b3beb6df3c42abd3509abfc3bcacc0fbfb7c877
@@ -9,11 +9,6 @@ imports:
   version: bbd5bb678321a0d6e58f1099321dfa73391c1b6f
 - name: github.com/cenkalti/backoff
   version: b02f2bbce11d7ea6b97f282ef1771b0fe2f65ef3
-- name: github.com/docker/distribution
-  version: e249b61e900df4d36779a690971e5cab691a4954
-  subpackages:
-  - context
-  - uuid
 - name: github.com/go-openapi/analysis
   version: 7222828b8ce19afee3c595aef6643b9e42150120
 - name: github.com/go-openapi/errors
@@ -36,10 +31,6 @@ imports:
   version: 3b6d86cd965820f968760d5d419cb4add096bdd7
 - name: github.com/go-openapi/validate
   version: 027696d4b54399770f1cdcc6c6daa56975f9e14e
-- name: github.com/gorilla/context
-  version: 14f550f51af52180c2eefed15e5fd18d63c0a64a
-- name: github.com/gorilla/mux
-  version: e444e69cbd2e2e3e0749a2f3c717cec491552bbf
 - name: github.com/inconshreveable/mousetrap
   version: 76626ae9c91c4f2a10f34cad8ce83ea42c93bb75
 - name: github.com/mailru/easyjson
@@ -49,9 +40,9 @@ imports:
   - jwriter
   - buffer
 - name: github.com/mitchellh/mapstructure
-  version: 482a9fd5fa83e8c4e7817413b80f3eb8feec03ef
+  version: f3009df150dadf309fdee4a54ed65c124afad715
 - name: github.com/netlify/open-api
-  version: 71b38baf4e7e6e5290c3d150d3200cedd17501e8
+  version: af3ff222df2beb1afc475436218ca776d9a1f60f
   subpackages:
   - go/models
   - go/porcelain
@@ -69,7 +60,7 @@ imports:
 - name: github.com/spf13/pflag
   version: 5ccb023bc27df288a957c5e994cd44fd19619465
 - name: golang.org/x/net
-  version: 4876518f9e71663000c348837735820161a42df7
+  version: 4971afdc2f162e82d185353533d3cf16188a9f4e
   subpackages:
   - context
   - context/ctxhttp

@@ -3,16 +3,16 @@ package middleware
 import (
 	"net/url"
 
-	httptransport "github.com/go-openapi/runtime/client"
-
 	"github.com/Sirupsen/logrus"
-	logContext "github.com/docker/distribution/context"
-	strfmt "github.com/go-openapi/strfmt"
+	httptransport "github.com/go-openapi/runtime/client"
+	"github.com/go-openapi/strfmt"
+	"github.com/spf13/cobra"
+
+	"github.com/netlify/open-api/go/porcelain"
+	apiContext "github.com/netlify/open-api/go/porcelain/context"
+
 	"github.com/netlify/netlifyctl/auth"
 	"github.com/netlify/netlifyctl/context"
-	"github.com/netlify/open-api/go/porcelain"
-	authContext "github.com/netlify/open-api/go/porcelain/context"
-	"github.com/spf13/cobra"
 )
 
 const defaultAPIPath = "/api/v1"
@@ -22,7 +22,7 @@ type Middleware func(CommandFunc) CommandFunc
 
 func NewRunFunc(f CommandFunc, mm []Middleware) func(*cobra.Command, []string) error {
 	return func(cmd *cobra.Command, args []string) error {
-		ctx := logContext.Background()
+		ctx := context.Background()
 
 		runf := f
 		for _, m := range mm {
@@ -35,11 +35,8 @@ func NewRunFunc(f CommandFunc, mm []Middleware) func(*cobra.Command, []string) e
 
 func LoggingMiddleware(cmd CommandFunc) CommandFunc {
 	return func(ctx context.Context, c *cobra.Command, args []string) error {
-		entry := logrus.NewEntry(logrus.StandardLogger())
-		logrus.WithField("log_level", "debug").Debug("setup logger middleware")
-
-		ctx = logContext.WithLogger(ctx, entry)
-
+		ctx = apiContext.WithLogger(ctx, logrus.NewEntry(logrus.StandardLogger()))
+		logrus.Debugf("setup logger middleware: %v", logrus.StandardLogger().Level)
 		return cmd(ctx, c, args)
 	}
 }
@@ -49,7 +46,7 @@ func AuthMiddleware(cmd CommandFunc) CommandFunc {
 		creds := auth.ClientCredentials()
 		logrus.WithField("credentials", creds).Debug("setup credentials")
 
-		ctx = authContext.WithAuthInfo(ctx, creds)
+		ctx = apiContext.WithAuthInfo(ctx, creds)
 
 		return cmd(ctx, c, args)
 	}

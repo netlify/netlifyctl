@@ -1,7 +1,8 @@
 package context
 
 import (
-	"github.com/docker/distribution/context"
+	"context"
+
 	"github.com/netlify/open-api/go/porcelain"
 )
 
@@ -15,4 +16,8 @@ func WithClient(ctx context.Context, client *porcelain.Netlify) context.Context 
 
 func GetClient(ctx context.Context) *porcelain.Netlify {
 	return ctx.Value("netlify_client").(*porcelain.Netlify)
+}
+
+func Background() context.Context {
+	return context.Background()
 }

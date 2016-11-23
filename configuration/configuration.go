@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 
 	"github.com/BurntSushi/toml"
+	"github.com/Sirupsen/logrus"
 )
 
 const globalConfigFileName = "netlify.toml"
