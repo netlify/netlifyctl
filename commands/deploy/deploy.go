@@ -54,10 +54,10 @@ func (*deployCmd) deploySite(ctx context.Context, cmd *cobra.Command, args []str
 	s := conf.Settings
 	id := s.ID
 
-	base := baseDeploy(cmd, s)
-	logrus.WithFields(logrus.Fields{"site": id, "root": base}).Debug("deploy site")
+	baseDeploy(cmd, &s)
+	logrus.WithFields(logrus.Fields{"site": id, "path": s.Path}).Debug("deploying site")
 
-	d, err := client.DeploySite(ctx, id, base)
+	d, err := client.DeploySite(ctx, id, s.Path)
 	if err != nil {
 		return err
 	}
@@ -71,10 +71,12 @@ func (*deployCmd) deploySite(ctx context.Context, cmd *cobra.Command, args []str
 	return nil
 }
 
-func baseDeploy(cmd *cobra.Command, conf configuration.Settings) string {
-	f := cmd.Flag("base-directory")
-	if f == nil || f.Value.String() == "" {
-		return conf.Root()
+func baseDeploy(cmd *cobra.Command, conf *configuration.Settings) {
+	bd, err := cmd.Flags().GetString("base-directory")
+	if err != nil {
+		logrus.WithError(err).Fatal("Failed to get string flag: 'base-directory'")
 	}
-	return f.Value.String()
+	if bd != "" {
+		conf.Path = bd
+	}
 }
