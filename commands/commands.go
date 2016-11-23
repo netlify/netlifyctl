@@ -24,4 +24,6 @@ func addCommands() {
 
 	dCmd, dFunc := deploy.Setup()
 	rootCmd.AddCommand(setupRunE(dCmd, dFunc, middlewares))
+
+	rootCmd.AddCommand(versionCmd)
 }
