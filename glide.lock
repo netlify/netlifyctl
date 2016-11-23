@@ -1,0 +1,87 @@
+hash: c524a6a4b49c40463115691261a52566b662ab177a4ce419afb31fc37b89cee8
+updated: 2016-11-23T10:32:39.532196093-08:00
+imports:
+- name: github.com/asaskevich/govalidator
+  version: 7b3beb6df3c42abd3509abfc3bcacc0fbfb7c877
+- name: github.com/buger/goterm
+  version: cc3942e537b1ab00de92d348c40acbfa6565d20f
+- name: github.com/BurntSushi/toml
+  version: bbd5bb678321a0d6e58f1099321dfa73391c1b6f
+- name: github.com/cenkalti/backoff
+  version: b02f2bbce11d7ea6b97f282ef1771b0fe2f65ef3
+- name: github.com/docker/distribution
+  version: e249b61e900df4d36779a690971e5cab691a4954
+  subpackages:
+  - context
+  - uuid
+- name: github.com/go-openapi/analysis
+  version: 7222828b8ce19afee3c595aef6643b9e42150120
+- name: github.com/go-openapi/errors
+  version: 49fe8b3a0e0d32a617d8d50c67f856ad6e45b28b
+- name: github.com/go-openapi/jsonpointer
+  version: 8d96a2dc61536b690bd36b2e9df0b3c0b62825b2
+- name: github.com/go-openapi/jsonreference
+  version: 36d33bfe519efae5632669801b180bf1a245da3b
+- name: github.com/go-openapi/loads
+  version: 5861a4879a2866943dce3c644c879af9e59c22a3
+- name: github.com/go-openapi/runtime
+  version: 12c07accf0687ab20b1e7b6293d8012ce282499c
+  subpackages:
+  - client
+- name: github.com/go-openapi/spec
+  version: f7ae86df5bc115a2744343016c789a89f065a4bd
+- name: github.com/go-openapi/strfmt
+  version: 34fc3ba7c0f5fb615fda47a2b4fbd4c641b215f2
+- name: github.com/go-openapi/swag
+  version: 3b6d86cd965820f968760d5d419cb4add096bdd7
+- name: github.com/go-openapi/validate
+  version: 027696d4b54399770f1cdcc6c6daa56975f9e14e
+- name: github.com/gorilla/context
+  version: 14f550f51af52180c2eefed15e5fd18d63c0a64a
+- name: github.com/gorilla/mux
+  version: e444e69cbd2e2e3e0749a2f3c717cec491552bbf
+- name: github.com/inconshreveable/mousetrap
+  version: 76626ae9c91c4f2a10f34cad8ce83ea42c93bb75
+- name: github.com/mailru/easyjson
+  version: 159cdb893c982e3d1bc6450322fedd514f9c9de3
+  subpackages:
+  - jlexer
+  - jwriter
+  - buffer
+- name: github.com/mitchellh/mapstructure
+  version: 482a9fd5fa83e8c4e7817413b80f3eb8feec03ef
+- name: github.com/netlify/open-api
+  version: 71b38baf4e7e6e5290c3d150d3200cedd17501e8
+  subpackages:
+  - go/models
+  - go/porcelain
+  - go/porcelain/context
+  - go/plumbing
+  - go/plumbing/operations
+- name: github.com/PuerkitoBio/purell
+  version: 0bcb03f4b4d0a9428594752bd2a3b9aa0a9d4bd4
+- name: github.com/PuerkitoBio/urlesc
+  version: 5bd2802263f21d8788851d5305584c82a5c75d7e
+- name: github.com/Sirupsen/logrus
+  version: d26492970760ca5d33129d2d799e34be5c4782eb
+- name: github.com/spf13/cobra
+  version: 9495bc009a56819bdb0ddbc1a373e29c140bc674
+- name: github.com/spf13/pflag
+  version: 5ccb023bc27df288a957c5e994cd44fd19619465
+- name: golang.org/x/net
+  version: 4876518f9e71663000c348837735820161a42df7
+  subpackages:
+  - context
+  - context/ctxhttp
+  - idna
+- name: golang.org/x/sys
+  version: 30237cf4eefd639b184d1f2cb77a581ea0be8947
+  subpackages:
+  - unix
+- name: golang.org/x/text
+  version: b01949dc0793a9af5e4cb3fce4d42999e76e8ca1
+  subpackages:
+  - unicode/norm
+  - width
+  - transform
+testImports: []

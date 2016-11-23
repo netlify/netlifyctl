@@ -1,0 +1,21 @@
+package: github.com/netlify/netlifyctl
+import:
+- package: github.com/BurntSushi/toml
+  version: v0.2.0
+- package: github.com/Sirupsen/logrus
+  version: v0.11.0
+- package: github.com/buger/goterm
+- package: github.com/docker/distribution
+  version: v2.6.0-rc.1
+  subpackages:
+  - context
+- package: github.com/go-openapi/runtime
+  subpackages:
+  - client
+- package: github.com/go-openapi/strfmt
+- package: github.com/netlify/open-api
+  subpackages:
+  - go/models
+  - go/porcelain
+  - go/porcelain/context
+- package: github.com/spf13/cobra
