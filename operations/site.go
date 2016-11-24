@@ -20,7 +20,7 @@ func ConfirmCreateSite(cmd *cobra.Command) bool {
 }
 
 func CreateSite(cmd *cobra.Command, client *porcelain.Netlify, ctx context.Context) (*models.Site, error) {
-	domain, err := askForInput("Type your domain or press enter to use a Netlify subdomain:", "", validateCustomDomain)
+	domain, err := AskForInput("Type your domain or press enter to use a Netlify subdomain:", "", validateCustomDomain)
 	if err != nil {
 		return nil, err
 	}

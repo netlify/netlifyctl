@@ -15,7 +15,7 @@ var (
 	tlds         []byte
 )
 
-type validator func(string) error
+type Validator func(string) error
 
 func validateNothing(input string) error {
 	return nil

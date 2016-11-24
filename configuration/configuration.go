@@ -5,8 +5,6 @@ import (
 	"os"
 	"path/filepath"
 
-	"strings"
-
 	"github.com/BurntSushi/toml"
 	"github.com/Sirupsen/logrus"
 )
@@ -16,11 +14,15 @@ const globalConfigFileName = "netlify.toml"
 type Settings struct {
 	ID   string
 	Path string
-	root string
 }
 
 type Configuration struct {
 	Settings Settings
+	root     string
+}
+
+func (c Configuration) Root() string {
+	return c.root
 }
 
 func Load() (*Configuration, error) {
@@ -30,8 +32,7 @@ func Load() (*Configuration, error) {
 	}
 
 	var c Configuration
-	c.Settings.Path = pwd
-	c.Settings.root = pwd
+	c.root = pwd
 
 	single := filepath.Join(pwd, globalConfigFileName)
 	fi, err := os.Stat(single)
@@ -52,18 +53,11 @@ func Load() (*Configuration, error) {
 
 	logrus.Debugf("Parsed configuration: %+v", c)
 
-	if c.Settings.Path != "" {
-		if !strings.HasPrefix(c.Settings.Path, "/") {
-			c.Settings.Path = filepath.Join(pwd, c.Settings.Path)
-			logrus.Debugf("Relative path detected, going to deploy: '%s'", c.Settings.Path)
-		}
-	}
-
 	return &c, nil
 }
 
 func Save(conf *Configuration) error {
-	single := filepath.Join(conf.Settings.root, globalConfigFileName)
+	single := filepath.Join(conf.root, globalConfigFileName)
 	f, err := os.OpenFile(single, os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0644)
 	if err != nil {
 		return err

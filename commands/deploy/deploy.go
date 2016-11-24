@@ -5,6 +5,9 @@ import (
 
 	"github.com/Sirupsen/logrus"
 
+	"path/filepath"
+	"strings"
+
 	"github.com/netlify/netlifyctl/commands/middleware"
 	"github.com/netlify/netlifyctl/configuration"
 	"github.com/netlify/netlifyctl/context"
@@ -51,13 +54,13 @@ func (*deployCmd) deploySite(ctx context.Context, cmd *cobra.Command, args []str
 		fmt.Println("=> Domain ready, deploying assets now")
 	}
 
-	s := conf.Settings
-	id := s.ID
+	id := conf.Settings.ID
 
-	baseDeploy(cmd, &s)
-	logrus.WithFields(logrus.Fields{"site": id, "path": s.Path}).Debug("deploying site")
+	path := baseDeploy(cmd, conf)
+	configuration.Save(conf)
+	logrus.WithFields(logrus.Fields{"site": id, "path": path}).Debug("deploying site")
 
-	d, err := client.DeploySite(ctx, id, s.Path)
+	d, err := client.DeploySite(ctx, id, path)
 	if err != nil {
 		return err
 	}
@@ -71,12 +74,31 @@ func (*deployCmd) deploySite(ctx context.Context, cmd *cobra.Command, args []str
 	return nil
 }
 
-func baseDeploy(cmd *cobra.Command, conf *configuration.Settings) {
+func baseDeploy(cmd *cobra.Command, conf *configuration.Configuration) string {
 	bd, err := cmd.Flags().GetString("base-directory")
 	if err != nil {
 		logrus.WithError(err).Fatal("Failed to get string flag: 'base-directory'")
 	}
+
 	if bd != "" {
-		conf.Path = bd
+		return bd
 	}
+	s := conf.Settings
+	path := s.Path
+	if path == "" {
+		path, err = operations.AskForInput("What path would you like deployed?", ".")
+		if err != nil {
+			logrus.WithError(err).Fatal("Failed to get deploy path")
+		}
+
+		s.Path = path
+		logrus.Debugf("Got new path from the user %s", s.Path)
+	}
+
+	if !strings.HasPrefix(s.Path, "/") {
+		path := filepath.Join(conf.Root(), s.Path)
+		logrus.Debugf("Relative path detected, going to deploy: '%s'", path)
+	}
+
+	return path
 }
