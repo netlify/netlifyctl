@@ -28,7 +28,7 @@ func askForConfirmation(message string) bool {
 	}
 }
 
-func askForInput(message, defaultValue string, validate validator) (string, error) {
+func AskForInput(message, defaultValue string, validators ...Validator) (string, error) {
 	if len(defaultValue) > 0 {
 		fmt.Printf("=> %s (default: %s) ", message, defaultValue)
 	} else {
@@ -52,9 +52,13 @@ func askForInput(message, defaultValue string, validate validator) (string, erro
 		return response, nil
 	}
 
-	if err := validate(response); err != nil {
-		fmt.Println(err)
-		return askForInput(message, defaultValue, validate)
+	if validators != nil {
+		for _, v := range validators {
+			if err := v(response); err != nil {
+				fmt.Println(err)
+				return AskForInput(message, defaultValue, validators...)
+			}
+		}
 	}
 
 	return response, nil
