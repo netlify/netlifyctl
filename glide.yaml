@@ -10,6 +10,7 @@ import:
   - client
 - package: github.com/go-openapi/strfmt
 - package: github.com/netlify/open-api
+  version: v0.0.1
   subpackages:
   - go/models
   - go/porcelain
