@@ -39,32 +39,14 @@ func Setup() (*cobra.Command, middleware.CommandFunc) {
 }
 
 func (dc *deployCmd) deploySite(ctx context.Context, cmd *cobra.Command, args []string) error {
-	var configFile = cmd.Root().Flag("config").Value.String()
-	var conf, err = configuration.Load(configFile)
+	conf, err := middleware.ChooseSiteConf(ctx, cmd)
 	if err != nil {
 		return err
 	}
+
+	fmt.Println("=> Domain ready, deploying assets")
+
 	client := context.GetClient(ctx)
-
-	if conf.Settings.ID == "" {
-
-		logrus.Debug("Querying for existing sites")
-		// we don't know the site - time to try and get its id
-		site, err := operations.ChooseOrCreateSite(client, ctx)
-
-		// Ensure that the site ID is always saved,
-		// even when there is a provision error.
-		if site != nil {
-			conf.Settings.ID = site.ID
-			configuration.Save(configFile, conf)
-		}
-		if err != nil {
-			return err
-		}
-
-		fmt.Printf("=>  Domain ready, deploying assets to %s\n", site.Name)
-	}
-
 	options := netlify.DeployOptions{
 		SiteID: conf.Settings.ID,
 		Dir:    baseDeploy(cmd, conf),

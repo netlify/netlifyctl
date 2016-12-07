@@ -17,7 +17,9 @@ import (
 	apiContext "github.com/netlify/open-api/go/porcelain/context"
 
 	"github.com/netlify/netlifyctl/auth"
+	"github.com/netlify/netlifyctl/configuration"
 	"github.com/netlify/netlifyctl/context"
+	"github.com/netlify/netlifyctl/operations"
 )
 
 const defaultAPIPath = "/api/v1"
@@ -134,6 +136,34 @@ func ClientMiddleware(cmd CommandFunc) CommandFunc {
 
 		return cmd(ctx, c, args)
 	}
+}
+
+func ChooseSiteConf(ctx context.Context, cmd *cobra.Command) (*configuration.Configuration, error) {
+	var configFile = cmd.Root().Flag("config").Value.String()
+	var conf, err = configuration.Load(configFile)
+	if err != nil {
+		return nil, err
+	}
+	client := context.GetClient(ctx)
+
+	if conf.Settings.ID == "" {
+		logrus.Debug("Querying for existing sites")
+		// we don't know the site - time to try and get its id
+		site, err := operations.ChooseOrCreateSite(client, ctx)
+
+		// Ensure that the site ID is always saved,
+		// even when there is a provision error.
+		if site != nil {
+			conf.Settings.ID = site.ID
+			configuration.Save(configFile, conf)
+		}
+
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return conf, nil
 }
 
 func httpClient() *http.Client {

@@ -10,10 +10,9 @@ import (
 	aoperations "github.com/netlify/open-api/go/plumbing/operations"
 
 	"github.com/netlify/netlifyctl/auth"
+	"github.com/netlify/netlifyctl/configuration"
 	"github.com/netlify/netlifyctl/operations"
 )
-
-const globalConfigFileName = "netlify.toml"
 
 var (
 	configFile string
@@ -21,7 +20,7 @@ var (
 	endpoint   string
 
 	rootCmd = &cobra.Command{
-		Use:   "netlify",
+		Use:   "netlifyctl",
 		Short: "Command Line Interface for netlify.com",
 	}
 )
@@ -32,7 +31,7 @@ func Execute() {
 	rootCmd.SilenceErrors = true
 
 	rootCmd.PersistentFlags().StringVarP(&endpoint, "endpoint", "E", "https://api.netlify.com", "default API endpoint")
-	rootCmd.PersistentFlags().StringVarP(&configFile, "config", "C", globalConfigFileName, "configuration file")
+	rootCmd.PersistentFlags().StringVarP(&configFile, "config", "C", configuration.DefaultConfigFileName, "configuration file")
 	rootCmd.PersistentFlags().StringVarP(&auth.AccessToken, "access-token", "A", "", "access token for Netlify's API")
 	rootCmd.PersistentFlags().BoolVarP(&debug, "debug", "D", false, "enable debug tracing")
 
