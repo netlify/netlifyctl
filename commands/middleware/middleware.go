@@ -1,10 +1,14 @@
 package middleware
 
 import (
+	"crypto/tls"
+	"net"
+	"net/http"
 	"net/url"
+	"time"
 
 	"github.com/Sirupsen/logrus"
-	httptransport "github.com/go-openapi/runtime/client"
+	apiClient "github.com/go-openapi/runtime/client"
 	"github.com/go-openapi/strfmt"
 	"github.com/spf13/cobra"
 
@@ -54,7 +58,7 @@ func AuthMiddleware(cmd CommandFunc) CommandFunc {
 
 func ClientMiddleware(cmd CommandFunc) CommandFunc {
 	return func(ctx context.Context, c *cobra.Command, args []string) error {
-		var client *porcelain.Netlify
+		var transport *apiClient.Runtime
 
 		if endpoint := c.Flag("endpoint"); endpoint != nil {
 			if v := endpoint.Value.String(); v != "" {
@@ -73,18 +77,40 @@ func ClientMiddleware(cmd CommandFunc) CommandFunc {
 					u.Path = defaultAPIPath
 				}
 
-				transport := httptransport.New(u.Host, u.Path, []string{u.Scheme})
-				client = porcelain.New(transport, strfmt.Default)
+				transport = apiClient.NewWithClient(u.Host, u.Path, []string{u.Scheme}, httpClient())
 			}
 		}
 
-		if client == nil {
+		if transport == nil {
 			logrus.WithField("endpoint", "https://api.netlify.com").Debug("setup default API endpoint")
-			client = porcelain.NewHTTPClient(nil)
+
+			transport = apiClient.NewWithClient("api.netlify.com", "", []string{"https"}, httpClient())
 		}
 
+		client := porcelain.New(transport, strfmt.Default)
 		ctx = context.WithClient(ctx, client)
 
 		return cmd(ctx, c, args)
 	}
+}
+
+func httpClient() *http.Client {
+	protoUpgrade := map[string]func(string, *tls.Conn) http.RoundTripper{
+		"ignore-h2": func(string, *tls.Conn) http.RoundTripper { return nil },
+	}
+
+	tr := &http.Transport{
+		Proxy: http.ProxyFromEnvironment,
+		DialContext: (&net.Dialer{
+			Timeout:   30 * time.Second,
+			KeepAlive: 30 * time.Second,
+		}).DialContext,
+		MaxIdleConns:          100,
+		IdleConnTimeout:       90 * time.Second,
+		TLSHandshakeTimeout:   10 * time.Second,
+		ExpectContinueTimeout: 1 * time.Second,
+		TLSNextProto:          protoUpgrade,
+	}
+
+	return &http.Client{Transport: tr}
 }
