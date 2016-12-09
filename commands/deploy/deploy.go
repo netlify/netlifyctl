@@ -65,11 +65,14 @@ func (*deployCmd) deploySite(ctx context.Context, cmd *cobra.Command, args []str
 		return err
 	}
 
-	ready, err := client.WaitUntilDeployReady(ctx, d)
-	if err != nil {
-		return err
+	if len(d.Required) > 0 {
+		ready, err := client.WaitUntilDeployReady(ctx, d)
+		if err != nil {
+			return err
+		}
+		d = ready
 	}
-	fmt.Printf("=> Done, your website is live in %s\n", ready.URL)
+	fmt.Printf("=> Done, your website is live in %s\n", d.URL)
 
 	return nil
 }
