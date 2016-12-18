@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/Sirupsen/logrus"
+	"github.com/netlify/open-api/go/models"
 
 	"path/filepath"
 	"strings"
@@ -32,19 +33,21 @@ func Setup() (*cobra.Command, middleware.CommandFunc) {
 }
 
 func (*deployCmd) deploySite(ctx context.Context, cmd *cobra.Command, args []string) error {
-	conf, err := configuration.Load()
+	var configFile = cmd.Root().Flag("config").Value.String()
+	var conf, err = configuration.Load(configFile)
 	if err != nil {
 		return err
 	}
 	client := context.GetClient(ctx)
 
 	if conf.Settings.ID == "" && operations.ConfirmCreateSite(cmd) {
-		newSite, err := operations.CreateSite(cmd, client, ctx)
+		var newSite *models.Site
+		newSite, err = operations.CreateSite(cmd, client, ctx)
 		// Ensure that the site ID is always saved,
 		// even when there is a provision error.
 		if newSite != nil {
 			conf.Settings.ID = newSite.ID
-			configuration.Save(conf)
+			configuration.Save(configFile, conf)
 		}
 
 		if err != nil {
@@ -57,7 +60,7 @@ func (*deployCmd) deploySite(ctx context.Context, cmd *cobra.Command, args []str
 	id := conf.Settings.ID
 
 	path := baseDeploy(cmd, conf)
-	configuration.Save(conf)
+	configuration.Save(configFile, conf)
 	logrus.WithFields(logrus.Fields{"site": id, "path": path}).Debug("deploying site")
 
 	d, err := client.DeploySite(ctx, id, path)
@@ -87,7 +90,7 @@ func baseDeploy(cmd *cobra.Command, conf *configuration.Configuration) string {
 		return bd
 	}
 	s := conf.Settings
-	path := s.Path
+	var path = s.Path
 	if path == "" {
 		path, err = operations.AskForInput("What path would you like deployed?", ".")
 		if err != nil {
@@ -99,7 +102,7 @@ func baseDeploy(cmd *cobra.Command, conf *configuration.Configuration) string {
 	}
 
 	if !strings.HasPrefix(s.Path, "/") {
-		path := filepath.Join(conf.Root(), s.Path)
+		path = filepath.Join(conf.Root(), s.Path)
 		logrus.Debugf("Relative path detected, going to deploy: '%s'", path)
 	}
 
