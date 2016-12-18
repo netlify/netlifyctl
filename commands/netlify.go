@@ -10,9 +10,12 @@ import (
 	"github.com/spf13/cobra"
 )
 
+const globalConfigFileName = "netlify.toml"
+
 var (
-	debug    bool
-	endpoint string
+	configFile string
+	debug      bool
+	endpoint   string
 
 	rootCmd = &cobra.Command{
 		Use:   "netlify",
@@ -34,6 +37,7 @@ func Execute() {
 	rootCmd.SilenceUsage = true
 
 	rootCmd.PersistentFlags().StringVarP(&endpoint, "endpoint", "E", "https://api.netlify.com", "default API endpoint")
+	rootCmd.PersistentFlags().StringVarP(&configFile, "config", "C", globalConfigFileName, "configuration file")
 	rootCmd.PersistentFlags().StringVarP(&auth.AccessToken, "access-token", "A", "", "access token for Netlify's API")
 	rootCmd.PersistentFlags().BoolVarP(&debug, "debug", "D", false, "enable debug tracing")
 

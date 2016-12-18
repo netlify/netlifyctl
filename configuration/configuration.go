@@ -9,8 +9,6 @@ import (
 	"github.com/Sirupsen/logrus"
 )
 
-const globalConfigFileName = "netlify.toml"
-
 type Settings struct {
 	ID   string
 	Path string
@@ -25,7 +23,7 @@ func (c Configuration) Root() string {
 	return c.root
 }
 
-func Load() (*Configuration, error) {
+func Load(configFile string) (*Configuration, error) {
 	pwd, err := os.Getwd()
 	if err != nil {
 		return nil, err
@@ -34,8 +32,7 @@ func Load() (*Configuration, error) {
 	var c Configuration
 	c.root = pwd
 
-	single := filepath.Join(pwd, globalConfigFileName)
-	fi, err := os.Stat(single)
+	fi, err := os.Stat(configFile)
 	if err != nil {
 		if os.IsNotExist(err) {
 			return &c, nil
@@ -44,10 +41,10 @@ func Load() (*Configuration, error) {
 	}
 
 	if fi.IsDir() {
-		return nil, fmt.Errorf("%s cannot be a directory", globalConfigFileName)
+		return nil, fmt.Errorf("%s cannot be a directory", configFile)
 	}
 
-	if _, err := toml.DecodeFile(single, &c); err != nil {
+	if _, err := toml.DecodeFile(configFile, &c); err != nil {
 		return nil, err
 	}
 
@@ -56,8 +53,8 @@ func Load() (*Configuration, error) {
 	return &c, nil
 }
 
-func Save(conf *Configuration) error {
-	single := filepath.Join(conf.root, globalConfigFileName)
+func Save(configFile string, conf *Configuration) error {
+	single := filepath.Join(conf.root, configFile)
 	f, err := os.OpenFile(single, os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0644)
 	if err != nil {
 		return err
