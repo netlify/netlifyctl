@@ -5,6 +5,7 @@ import (
 	"net"
 	"net/http"
 	"net/url"
+	"os"
 	"time"
 
 	"github.com/Sirupsen/logrus"
@@ -34,6 +35,31 @@ func NewRunFunc(f CommandFunc, mm []Middleware) func(*cobra.Command, []string) e
 		}
 
 		return runf(ctx, cmd, args)
+	}
+}
+
+func DebugMiddleware(cmd CommandFunc) CommandFunc {
+	return func(ctx context.Context, c *cobra.Command, args []string) error {
+		debug, err := c.Root().Flags().GetBool("debug")
+		if err != nil {
+			return cmd(ctx, c, args)
+		}
+
+		if debug {
+			// Enable open-api debug mode and disable it after running the command.
+			os.Setenv("DEBUG", "1")
+			defer os.Unsetenv("DEBUG")
+
+			// Enable debug logging
+			logrus.SetLevel(logrus.DebugLevel)
+			logrus.WithFields(logrus.Fields{"command": c.Use, "arguments": args}).Debug("PreRun")
+
+			// Show all set flags values
+			c.DebugFlags()
+		}
+
+		// Run command
+		return cmd(ctx, c, args)
 	}
 }
 
