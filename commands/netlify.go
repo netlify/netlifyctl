@@ -4,7 +4,6 @@ import (
 	"os"
 	"regexp"
 
-	"github.com/Sirupsen/logrus"
 	"github.com/netlify/netlifyctl/auth"
 	"github.com/netlify/netlifyctl/operations"
 	"github.com/spf13/cobra"
@@ -20,15 +19,6 @@ var (
 	rootCmd = &cobra.Command{
 		Use:   "netlify",
 		Short: "Command Line Interface for netlify.com",
-		PersistentPreRun: func(cmd *cobra.Command, args []string) {
-			if debug {
-				logrus.SetLevel(logrus.DebugLevel)
-			}
-			logrus.WithFields(logrus.Fields{"command": cmd.Use, "arguments": args}).Debug("PreRun")
-			if debug {
-				cmd.DebugFlags()
-			}
-		},
 	}
 )
 
