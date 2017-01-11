@@ -9,12 +9,16 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func Setup() (*cobra.Command, middleware.CommandFunc) {
-	return &cobra.Command{
-		Use:   "sites",
-		Short: "List sites in your account",
-		Long:  "List sites in your account",
-	}, listSites
+func Setup(middlewares []middleware.Middleware) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "site",
+		Short: "Handle site operations",
+		Long:  "Handle site operations",
+	}
+
+	cmd.AddCommand(setupUpdateCommand(middlewares))
+
+	return middleware.SetupCommand(cmd, listSites, middlewares)
 }
 
 func listSites(ctx context.Context, cmd *cobra.Command, args []string) error {

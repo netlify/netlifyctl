@@ -25,6 +25,11 @@ const defaultAPIPath = "/api/v1"
 type CommandFunc func(context.Context, *cobra.Command, []string) error
 type Middleware func(CommandFunc) CommandFunc
 
+func SetupCommand(cmd *cobra.Command, f CommandFunc, m []Middleware) *cobra.Command {
+	cmd.RunE = NewRunFunc(f, m)
+	return cmd
+}
+
 func NewRunFunc(f CommandFunc, mm []Middleware) func(*cobra.Command, []string) error {
 	return func(cmd *cobra.Command, args []string) error {
 		ctx := context.Background()
