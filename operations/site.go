@@ -53,7 +53,8 @@ func CreateSite(cmd *cobra.Command, client *porcelain.Netlify, ctx context.Conte
 		}
 
 		site.ForceSsl = true
-		if err := client.UpdateSite(ctx, site); err != nil {
+		_, err = client.UpdateSite(ctx, site)
+		if err != nil {
 			return site, err
 		}
 	}

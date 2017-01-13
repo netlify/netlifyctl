@@ -20,11 +20,9 @@ func addCommands() {
 		middleware.LoggingMiddleware,
 	}
 
-	sCmd, sFunc := sites.Setup()
-	rootCmd.AddCommand(setupRunE(sCmd, sFunc, middlewares))
-
 	dCmd, dFunc := deploy.Setup()
 	rootCmd.AddCommand(setupRunE(dCmd, dFunc, middlewares))
 
+	rootCmd.AddCommand(sites.Setup(middlewares))
 	rootCmd.AddCommand(versionCmd)
 }

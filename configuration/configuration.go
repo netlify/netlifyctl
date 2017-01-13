@@ -23,6 +23,17 @@ func (c Configuration) Root() string {
 	return c.root
 }
 
+func Exist(configFile string) bool {
+	pwd, err := os.Getwd()
+	if err != nil {
+		return false
+	}
+
+	single := filepath.Join(pwd, configFile)
+	_, err = os.Stat(single)
+	return err == nil
+}
+
 func Load(configFile string) (*Configuration, error) {
 	pwd, err := os.Getwd()
 	if err != nil {
