@@ -1,5 +1,5 @@
-hash: 4c86b2f7f2d2b35cd32814dc50640e4903dc59792f5829fd6e12adf02922d529
-updated: 2016-11-23T18:24:36.683055361-08:00
+hash: 098b0bc5ebb573e0c4bd3bae4fe9e0827eedb8ddc0f6efc84c588f01019730ef
+updated: 2017-01-19T20:36:44.884170528+01:00
 imports:
 - name: github.com/asaskevich/govalidator
   version: 7b3beb6df3c42abd3509abfc3bcacc0fbfb7c877
@@ -8,7 +8,7 @@ imports:
 - name: github.com/BurntSushi/toml
   version: bbd5bb678321a0d6e58f1099321dfa73391c1b6f
 - name: github.com/cenkalti/backoff
-  version: b02f2bbce11d7ea6b97f282ef1771b0fe2f65ef3
+  version: cdf48bbc1eb78d1349cbda326a4a037f7ba565c6
 - name: github.com/go-openapi/analysis
   version: 7222828b8ce19afee3c595aef6643b9e42150120
 - name: github.com/go-openapi/errors
@@ -36,43 +36,49 @@ imports:
 - name: github.com/mailru/easyjson
   version: 159cdb893c982e3d1bc6450322fedd514f9c9de3
   subpackages:
+  - buffer
   - jlexer
   - jwriter
-  - buffer
+- name: github.com/mitchellh/go-homedir
+  version: b8bc1bf767474819792c23f32d8286a45736f1c6
 - name: github.com/mitchellh/mapstructure
-  version: f3009df150dadf309fdee4a54ed65c124afad715
+  version: ca63d7c062ee3c9f34db231e352b60012b4fd0c1
 - name: github.com/netlify/open-api
   version: 9d04397d2597b4c5f617613d1430dae937e82020
   subpackages:
   - go/models
-  - go/porcelain
-  - go/porcelain/context
   - go/plumbing
   - go/plumbing/operations
+  - go/porcelain
+  - go/porcelain/context
 - name: github.com/PuerkitoBio/purell
   version: 0bcb03f4b4d0a9428594752bd2a3b9aa0a9d4bd4
 - name: github.com/PuerkitoBio/urlesc
   version: 5bd2802263f21d8788851d5305584c82a5c75d7e
 - name: github.com/Sirupsen/logrus
   version: d26492970760ca5d33129d2d799e34be5c4782eb
+- name: github.com/skratchdot/open-golang
+  version: 75fb7ed4208cf72d323d7d02fd1a5964a7a9073c
+  subpackages:
+  - open
 - name: github.com/spf13/cobra
-  version: 9495bc009a56819bdb0ddbc1a373e29c140bc674
+  version: f368244301305f414206f889b1735a54cfc8bde8
 - name: github.com/spf13/pflag
-  version: 5ccb023bc27df288a957c5e994cd44fd19619465
+  version: cb88ea77998c3f024757528e3305022ab50b43be
 - name: golang.org/x/net
-  version: 4971afdc2f162e82d185353533d3cf16188a9f4e
+  version: 075e191f18186a8ff2becaf64478e30f4545cdad
   subpackages:
   - context
   - context/ctxhttp
   - idna
 - name: golang.org/x/sys
-  version: 30237cf4eefd639b184d1f2cb77a581ea0be8947
+  version: d4feaf1a7e61e1d9e79e6c4e76c6349e9cab0a03
   subpackages:
   - unix
 - name: golang.org/x/text
-  version: b01949dc0793a9af5e4cb3fce4d42999e76e8ca1
+  version: d69c40b4be55797923cec7457fac7a244d91a9b6
   subpackages:
+  - transform
   - unicode/norm
   - width
-  - transform
 testImports: []
