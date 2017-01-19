@@ -16,3 +16,5 @@ import:
   - go/porcelain
   - go/porcelain/context
 - package: github.com/spf13/cobra
+- package: github.com/skratchdot/open-golang
+- package: github.com/mitchellh/go-homedir
