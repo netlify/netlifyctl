@@ -2,6 +2,7 @@ package commands
 
 import (
 	"github.com/netlify/netlifyctl/commands/deploy"
+	"github.com/netlify/netlifyctl/commands/login"
 	"github.com/netlify/netlifyctl/commands/middleware"
 	"github.com/netlify/netlifyctl/commands/sites"
 	"github.com/spf13/cobra"
@@ -24,5 +25,6 @@ func addCommands() {
 	rootCmd.AddCommand(setupRunE(dCmd, dFunc, middlewares))
 
 	rootCmd.AddCommand(sites.Setup(middlewares))
+	rootCmd.AddCommand(login.Setup(middlewares))
 	rootCmd.AddCommand(versionCmd)
 }
