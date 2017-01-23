@@ -4,15 +4,28 @@ netlifyctl is a proof of concept to rewrite Netlify's CLI in Go.
 It uses the [OpenAPI](https://github.com/netlify/open-api) definitions
 to interact with Netlify's API.
 
+
 ## Installation
 
-netlifyctl can only be installed by source for now:
+netlifyctl can be installed by source:
 
 	$ go get github.com/netlify/netlifyctl
+	
+it can also be downloaded as a ready-to-run binary for osx and linux (other architectures available upon request to support@netlify.com):
+
+        https://github.com/netlify/netlifyctl/releases
+
 
 ## Usage
 
 	$ netlifyctl --help
+	
+	
+## Contributions and Bug Reports
+
+Contributions are welcome via Pull Request
+Bug Reports are welcome as Issues filed on this repository, but feel free to chat with support@netlify.com about issues too!
+
 
 ## License
 
