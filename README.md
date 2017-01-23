@@ -11,9 +11,7 @@ netlifyctl can be installed by source:
 
 	$ go get github.com/netlify/netlifyctl
 	
-it can also be downloaded as a ready-to-run binary for osx and linux (other architectures available upon request to support@netlify.com):
-
-        https://github.com/netlify/netlifyctl/releases
+it can also be [downloaded as a ready-to-run binary for osx and linux](https://github.com/netlify/netlifyctl/releases ).  Other architectures available upon request to support@netlify.com.
 
 
 ## Usage
