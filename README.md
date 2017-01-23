@@ -21,7 +21,8 @@ it can also be [downloaded as a ready-to-run binary for osx and linux](https://g
 	
 ## Contributions and Bug Reports
 
-Contributions are welcome via Pull Request
+Contributions are welcome via Pull Request.
+
 Bug Reports are welcome as Issues filed on this repository, but feel free to chat with support@netlify.com about issues too!
 
 
