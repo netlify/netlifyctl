@@ -41,7 +41,7 @@ func SaveToken(token string) error {
 	defer f.Close()
 
 	config := struct {
-		AccessToken string
+		AccessToken string `json:"access_token"`
 	}{
 		AccessToken: token,
 	}
@@ -82,7 +82,7 @@ func loadAccessTokenFromFile() string {
 	defer f.Close()
 
 	config := struct {
-		AccessToken string
+		AccessToken string `json:"access_token"`
 	}{}
 
 	if err := json.NewDecoder(f).Decode(&config); err != nil {
