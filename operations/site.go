@@ -3,9 +3,12 @@ package operations
 import (
 	"fmt"
 
+	"strconv"
+
 	"github.com/netlify/open-api/go/models"
 	"github.com/netlify/open-api/go/porcelain"
 	"github.com/netlify/open-api/go/porcelain/context"
+	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 )
 
@@ -60,4 +63,31 @@ func CreateSite(cmd *cobra.Command, client *porcelain.Netlify, ctx context.Conte
 	}
 
 	return site, nil
+}
+
+func ChooseSite(client *porcelain.Netlify, ctx context.Context) (*models.Site, error) {
+	sites, err := client.ListSites(ctx, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	for i, s := range sites {
+		fmt.Printf("[%d] %s (%s)\n", i+1, s.Name, s.ID)
+	}
+	var id int
+	AskForInput("Which site?", "", func(input string) error {
+		var err error
+		id, err = strconv.Atoi(input)
+		if err != nil {
+			return err
+		}
+
+		if id > len(sites) || id <= 0 {
+			return errors.New("Not a valid site selection")
+		}
+
+		return nil
+	})
+
+	return sites[id], nil
 }
