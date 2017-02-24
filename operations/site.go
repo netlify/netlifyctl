@@ -70,13 +70,21 @@ func ChooseSite(client *porcelain.Netlify, ctx context.Context) (*models.Site, e
 	if err != nil {
 		return nil, err
 	}
-
+	nameToId := make(map[string]int)
 	for i, s := range sites {
 		fmt.Printf("[%d] %s (%s)\n", i+1, s.Name, s.ID)
+		nameToId[s.Name] = s.ID
 	}
+
 	var id int
 	AskForInput("Which site?", "", func(input string) error {
 		var err error
+
+		if index, ok := nameToId[input]; ok {
+			id = index
+			return nil
+		}
+
 		id, err = strconv.Atoi(input)
 		if err != nil {
 			return err
