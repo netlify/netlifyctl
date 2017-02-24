@@ -40,26 +40,26 @@ func Execute() {
 
 	addCommands()
 	if c, err := rootCmd.ExecuteC(); err != nil {
-		if isUserError(err) {
-			c.Println(c.UsageString())
-		} else if uErr, ok := err.(*aoperations.ListSitesDefault); ok {
-			errStr := fmt.Sprintf("%d", uErr.Code())
-			if uErr.Payload.Message != nil {
-				errStr += ": " + *uErr.Payload.Message
-			}
-			fmt.Fprintf(os.Stderr, "%s\n", errStr)
-		}
-
+		displayError(c, err)
 		os.Exit(-1)
 	}
 }
 
 var userErrorRegexp = regexp.MustCompile("argument|flag|shorthand")
 
-func isUserError(err error) bool {
-	if cErr, ok := err.(commandError); ok && cErr.isUserError() {
-		return true
+func displayError(c *cobra.Command, raw error) {
+	switch err := raw.(type) {
+	case commandError:
+		if err.isUserError() && userErrorRegexp.MatchString(err.Error()) {
+			c.Println(c.UsageString())
+		}
+	case *aoperations.ListSitesDefault:
+		errStr := fmt.Sprintf("%d", err.Code())
+		if err.Payload.Message != nil {
+			errStr += ": " + *err.Payload.Message
+		}
+		fmt.Fprintf(os.Stderr, "%s\n", errStr)
+	default:
+		fmt.Println(os.Stderr, err.Error())
 	}
-
-	return userErrorRegexp.MatchString(err.Error())
 }
