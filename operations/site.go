@@ -72,8 +72,8 @@ func ChooseSite(client *porcelain.Netlify, ctx context.Context) (*models.Site, e
 	}
 	nameToId := make(map[string]int)
 	for i, s := range sites {
-		fmt.Printf("[%d] %s (%s)\n", i+1, s.Name, s.ID)
-		nameToId[s.Name] = s.ID
+		fmt.Printf("[%d] %s\n", i+1, s.Name)
+		nameToId[s.Name] = i
 	}
 
 	var id int
