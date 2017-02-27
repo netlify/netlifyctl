@@ -57,6 +57,16 @@ func (*deployCmd) deploySite(ctx context.Context, cmd *cobra.Command, args []str
 		}
 
 		fmt.Println("=> Domain ready, deploying assets now")
+	} else {
+		logrus.Debug("Querying for existing sites")
+		// we don't know the site - time to try and get its id
+		site, err := operations.ChooseSite(client, ctx)
+		if err != nil {
+			return err
+		}
+		conf.Settings.ID = site.ID
+		configuration.Save(configFile, conf)
+		fmt.Printf("=> deploying assets to %s (%s)\n", site.Name, site.ID)
 	}
 
 	id := conf.Settings.ID
