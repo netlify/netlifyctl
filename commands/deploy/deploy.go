@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/Sirupsen/logrus"
-	"github.com/netlify/open-api/go/models"
 
 	"path/filepath"
 	"strings"
@@ -42,31 +41,23 @@ func (*deployCmd) deploySite(ctx context.Context, cmd *cobra.Command, args []str
 	}
 	client := context.GetClient(ctx)
 
-	if conf.Settings.ID == "" && operations.ConfirmCreateSite(cmd) {
-		var newSite *models.Site
-		newSite, err = operations.CreateSite(cmd, client, ctx)
-		// Ensure that the site ID is always saved,
-		// even when there is a provision error.
-		if newSite != nil {
-			conf.Settings.ID = newSite.ID
-			configuration.Save(configFile, conf)
-		}
+	if conf.Settings.ID == "" {
 
-		if err != nil {
-			return err
-		}
-
-		fmt.Println("=> Domain ready, deploying assets now")
-	} else {
 		logrus.Debug("Querying for existing sites")
 		// we don't know the site - time to try and get its id
-		site, err := operations.ChooseSite(client, ctx)
+		site, err := operations.ChooseOrCreateSite(client, ctx)
+
+		// Ensure that the site ID is always saved,
+		// even when there is a provision error.
+		if site != nil {
+			conf.Settings.ID = site.ID
+			configuration.Save(configFile, conf)
+		}
 		if err != nil {
 			return err
 		}
-		conf.Settings.ID = site.ID
-		configuration.Save(configFile, conf)
-		fmt.Printf("=> deploying assets to %s (%s)\n", site.Name, site.ID)
+
+		fmt.Printf("=>  Domain ready, deploying assets to %s\n", site.Name)
 	}
 
 	id := conf.Settings.ID
