@@ -1,58 +1,56 @@
-hash: c0672364024d535d4d103295fb363398e31e8a1acd8e8978d26f8157031b5a37
-updated: 2017-01-26T15:05:39.492049318-08:00
+hash: e78517a7910539284e61a2e7a88a9127209189fcc7d61213d67504d06ac24585
+updated: 2017-04-26T20:26:12.233087763-07:00
 imports:
 - name: github.com/asaskevich/govalidator
-  version: fdf19785fd3558d619ef81212f5edf1d6c2a5911
+  version: 7b3beb6df3c42abd3509abfc3bcacc0fbfb7c877
 - name: github.com/buger/goterm
   version: cc3942e537b1ab00de92d348c40acbfa6565d20f
 - name: github.com/BurntSushi/toml
   version: bbd5bb678321a0d6e58f1099321dfa73391c1b6f
 - name: github.com/cenkalti/backoff
-  version: b02f2bbce11d7ea6b97f282ef1771b0fe2f65ef3
+  version: cdf48bbc1eb78d1349cbda326a4a037f7ba565c6
 - name: github.com/go-openapi/analysis
-  version: d5a75b7d751ca3f11ad5d93cfe97405f2c3f6a47
+  version: 7222828b8ce19afee3c595aef6643b9e42150120
 - name: github.com/go-openapi/errors
-  version: fc3f73a224499b047eda7191e5d22e1e9631e86f
+  version: 49fe8b3a0e0d32a617d8d50c67f856ad6e45b28b
 - name: github.com/go-openapi/jsonpointer
-  version: 779f45308c19820f1a69e9a4cd965f496e0da10f
+  version: 8d96a2dc61536b690bd36b2e9df0b3c0b62825b2
 - name: github.com/go-openapi/jsonreference
   version: 36d33bfe519efae5632669801b180bf1a245da3b
 - name: github.com/go-openapi/loads
-  version: 6bb6486231e079ea125c0f39994ed3d0c53399ed
-  subpackages:
-  - fmts
+  version: 5861a4879a2866943dce3c644c879af9e59c22a3
 - name: github.com/go-openapi/runtime
-  version: 3b13ebb46790d871d74a6c2450fa4b1280f90854
+  version: 12c07accf0687ab20b1e7b6293d8012ce282499c
   subpackages:
   - client
 - name: github.com/go-openapi/spec
-  version: e072eb2390d3a03736a6eb617d30f48369160447
+  version: f7ae86df5bc115a2744343016c789a89f065a4bd
 - name: github.com/go-openapi/strfmt
-  version: 0cb3db44c13bad3b3f567b762a66751972a310cc
+  version: 34fc3ba7c0f5fb615fda47a2b4fbd4c641b215f2
 - name: github.com/go-openapi/swag
-  version: 96d7b9ebd181a1735a1c9ac87914f2b32fbf56c9
+  version: 3b6d86cd965820f968760d5d419cb4add096bdd7
 - name: github.com/go-openapi/validate
-  version: 035dcd74f1f61e83debe1c22950dc53556e7e4b2
+  version: 027696d4b54399770f1cdcc6c6daa56975f9e14e
 - name: github.com/inconshreveable/mousetrap
   version: 76626ae9c91c4f2a10f34cad8ce83ea42c93bb75
 - name: github.com/mailru/easyjson
-  version: cc9fc679cf2c79747fcbf73eed4e3c0f23d9ee14
+  version: 159cdb893c982e3d1bc6450322fedd514f9c9de3
   subpackages:
+  - buffer
   - jlexer
   - jwriter
-  - buffer
 - name: github.com/mitchellh/go-homedir
   version: b8bc1bf767474819792c23f32d8286a45736f1c6
 - name: github.com/mitchellh/mapstructure
-  version: db1efb556f84b25a0a13a04aad883943538ad2e0
+  version: f3009df150dadf309fdee4a54ed65c124afad715
 - name: github.com/netlify/open-api
-  version: ce3d822d1073bc08387df6759e7c5954fc1a93d0
+  version: e2bba4859b36c1679b6d894f040c8505d888e985
   subpackages:
   - go/models
-  - go/porcelain
-  - go/porcelain/context
   - go/plumbing
   - go/plumbing/operations
+  - go/porcelain
+  - go/porcelain/context
 - name: github.com/PuerkitoBio/purell
   version: 0bcb03f4b4d0a9428594752bd2a3b9aa0a9d4bd4
 - name: github.com/PuerkitoBio/urlesc
@@ -64,25 +62,23 @@ imports:
   subpackages:
   - open
 - name: github.com/spf13/cobra
-  version: c29ece4386f74084680e5e6d02d7b943ae630f63
+  version: 856b96dcb49d6427babe192998a35190a12c2230
 - name: github.com/spf13/pflag
-  version: a9a634f3de0a7529baded7ad6b0c7467d5c6eca7
+  version: 5ccb023bc27df288a957c5e994cd44fd19619465
 - name: golang.org/x/net
-  version: f2499483f923065a842d38eb4c7f1927e6fc6e6d
+  version: de35ec43e7a9aabd6a9c54d2898220ea7e44de7d
   subpackages:
   - context
   - context/ctxhttp
   - idna
 - name: golang.org/x/sys
-  version: d75a52659825e75fff6158388dddc6a5b04f9ba5
+  version: c200b10b5d5e122be351b67af224adc6128af5bf
   subpackages:
   - unix
 - name: golang.org/x/text
-  version: ece019dcfd29abcf65d0d1dfe145e8faad097640
+  version: 16e1d1f27f7aba51c74c0aeb7a7ee31a75c5c63c
   subpackages:
+  - transform
   - unicode/norm
   - width
-  - transform
-- name: gopkg.in/yaml.v2
-  version: 4c78c975fe7c825c6d1466c42be594d1d6f3aba6
 testImports: []
