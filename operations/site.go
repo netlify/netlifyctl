@@ -83,7 +83,7 @@ func ChooseOrCreateSite(client *porcelain.Netlify, ctx context.Context) (*models
 	}
 
 	for {
-		input, err := AskForInput("Which site?", "0", nil)
+		input, err := AskForInput("Which site?", "0")
 		if err == nil {
 			if selection, ok := nameToId[input]; ok {
 				return selection, nil
