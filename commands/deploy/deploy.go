@@ -17,6 +17,7 @@ import (
 
 type deployCmd struct {
 	base  string
+	title string
 	draft bool
 }
 
@@ -28,12 +29,13 @@ func Setup() (*cobra.Command, middleware.CommandFunc) {
 		Long:  "Deploy your site",
 	}
 	ccmd.Flags().StringVarP(&cmd.base, "base-directory", "b", "", "directory to publish")
+	ccmd.Flags().StringVarP(&cmd.title, "message", "m", "", "message for the deploy title")
 	ccmd.Flags().BoolVarP(&cmd.draft, "draft", "d", false, "draft deploy, not published in production")
 
 	return ccmd, cmd.deploySite
 }
 
-func (*deployCmd) deploySite(ctx context.Context, cmd *cobra.Command, args []string) error {
+func (dc *deployCmd) deploySite(ctx context.Context, cmd *cobra.Command, args []string) error {
 	var configFile = cmd.Root().Flag("config").Value.String()
 	var conf, err = configuration.Load(configFile)
 	if err != nil {
@@ -72,7 +74,7 @@ func (*deployCmd) deploySite(ctx context.Context, cmd *cobra.Command, args []str
 
 	logrus.WithFields(logrus.Fields{"site": id, "path": path, "draft": draft}).Debug("deploying site")
 
-	d, err := client.DeploySite(ctx, id, path, draft)
+	d, err := client.DeploySite(ctx, id, dc.title, path, draft)
 	if err != nil {
 		return err
 	}
