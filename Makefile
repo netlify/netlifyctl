@@ -5,11 +5,21 @@ help: ## Show this help.
 
 all: deps test build ## Run the tests and build the binary.
 
-build: ## Build the binary.
-	go build -ldflags "-X github.com/netlify/netlifyctl/commands.Version=`git rev-parse HEAD`"
+os = darwin
+arch = amd64
 
-build_linux: ## Build the binary.
-	GOOS=linux GOARCH=amd64 go build -ldflags "-X github.com/netlify/netlifyctl/commands.Version=`git rev-parse HEAD`"
+build: test
+	@echo "Making netlifyctl for $(os)/$(arch)"
+	GOOS=$(os) GOARCH=$(arch) go build -ldflags "-X github.com/netlify/netlifyctl/commands.Version=`git rev-parse HEAD`"
+
+build_linux: override os=linux
+build_linux: build
+
+package: build
+	tar -czf netlifyctl-$(os)-$(arch).tar.gz netlifyctl
+
+package_linux: override os=linux
+package_linux: package
 
 deps: ## Install dependencies.
 	go get -u github.com/Masterminds/glide && glide install
