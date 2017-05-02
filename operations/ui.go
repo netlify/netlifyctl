@@ -52,8 +52,8 @@ func AskForInput(message, defaultValue string, validators ...Validator) (string,
 		return response, nil
 	}
 
-	if validators != nil {
-		for _, v := range validators {
+	for _, v := range validators {
+		if v != nil {
 			if err := v(response); err != nil {
 				fmt.Println(err)
 				return AskForInput(message, defaultValue, validators...)
