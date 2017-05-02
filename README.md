@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/netlify/netlifyctl.svg?branch=master)](https://travis-ci.org/netlify/netlifyctl)
 # Introduction
 
 netlifyctl is a proof of concept to rewrite Netlify's CLI in Go.
@@ -10,15 +11,15 @@ to interact with Netlify's API.
 netlifyctl can be installed by source:
 
 	$ go get github.com/netlify/netlifyctl
-	
+
 it can also be [downloaded as a ready-to-run binary for osx and linux](https://github.com/netlify/netlifyctl/releases ).  Other architectures available upon request to support@netlify.com.
 
 
 ## Usage
 
 	$ netlifyctl --help
-	
-	
+
+
 ## Contributions and Bug Reports
 
 Contributions are welcome via Pull Request.
