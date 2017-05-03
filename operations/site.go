@@ -7,8 +7,6 @@ import (
 
 	"os"
 
-	"errors"
-
 	"github.com/netlify/open-api/go/models"
 	"github.com/netlify/open-api/go/porcelain"
 	"github.com/netlify/open-api/go/porcelain/context"
@@ -105,9 +103,7 @@ func ChooseOrCreateSite(client *porcelain.Netlify, ctx context.Context) (*models
 				fmt.Fprint(os.Stdout, "Input must be an index or the site name")
 			}
 
-			return sites[id], nil
+			return sites[id-1], nil
 		}
 	}
-
-	return nil, errors.New("Failed to select a site")
 }
