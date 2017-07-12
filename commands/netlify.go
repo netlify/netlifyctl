@@ -60,6 +60,6 @@ func displayError(c *cobra.Command, raw error) {
 		}
 		fmt.Fprintf(os.Stderr, "%s\n", errStr)
 	default:
-		fmt.Println(os.Stderr, err.Error())
+		fmt.Fprintln(os.Stderr, err.Error())
 	}
 }
