@@ -2,6 +2,7 @@ package auth
 
 import (
 	"encoding/json"
+	"errors"
 	"os"
 	"path/filepath"
 
@@ -21,8 +22,13 @@ var (
 
 func ClientCredentials() runtime.ClientAuthInfoWriter {
 	return runtime.ClientAuthInfoWriterFunc(func(r runtime.ClientRequest, _ strfmt.Registry) error {
+		token := chooseAccessToken()
+		if token == "" {
+			return errors.New("No access token found. Please login.")
+		}
+
 		r.SetHeaderParam("User-Agent", "netlifyctl")
-		r.SetHeaderParam("Authorization", "Bearer "+chooseAccessToken())
+		r.SetHeaderParam("Authorization", "Bearer "+token)
 		return nil
 	})
 }
