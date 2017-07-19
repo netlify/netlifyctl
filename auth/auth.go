@@ -33,6 +33,13 @@ func ClientCredentials() runtime.ClientAuthInfoWriter {
 	})
 }
 
+func NoCredentials() runtime.ClientAuthInfoWriter {
+	return runtime.ClientAuthInfoWriterFunc(func(r runtime.ClientRequest, _ strfmt.Registry) error {
+		r.SetHeaderParam("User-Agent", "netlifyctl")
+		return nil
+	})
+}
+
 func SaveToken(token string) error {
 	home, err := homedir.Dir()
 	if err != nil {

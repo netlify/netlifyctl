@@ -87,6 +87,17 @@ func AuthMiddleware(cmd CommandFunc) CommandFunc {
 	}
 }
 
+func NoAuthMiddleware(cmd CommandFunc) CommandFunc {
+	return func(ctx context.Context, c *cobra.Command, args []string) error {
+		creds := auth.NoCredentials()
+		logrus.WithField("credentials", creds).Debug("setup credentials")
+
+		ctx = apiContext.WithAuthInfo(ctx, creds)
+
+		return cmd(ctx, c, args)
+	}
+}
+
 func ClientMiddleware(cmd CommandFunc) CommandFunc {
 	return func(ctx context.Context, c *cobra.Command, args []string) error {
 		var transport *apiClient.Runtime
