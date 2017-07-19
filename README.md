@@ -8,16 +8,32 @@ to interact with Netlify's API.
 
 ## Installation
 
-netlifyctl can be installed by source:
+### Source
 
-	$ go get github.com/netlify/netlifyctl
+netlifyctl can be installed from source:
 
-it can also be [downloaded as a ready-to-run binary for osx and linux](https://github.com/netlify/netlifyctl/releases ).  Other architectures available upon request to support@netlify.com.
+```sh
+$ go get github.com/netlify/netlifyctl
+```
 
+### Binary Distribution
+
+#### GitHub Releases
+
+Prebuilt [binaries are available for osx and linux](https://github.com/netlify/netlifyctl/releases). Other architectures available upon request to support@netlify.com.
+
+#### Homebrew
+
+```sh
+brew tap netlify/netlifyctl
+brew install netlifyctl
+```
 
 ## Usage
 
-	$ netlifyctl --help
+```sh
+$ netlifyctl --help
+```
 
 
 ## Contributions and Bug Reports
