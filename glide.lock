@@ -1,5 +1,5 @@
-hash: e78517a7910539284e61a2e7a88a9127209189fcc7d61213d67504d06ac24585
-updated: 2017-04-26T20:26:12.233087763-07:00
+hash: 645681328cc839c123756097c822b86f6ae82bf40fbeaa8ddddae01872b26d21
+updated: 2017-07-19T12:44:13.559938351-04:00
 imports:
 - name: github.com/asaskevich/govalidator
   version: 7b3beb6df3c42abd3509abfc3bcacc0fbfb7c877
@@ -20,7 +20,7 @@ imports:
 - name: github.com/go-openapi/loads
   version: 5861a4879a2866943dce3c644c879af9e59c22a3
 - name: github.com/go-openapi/runtime
-  version: 12c07accf0687ab20b1e7b6293d8012ce282499c
+  version: e255829c65ab152686ddbb608d57c2b93e28b899
   subpackages:
   - client
 - name: github.com/go-openapi/spec
