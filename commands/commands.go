@@ -14,6 +14,12 @@ func setupRunE(cmd *cobra.Command, f middleware.CommandFunc, m []middleware.Midd
 }
 
 func addCommands() {
+	loginMiddleware := []middleware.Middleware{
+		middleware.DebugMiddleware,
+		middleware.NoAuthMiddleware,
+		middleware.ClientMiddleware,
+		middleware.LoggingMiddleware,
+	}
 	middlewares := []middleware.Middleware{
 		middleware.DebugMiddleware,
 		middleware.AuthMiddleware,
@@ -25,6 +31,6 @@ func addCommands() {
 	rootCmd.AddCommand(setupRunE(dCmd, dFunc, middlewares))
 
 	rootCmd.AddCommand(sites.Setup(middlewares))
-	rootCmd.AddCommand(login.Setup(middlewares))
+	rootCmd.AddCommand(login.Setup(loginMiddleware))
 	rootCmd.AddCommand(versionCmd)
 }
