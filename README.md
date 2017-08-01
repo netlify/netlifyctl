@@ -41,7 +41,7 @@ $ netlifyctl --help
 
 1. create an API token for your deploys here: https://app.netlify.com/applications (and save it)
 2. find your site ID - most easily done at the bottom of your site's settings page
-3. do one deploy manually, which will create a new config file (or add to an existing one): `netlify.toml`. You'll want to run:
+3. do one deploy manually, which will create a new config file (or add to an existing one): `netlify.toml`. You'll want to run this command on a system with both your code checked out AND a browser to interact with (for login purposes).
 
 ```sh
 netlifyctl -A YOURAPITOKEN deploy
@@ -49,7 +49,7 @@ netlifyctl -A YOURAPITOKEN deploy
 
 ...and the interactive guides will take your site ID and deploy path and incorporate them into that config file.
 
-Thereafter, you can run unattended (though you should check the return code in case there is some error):
+Thereafter, you can run unattended and headless (though you should check the return code from running, in case there is some error):
 
 ```sh
 netlifyctl -y -A YOURAPITOKEN deploy
