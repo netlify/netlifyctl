@@ -1,5 +1,5 @@
-hash: 645681328cc839c123756097c822b86f6ae82bf40fbeaa8ddddae01872b26d21
-updated: 2017-07-19T12:44:13.559938351-04:00
+hash: 141d92fa6bb3d91fad4d3dc66709caef9e8baad7a1e5962264df734ba2472ce6
+updated: 2017-08-09T18:08:23.107110876-07:00
 imports:
 - name: github.com/asaskevich/govalidator
   version: 7b3beb6df3c42abd3509abfc3bcacc0fbfb7c877
@@ -12,7 +12,7 @@ imports:
 - name: github.com/go-openapi/analysis
   version: 7222828b8ce19afee3c595aef6643b9e42150120
 - name: github.com/go-openapi/errors
-  version: 49fe8b3a0e0d32a617d8d50c67f856ad6e45b28b
+  version: 03cfca65330da08a5a440053faf994a3c682b5bf
 - name: github.com/go-openapi/jsonpointer
   version: 8d96a2dc61536b690bd36b2e9df0b3c0b62825b2
 - name: github.com/go-openapi/jsonreference
@@ -44,10 +44,19 @@ imports:
 - name: github.com/mitchellh/mapstructure
   version: f3009df150dadf309fdee4a54ed65c124afad715
 - name: github.com/netlify/open-api
-  version: e2bba4859b36c1679b6d894f040c8505d888e985
+  version: 9909719598a5aab12cba38f27ae4890e295d8253
+  repo: git@github.com:netlify/open-api-private.git
+  vcs: git
   subpackages:
   - go/models
   - go/plumbing
+  - go/plumbing/operations
+  - go/porcelain
+  - go/porcelain/context
+- name: github.com/netlify/open-api-private
+  version: 9909719598a5aab12cba38f27ae4890e295d8253
+  subpackages:
+  - go/models
   - go/plumbing/operations
   - go/porcelain
   - go/porcelain/context
@@ -55,7 +64,7 @@ imports:
   version: 0bcb03f4b4d0a9428594752bd2a3b9aa0a9d4bd4
 - name: github.com/PuerkitoBio/urlesc
   version: 5bd2802263f21d8788851d5305584c82a5c75d7e
-- name: github.com/Sirupsen/logrus
+- name: github.com/sirupsen/logrus
   version: d26492970760ca5d33129d2d799e34be5c4782eb
 - name: github.com/skratchdot/open-golang
   version: 75fb7ed4208cf72d323d7d02fd1a5964a7a9073c

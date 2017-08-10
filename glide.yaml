@@ -2,15 +2,19 @@ package: github.com/netlify/netlifyctl
 import:
 - package: github.com/BurntSushi/toml
   version: v0.2.0
-- package: github.com/Sirupsen/logrus
+- package: github.com/sirupsen/logrus
   version: v0.11.0
 - package: github.com/buger/goterm
+- package: github.com/go-openapi/errors
+  version: 03cfca65330da08a5a440053faf994a3c682b5bf
 - package: github.com/go-openapi/runtime
   subpackages:
   - client
 - package: github.com/go-openapi/strfmt
 - package: github.com/netlify/open-api
-  version: e2bba4859b36c1679b6d894f040c8505d888e985
+  vcs: git
+  repo: git@github.com:netlify/open-api-private.git
+  version: 9909719598a5aab12cba38f27ae4890e295d8253
   subpackages:
   - go/models
   - go/porcelain

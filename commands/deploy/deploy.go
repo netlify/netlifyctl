@@ -3,7 +3,7 @@ package deploy
 import (
 	"fmt"
 
-	"github.com/Sirupsen/logrus"
+	"github.com/sirupsen/logrus"
 
 	"path/filepath"
 	"strings"
@@ -12,6 +12,7 @@ import (
 	"github.com/netlify/netlifyctl/configuration"
 	"github.com/netlify/netlifyctl/context"
 	"github.com/netlify/netlifyctl/operations"
+	netlify "github.com/netlify/open-api/go/porcelain"
 	"github.com/spf13/cobra"
 )
 
@@ -62,19 +63,25 @@ func (dc *deployCmd) deploySite(ctx context.Context, cmd *cobra.Command, args []
 		fmt.Printf("=>  Domain ready, deploying assets to %s\n", site.Name)
 	}
 
-	id := conf.Settings.ID
+	options := netlify.DeployOptions{
+		SiteID: conf.Settings.ID,
+		Dir:    baseDeploy(cmd, conf),
+	}
 
-	path := baseDeploy(cmd, conf)
 	configuration.Save(configFile, conf)
 
 	draft, err := cmd.Flags().GetBool("draft")
 	if err != nil {
 		logrus.WithError(err).Fatal("Failed to get string flag: 'draft'")
 	}
+	options.IsDraft = draft
 
-	logrus.WithFields(logrus.Fields{"site": id, "path": path, "draft": draft}).Debug("deploying site")
+	logrus.WithFields(logrus.Fields{
+		"site":  options.SiteID,
+		"path":  options.Dir,
+		"draft": options.IsDraft}).Debug("deploying site")
 
-	d, err := client.DeploySite(ctx, id, dc.title, path, draft)
+	d, err := client.DeploySite(ctx, options)
 	if err != nil {
 		return err
 	}

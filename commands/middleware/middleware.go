@@ -8,9 +8,9 @@ import (
 	"os"
 	"time"
 
-	"github.com/Sirupsen/logrus"
 	apiClient "github.com/go-openapi/runtime/client"
 	"github.com/go-openapi/strfmt"
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 
 	"github.com/netlify/open-api/go/porcelain"
