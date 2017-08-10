@@ -1,5 +1,5 @@
-hash: 141d92fa6bb3d91fad4d3dc66709caef9e8baad7a1e5962264df734ba2472ce6
-updated: 2017-08-09T18:08:23.107110876-07:00
+hash: 251c90a1b2f62e3032a982ebc676beae6313971b688433a06cf6301a065a0bea
+updated: 2017-08-09T22:51:49.706959388-07:00
 imports:
 - name: github.com/asaskevich/govalidator
   version: 7b3beb6df3c42abd3509abfc3bcacc0fbfb7c877
@@ -44,19 +44,12 @@ imports:
 - name: github.com/mitchellh/mapstructure
   version: f3009df150dadf309fdee4a54ed65c124afad715
 - name: github.com/netlify/open-api
-  version: 9909719598a5aab12cba38f27ae4890e295d8253
-  repo: git@github.com:netlify/open-api-private.git
+  version: 804ed925b167a73429eef2c053c823196523143e
+  repo: /Users/mbc/go/src/github.com/netlify/open-api
   vcs: git
   subpackages:
   - go/models
   - go/plumbing
-  - go/plumbing/operations
-  - go/porcelain
-  - go/porcelain/context
-- name: github.com/netlify/open-api-private
-  version: 9909719598a5aab12cba38f27ae4890e295d8253
-  subpackages:
-  - go/models
   - go/plumbing/operations
   - go/porcelain
   - go/porcelain/context

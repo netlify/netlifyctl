@@ -17,9 +17,10 @@ import (
 )
 
 type deployCmd struct {
-	base  string
-	title string
-	draft bool
+	base      string
+	title     string
+	draft     bool
+	functions string
 }
 
 func Setup() (*cobra.Command, middleware.CommandFunc) {
@@ -32,6 +33,7 @@ func Setup() (*cobra.Command, middleware.CommandFunc) {
 	ccmd.Flags().StringVarP(&cmd.base, "base-directory", "b", "", "directory to publish")
 	ccmd.Flags().StringVarP(&cmd.title, "message", "m", "", "message for the deploy title")
 	ccmd.Flags().BoolVarP(&cmd.draft, "draft", "d", false, "draft deploy, not published in production")
+	ccmd.Flags().StringVarP(&cmd.functions, "functions", "f", "", "function directory to deploy")
 
 	return ccmd, cmd.deploySite
 }
@@ -68,13 +70,17 @@ func (dc *deployCmd) deploySite(ctx context.Context, cmd *cobra.Command, args []
 		Dir:    baseDeploy(cmd, conf),
 	}
 
-	configuration.Save(configFile, conf)
-
 	draft, err := cmd.Flags().GetBool("draft")
 	if err != nil {
 		logrus.WithError(err).Fatal("Failed to get string flag: 'draft'")
 	}
 	options.IsDraft = draft
+
+	fs, err := cmd.Flags().GetString("functions")
+	if err != nil {
+		logrus.WithError(err).Fatal("Failed to get string flag: 'functions'")
+	}
+	options.FunctionsDir = fs
 
 	logrus.WithFields(logrus.Fields{
 		"site":  options.SiteID,
