@@ -55,6 +55,9 @@ Thereafter, you can run unattended and headless (though you should check the ret
 netlifyctl -y -A YOURAPITOKEN deploy
 ```
 
+### Logging in & creating authentication tokens via a browser instead of the command line
+
+We use the package https://github.com/skratchdot/open-golang to support browser-based auth with netlify if you want to use that path instead via `netlifyctl login`.  The client portion of the authentication token will then be available in ~/.config/netlify
 
 
 ## Contributions and Bug Reports
