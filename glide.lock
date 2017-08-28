@@ -1,5 +1,5 @@
-hash: 5ca94a9e6b17cee4b5e5267fc1c587b247ea1c448c9d63466f9ba7554c89e5da
-updated: 2017-08-17T14:31:31.582708931-07:00
+hash: 5fcb0621a9784a302dcfc5e63d2570e53188ebc788d7d4f10fc71547ab7863cd
+updated: 2017-08-28T16:10:12.692000917-07:00
 imports:
 - name: github.com/asaskevich/govalidator
   version: 7b3beb6df3c42abd3509abfc3bcacc0fbfb7c877
@@ -44,8 +44,7 @@ imports:
 - name: github.com/mitchellh/mapstructure
   version: d0303fe809921458f417bcf828397a65db30a7e4
 - name: github.com/netlify/open-api
-  version: 24673718925a61ae0b1a6b12633b02a8b7c4899f
-  repo: git@github.com:netlify/open-api-private
+  version: dd9014639bf81e12e819ebc659d2bc290e614975
   vcs: git
   subpackages:
   - go/models
@@ -64,21 +63,21 @@ imports:
   subpackages:
   - open
 - name: github.com/spf13/cobra
-  version: 8c6fa02d2225de0f9bdcb7ca912556f68d172d8c
+  version: 4a7b7e65864c064d48dce82efbbfed2bdc0bf2aa
 - name: github.com/spf13/pflag
   version: e57e3eeb33f795204c1ca35f56c44f83227c6e66
 - name: golang.org/x/net
-  version: 054b33e6527139ad5b1ec2f6232c3b175bd9a30c
+  version: 1c05540f6879653db88113bc4a2b70aec4bd491f
   subpackages:
   - context
   - context/ctxhttp
   - idna
 - name: golang.org/x/sys
-  version: 6faef541c73732f438fb660a212750a9ba9f9362
+  version: 07c182904dbd53199946ba614a412c61d3c548f5
   subpackages:
   - unix
 - name: golang.org/x/text
-  version: cfdf022e86b4ecfb646e1efbd7db175dd623a8fa
+  version: e56139fd9c5bc7244c76116c68e500765bb6db6b
   subpackages:
   - secure/bidirule
   - transform
