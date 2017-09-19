@@ -37,6 +37,12 @@ brew install netlifyctl
 $ netlifyctl --help
 ```
 
+or to get details on a subcommand:
+
+```sh
+$netlifyctl site update --help
+```
+
 ### Quickstart
 
 1. create an API token for your deploys here: https://app.netlify.com/applications (and save it)
