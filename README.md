@@ -34,13 +34,13 @@ brew install netlifyctl
 ### Overview
 
 ```sh
-$ netlifyctl --help
+netlifyctl --help
 ```
 
 or to get details on a subcommand:
 
 ```sh
-$netlifyctl site update --help
+netlifyctl site update --help
 ```
 
 ### Quickstart
