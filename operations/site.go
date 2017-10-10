@@ -23,6 +23,14 @@ func ConfirmCreateSite(cmd *cobra.Command) bool {
 	return askForConfirmation("We cannot find a site for this repository, do you want to create a new one?")
 }
 
+func ConfirmOverwriteSite(cmd *cobra.Command) bool {
+	if AssumeYes {
+		return true
+	}
+
+	return askForConfirmation("There's already a site ID stored for this folder. Ignore and create a new site?")
+}
+
 func CreateSite(client *porcelain.Netlify, ctx context.Context) (*models.Site, error) {
 	domain, err := AskForInput("Type your domain or press enter to use a Netlify subdomain:", "", validateCustomDomain)
 	if err != nil {
