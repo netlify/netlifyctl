@@ -9,6 +9,8 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+const DefaultConfigFileName = "netlify.toml"
+
 type Settings struct {
 	ID   string
 	Path string
