@@ -17,6 +17,7 @@ func Setup(middlewares []middleware.Middleware) *cobra.Command {
 	}
 
 	cmd.AddCommand(setupUpdateCommand(middlewares))
+	cmd.AddCommand(setupCreateCommand(middlewares))
 
 	return middleware.SetupCommand(cmd, listSites, middlewares)
 }

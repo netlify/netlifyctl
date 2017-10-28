@@ -13,7 +13,7 @@ import:
 - package: github.com/go-openapi/strfmt
 - package: github.com/netlify/open-api
   vcs: git
-  version: 9d16db737b26d7349b971117f55925e68de61596
+  version: 7f676b8947f434c100e248ebb5864c042d7bd2e8
   subpackages:
   - go/models
   - go/porcelain

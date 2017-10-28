@@ -23,20 +23,29 @@ func ConfirmCreateSite(cmd *cobra.Command) bool {
 	return askForConfirmation("We cannot find a site for this repository, do you want to create a new one?")
 }
 
-func CreateSite(client *porcelain.Netlify, ctx context.Context) (*models.Site, error) {
-	domain, err := AskForInput("Type your domain or press enter to use a Netlify subdomain:", "", validateCustomDomain)
-	if err != nil {
-		return nil, err
+func ConfirmOverwriteSite(cmd *cobra.Command) bool {
+	if AssumeYes {
+		return true
 	}
 
-	newS := &models.Site{
-		CustomDomain: domain,
+	return askForConfirmation("There's already a site ID stored for this folder. Ignore and create a new site?")
+}
+
+func CreateSite(client *porcelain.Netlify, ctx context.Context, newS *models.Site) (*models.Site, error) {
+	if newS == nil {
+		domain, err := AskForInput("Type your domain or press enter to use a Netlify subdomain:", "", validateCustomDomain)
+		if err != nil {
+			return nil, err
+		}
+		newS = &models.Site{
+			CustomDomain: domain,
+		}
 	}
 
 	// Only configure DNS and TLS for custom domains.
 	// Netlify hosted sites don't need DNS entries
 	// and the connection is always over TLS.
-	withTLS := len(domain) > 0
+	withTLS := len(newS.CustomDomain) > 0
 
 	site, err := client.CreateSite(ctx, newS, withTLS)
 	if err != nil {
@@ -96,7 +105,7 @@ func ChooseOrCreateSite(client *porcelain.Netlify, ctx context.Context) (*models
 			if id == 0 {
 				// in this case we want to do whatever the create says
 				// that includes storing off the new id
-				return CreateSite(client, ctx)
+				return CreateSite(client, ctx, nil)
 			}
 
 			if id > len(sites) || id < 0 {

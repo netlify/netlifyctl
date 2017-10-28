@@ -21,6 +21,7 @@ type deployCmd struct {
 	title     string
 	draft     bool
 	functions string
+	siteID    string
 }
 
 func Setup() (*cobra.Command, middleware.CommandFunc) {
@@ -34,6 +35,7 @@ func Setup() (*cobra.Command, middleware.CommandFunc) {
 	ccmd.Flags().StringVarP(&cmd.title, "message", "m", "", "message for the deploy title")
 	ccmd.Flags().BoolVarP(&cmd.draft, "draft", "d", false, "draft deploy, not published in production")
 	ccmd.Flags().StringVarP(&cmd.functions, "functions", "f", "", "function directory to deploy")
+	ccmd.Flags().StringVarP(&cmd.siteID, "site-id", "s", "", "explicitly set a site id instead of relying on configuration")
 
 	return ccmd, cmd.deploySite
 }
@@ -42,6 +44,10 @@ func (dc *deployCmd) deploySite(ctx context.Context, cmd *cobra.Command, args []
 	conf, err := middleware.ChooseSiteConf(ctx, cmd)
 	if err != nil {
 		return err
+	}
+
+	if dc.siteID != "" {
+		conf.Settings.ID = dc.siteID
 	}
 
 	fmt.Println("=> Domain ready, deploying assets")

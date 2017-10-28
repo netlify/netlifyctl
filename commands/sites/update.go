@@ -42,8 +42,8 @@ func setupUpdateCommand(middlewares []middleware.Middleware) *cobra.Command {
 	cmd := &siteUpdateCmd{}
 	ccmd := &cobra.Command{
 		Use:   "update <-n NAME> ...",
-		Short: "Add an asset to a site",
-		Long:  "Add an asset to a site",
+		Short: "Update site settings",
+		Long:  "Update site settings",
 	}
 	ccmd.Flags().StringVarP(&cmd.name, "name", "n", "", "site's Netlify name/subdomain")
 	ccmd.Flags().StringVarP(&cmd.customDomain, "custom-domain", "c", "", "site's custom domain")
