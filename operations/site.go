@@ -7,6 +7,7 @@ import (
 
 	"os"
 
+	"github.com/netlify/netlifyctl/ui"
 	"github.com/netlify/open-api/go/models"
 	"github.com/netlify/open-api/go/porcelain"
 	"github.com/netlify/open-api/go/porcelain/context"
@@ -20,7 +21,7 @@ func ConfirmCreateSite(cmd *cobra.Command) bool {
 		return true
 	}
 
-	return askForConfirmation("We cannot find a site for this repository, do you want to create a new one?")
+	return ui.AskForConfirmation("We cannot find a site for this repository, do you want to create a new one?")
 }
 
 func ConfirmOverwriteSite(cmd *cobra.Command) bool {
@@ -28,12 +29,12 @@ func ConfirmOverwriteSite(cmd *cobra.Command) bool {
 		return true
 	}
 
-	return askForConfirmation("There's already a site ID stored for this folder. Ignore and create a new site?")
+	return ui.AskForConfirmation("There's already a site ID stored for this folder. Ignore and create a new site?")
 }
 
 func CreateSite(client *porcelain.Netlify, ctx context.Context, newS *models.Site) (*models.Site, error) {
 	if newS == nil {
-		domain, err := AskForInput("Type your domain or press enter to use a Netlify subdomain:", "", validateCustomDomain)
+		domain, err := ui.AskForInput("Type your domain or press enter to use a Netlify subdomain:", "", validateCustomDomain)
 		if err != nil {
 			return nil, err
 		}
@@ -47,7 +48,8 @@ func CreateSite(client *porcelain.Netlify, ctx context.Context, newS *models.Sit
 	// and the connection is always over TLS.
 	withTLS := len(newS.CustomDomain) > 0
 
-	site, err := client.CreateSite(ctx, newS, withTLS)
+	setup := &models.SiteSetup{Site: *newS}
+	site, err := client.CreateSite(ctx, setup, withTLS)
 	if err != nil {
 		return nil, err
 	}
@@ -66,7 +68,8 @@ func CreateSite(client *porcelain.Netlify, ctx context.Context, newS *models.Sit
 		}
 
 		site.ForceSsl = true
-		_, err = client.UpdateSite(ctx, site)
+		setup := &models.SiteSetup{Site: *site}
+		_, err = client.UpdateSite(ctx, setup)
 		if err != nil {
 			return site, err
 		}
@@ -90,7 +93,7 @@ func ChooseOrCreateSite(client *porcelain.Netlify, ctx context.Context) (*models
 	}
 
 	for {
-		input, err := AskForInput("Which site?", "0")
+		input, err := ui.AskForInput("Which site?", "0")
 		if err == nil {
 			if selection, ok := nameToId[input]; ok {
 				return selection, nil

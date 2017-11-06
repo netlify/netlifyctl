@@ -11,7 +11,7 @@ import (
 	"github.com/netlify/netlifyctl/commands/middleware"
 	"github.com/netlify/netlifyctl/configuration"
 	"github.com/netlify/netlifyctl/context"
-	"github.com/netlify/netlifyctl/operations"
+	"github.com/netlify/netlifyctl/ui"
 	netlify "github.com/netlify/open-api/go/porcelain"
 	"github.com/spf13/cobra"
 )
@@ -24,7 +24,7 @@ type deployCmd struct {
 	siteID    string
 }
 
-func Setup() (*cobra.Command, middleware.CommandFunc) {
+func Setup(middlewares []middleware.Middleware) *cobra.Command {
 	cmd := &deployCmd{}
 	ccmd := &cobra.Command{
 		Use:   "deploy",
@@ -37,7 +37,7 @@ func Setup() (*cobra.Command, middleware.CommandFunc) {
 	ccmd.Flags().StringVarP(&cmd.functions, "functions", "f", "", "function directory to deploy")
 	ccmd.Flags().StringVarP(&cmd.siteID, "site-id", "s", "", "explicitly set a site id instead of relying on configuration")
 
-	return ccmd, cmd.deploySite
+	return middleware.SetupCommand(ccmd, cmd.deploySite, middlewares)
 }
 
 func (dc *deployCmd) deploySite(ctx context.Context, cmd *cobra.Command, args []string) error {
@@ -104,7 +104,7 @@ func baseDeploy(cmd *cobra.Command, conf *configuration.Configuration) string {
 	s := conf.Settings
 	var path = s.Path
 	if path == "" {
-		path, err = operations.AskForInput("What path would you like deployed?", ".")
+		path, err = ui.AskForInput("What path would you like deployed?", ".")
 		if err != nil {
 			logrus.WithError(err).Fatal("Failed to get deploy path")
 		}

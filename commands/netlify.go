@@ -54,8 +54,8 @@ func displayError(c *cobra.Command, raw error) {
 		}
 	case *aoperations.ListSitesDefault:
 		errStr := fmt.Sprintf("%d", err.Code())
-		if err.Payload.Message != nil {
-			errStr += ": " + *err.Payload.Message
+		if err.Payload.Message != "" {
+			errStr += ": " + err.Payload.Message
 		}
 		fmt.Fprintf(os.Stderr, "%s\n", errStr)
 	default:
