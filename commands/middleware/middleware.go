@@ -1,7 +1,10 @@
 package middleware
 
 import (
+	"bytes"
 	"crypto/tls"
+	"fmt"
+	"io/ioutil"
 	"net"
 	"net/http"
 	"net/url"
@@ -22,7 +25,10 @@ import (
 	"github.com/netlify/netlifyctl/operations"
 )
 
-const defaultAPIPath = "/api/v1"
+const (
+	defaultAPIPath = "/api/v1"
+	debugLogFile   = "netlifyctl-debug.log"
+)
 
 type CommandFunc func(context.Context, *cobra.Command, []string) error
 type Middleware func(CommandFunc) CommandFunc
@@ -47,26 +53,24 @@ func NewRunFunc(f CommandFunc, mm []Middleware) func(*cobra.Command, []string) e
 
 func DebugMiddleware(cmd CommandFunc) CommandFunc {
 	return func(ctx context.Context, c *cobra.Command, args []string) error {
-		debug, err := c.Root().Flags().GetBool("debug")
-		if err != nil {
-			return cmd(ctx, c, args)
-		}
+		b := new(bytes.Buffer)
+		// Enable open-api debug mode and disable it after running the command.
+		os.Setenv("DEBUG", "1")
+		defer os.Unsetenv("DEBUG")
 
-		if debug {
-			// Enable open-api debug mode and disable it after running the command.
-			os.Setenv("DEBUG", "1")
-			defer os.Unsetenv("DEBUG")
-
-			// Enable debug logging
-			logrus.SetLevel(logrus.DebugLevel)
-			logrus.WithFields(logrus.Fields{"command": c.Use, "arguments": args}).Debug("PreRun")
-
-			// Show all set flags values
-			c.DebugFlags()
-		}
+		// Enable debug logging
+		logrus.SetOutput(b)
+		logrus.SetLevel(logrus.DebugLevel)
+		logrus.WithFields(logrus.Fields{"command": c.Use, "arguments": args}).Debug("PreRun")
 
 		// Run command
-		return cmd(ctx, c, args)
+		if err := cmd(ctx, c, args); err != nil {
+			logrus.WithError(err).Error("command failed")
+			ioutil.WriteFile(debugLogFile, b.Bytes(), 0644)
+			return fmt.Errorf("There was an error running this command.\nSee the debug log in %s\n", debugLogFile)
+		}
+
+		return nil
 	}
 }
 
