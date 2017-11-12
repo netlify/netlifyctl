@@ -57,6 +57,19 @@ func initSite(ctx context.Context, cmd *cobra.Command, args []string) error {
 		return err
 	}
 
+	info, err := c.RepoInfo(ctx)
+	if err != nil {
+		return err
+	}
+
+	fmt.Println("Configuring Continuous Deployment:\n")
+	fmt.Printf("Repository: %s\n", host.Remote)
+	fmt.Printf("Production branch: %s\n", info.Branch)
+	fmt.Printf("Publishing directory: %s\n", dir)
+	fmt.Printf("Build command: %s\n", buildCmd)
+
+	ui.AskForConfirmation("\nContinue?")
+
 	fmt.Println("Creating deploy key")
 	key, err := client.CreateDeployKey(ctx)
 	if err != nil {
@@ -67,10 +80,6 @@ func initSite(ctx context.Context, cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	info, err := c.RepoInfo(ctx)
-	if err != nil {
-		return err
-	}
 	info.DeployKeyID = key.ID
 	if dir != "" {
 		info.Dir = dir

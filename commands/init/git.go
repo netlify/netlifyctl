@@ -14,6 +14,7 @@ import (
 
 const (
 	githubHost = "github.com"
+	gitlabHost = "gitlab.com"
 )
 
 var gitSSHURL = regexp.MustCompile("\\w+@([^:]+):([^.]+)(\\.git)?")
@@ -31,8 +32,11 @@ type gitRepo struct {
 }
 
 func loadConfigurator(ctx context.Context, provider *url.URL) (configurator, error) {
-	if provider.Host == githubHost {
+	switch {
+	case provider.Host == githubHost:
 		return newGitHubConfigurator(ctx, provider)
+	case provider.Host == gitlabHost:
+		return newGitLabConfigurator(ctx, provider)
 	}
 	return nil, fmt.Errorf("git provider not supported: %s", provider)
 }

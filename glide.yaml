@@ -12,8 +12,8 @@ import:
   - client
 - package: github.com/go-openapi/strfmt
 - package: github.com/netlify/open-api
-  vcs: git
   version: 150aec41d64703bde49ca4a5c9635f5f7841dd25
+  vcs: git
   subpackages:
   - go/models
   - go/porcelain
@@ -27,3 +27,6 @@ import:
   - github
 - package: github.com/google/go-github
   version: 35c06c17eff17d6ba18c6d8c5a84827f8ecf8679
+- package: github.com/xanzy/go-gitlab
+- package: golang.org/x/sys
+  version: 1e2299c37cc91a509f1b12369872d27be0ce98a6
