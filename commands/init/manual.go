@@ -31,8 +31,6 @@ func (c manualConfigurator) SetupWebHook(ctx context.Context, site *models.Site)
 		os.Exit(0)
 	}
 
-	fmt.Println("\nSuccess! Whenever you push to git, Netlify will build and deploy your site:\n")
-	fmt.Printf("    %s\n", site.URL)
 	return nil
 }
 

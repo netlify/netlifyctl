@@ -102,5 +102,8 @@ func initSite(ctx context.Context, cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	return err
+	fmt.Println("\nSuccess! Whenever you push to git, Netlify will build and deploy your site:\n")
+	fmt.Printf("    %s\n", uSite.URL)
+
+	return nil
 }
