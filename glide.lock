@@ -1,5 +1,5 @@
-hash: 2b0a7a022fca1e07fadb5f050471d92bb2eee56cba6270bac6213b6d34b68690
-updated: 2017-11-11T16:02:00.378022522-08:00
+hash: 5c33c94f1ff991464539629c6a98d5f00115845d08e5fb36cb5704df910cfa44
+updated: 2017-11-12T14:17:03.907485022-08:00
 imports:
 - name: github.com/asaskevich/govalidator
   version: ca5f9e638c83bac66bfac70ded5bded1503135a7
@@ -33,9 +33,15 @@ imports:
 - name: github.com/go-openapi/loads
   version: a80dea3052f00e5f032e860dd7355cd0cc67e24d
 - name: github.com/go-openapi/runtime
-  version: bf2ff8f7150788b1c7256abb0805ba0410cbbabb
+  version: 96511efa8f2190cf4dd04412c61a1a96546b36d9
   subpackages:
   - client
+  - logger
+  - middleware
+  - middleware/denco
+  - middleware/header
+  - middleware/untyped
+  - security
 - name: github.com/go-openapi/spec
   version: 48c2a7185575f9103a5a3863eff950bb776899d2
 - name: github.com/go-openapi/strfmt

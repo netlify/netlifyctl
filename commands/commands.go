@@ -12,15 +12,15 @@ import (
 func addCommands() {
 	loginMiddleware := []middleware.Middleware{
 		middleware.DebugMiddleware,
+		middleware.LoggingMiddleware,
 		middleware.NoAuthMiddleware,
 		middleware.ClientMiddleware,
-		middleware.LoggingMiddleware,
 	}
 	middlewares := []middleware.Middleware{
 		middleware.DebugMiddleware,
+		middleware.LoggingMiddleware,
 		middleware.AuthMiddleware,
 		middleware.ClientMiddleware,
-		middleware.LoggingMiddleware,
 	}
 
 	rootCmd.AddCommand(deploy.Setup(middlewares))

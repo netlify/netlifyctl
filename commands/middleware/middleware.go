@@ -69,7 +69,7 @@ func DebugMiddleware(cmd CommandFunc) CommandFunc {
 			if err := dumpDebug(b); err != nil {
 				return err
 			}
-			return fmt.Errorf("There was an error running this command.\nSee the debug log in %s\n", debugLogFile)
+			return fmt.Errorf("There was an error running this command.\nDebug log dumped to %sThis log includes full recordings of HTTP requests with credentials, be careful if you share it\n", debugLogFile)
 		}
 
 		dump, err := c.Root().Flags().GetBool("debug")
@@ -80,7 +80,8 @@ func DebugMiddleware(cmd CommandFunc) CommandFunc {
 			if err := dumpDebug(b); err != nil {
 				return err
 			}
-			fmt.Printf("See the debug log in %s\n", debugLogFile)
+			fmt.Printf("=> Debug log dumped to %s\n", debugLogFile)
+			fmt.Println("=> This log includes full recordings of HTTP requests with credentials, be careful if you share it")
 		}
 
 		return nil
@@ -89,8 +90,10 @@ func DebugMiddleware(cmd CommandFunc) CommandFunc {
 
 func LoggingMiddleware(cmd CommandFunc) CommandFunc {
 	return func(ctx context.Context, c *cobra.Command, args []string) error {
-		ctx = apiContext.WithLogger(ctx, logrus.NewEntry(logrus.StandardLogger()))
-		logrus.Debugf("setup logger middleware: %v", logrus.StandardLogger().Level)
+		entry := logrus.NewEntry(logrus.StandardLogger())
+		entry.Debugf("setup logger middleware: %v", entry.Level)
+		ctx = apiContext.WithLogger(ctx, entry)
+
 		return cmd(ctx, c, args)
 	}
 }
@@ -147,6 +150,10 @@ func ClientMiddleware(cmd CommandFunc) CommandFunc {
 
 			transport = apiClient.NewWithClient("api.netlify.com", "", []string{"https"}, httpClient())
 		}
+
+		logger := apiContext.GetLogger(ctx)
+		transport.SetDebug(true)
+		transport.SetLogger(logger)
 
 		client := porcelain.New(transport, strfmt.Default)
 		ctx = context.WithClient(ctx, client)
