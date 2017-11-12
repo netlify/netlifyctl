@@ -2,6 +2,7 @@ package init
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/netlify/netlifyctl/context"
 	"github.com/netlify/netlifyctl/ui"
@@ -13,20 +14,25 @@ type manualConfigurator struct {
 }
 
 func (c manualConfigurator) SetupDeployKey(ctx context.Context, deployKey *models.DeployKey) error {
-	fmt.Println("Give this Netlify SSH public key access to your repo:\n\n")
+	fmt.Println("\n=> Give this Netlify SSH public key access to your repository:\n\n")
 	fmt.Printf("%s\n\n", deployKey.PublicKey)
 
-	ui.AskForConfirmation("Continue?")
+	if !ui.AskForConfirmation("Continue?") {
+		os.Exit(0)
+	}
 	return nil
 }
 
 func (c manualConfigurator) SetupWebHook(ctx context.Context, site *models.Site) error {
-	fmt.Printf("Configure the following webhook for your repository:\n\n")
-	fmt.Printf("%s\n\n", site.WebHook)
+	fmt.Printf("\n=> Configure the following webhook for your repository:\n\n")
+	fmt.Printf("    %s\n\n", site.DeployHook)
 
-	ui.AskForConfirmation("Continue?")
-	fmt.Println("Success! Whenever you push to git, Netlify will build and deploy your site")
-	fmt.Printf("  %s", site.URL)
+	if !ui.AskForConfirmation("Continue?") {
+		os.Exit(0)
+	}
+
+	fmt.Println("\nSuccess! Whenever you push to git, Netlify will build and deploy your site:\n")
+	fmt.Printf("    %s\n", site.URL)
 	return nil
 }
 

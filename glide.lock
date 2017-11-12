@@ -87,7 +87,7 @@ imports:
 - name: github.com/mitchellh/mapstructure
   version: db1efb556f84b25a0a13a04aad883943538ad2e0
 - name: github.com/netlify/open-api
-  version: 150aec41d64703bde49ca4a5c9635f5f7841dd25
+  version: f72da496bf29c350c9c9a246f3676f8c13d5c6a8
   vcs: git
   subpackages:
   - go/models

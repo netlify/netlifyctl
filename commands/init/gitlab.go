@@ -55,7 +55,7 @@ func (c *gitlabConfigurator) SetupDeployKey(ctx context.Context, deployKey *mode
 
 func (c *gitlabConfigurator) SetupWebHook(ctx context.Context, site *models.Site) error {
 	hook := &gitlab.AddProjectHookOptions{
-		URL:                 gitlab.String(site.WebHook),
+		URL:                 gitlab.String(site.DeployHook),
 		PushEvents:          gitlab.Bool(true),
 		MergeRequestsEvents: gitlab.Bool(true),
 	}

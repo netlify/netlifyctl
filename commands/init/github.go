@@ -58,7 +58,7 @@ func (c *githubConfigurator) SetupWebHook(ctx context.Context, site *models.Site
 	// Do not try to install the webhook twice.
 	if hooks != nil && len(hooks) > 0 {
 		for _, h := range hooks {
-			if h.Config["url"] == site.WebHook {
+			if h.Config["url"] == site.DeployHook {
 				return nil
 			}
 		}
@@ -69,7 +69,7 @@ func (c *githubConfigurator) SetupWebHook(ctx context.Context, site *models.Site
 		Events: []string{"push", "pull_request", "delete"},
 		Active: github.Bool(true),
 		Config: map[string]interface{}{
-			"url":          site.WebHook,
+			"url":          site.DeployHook,
 			"content_type": "json",
 		},
 	}

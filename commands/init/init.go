@@ -62,15 +62,16 @@ func initSite(ctx context.Context, cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	fmt.Println("Configuring Continuous Deployment:\n")
-	fmt.Printf("Repository: %s\n", host.Remote)
-	fmt.Printf("Production branch: %s\n", info.Branch)
-	fmt.Printf("Publishing directory: %s\n", dir)
-	fmt.Printf("Build command: %s\n", buildCmd)
+	fmt.Println("\n=> Configuring Continuous Deployment:\n")
+	fmt.Printf("    Repository: %s\n", host.Remote)
+	fmt.Printf("    Production branch: %s\n", info.Branch)
+	fmt.Printf("    Publishing directory: %s\n", dir)
+	fmt.Printf("    Build command: %s\n\n", buildCmd)
 
-	ui.AskForConfirmation("\nContinue?")
+	if !ui.AskForConfirmation("Continue?") {
+		return nil
+	}
 
-	fmt.Println("Creating deploy key")
 	key, err := client.CreateDeployKey(ctx)
 	if err != nil {
 		return err
@@ -97,7 +98,6 @@ func initSite(ctx context.Context, cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	fmt.Println("Setting up webhook")
 	if err := c.SetupWebHook(ctx, uSite); err != nil {
 		return err
 	}
