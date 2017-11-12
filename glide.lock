@@ -3,8 +3,6 @@ updated: 2017-11-12T14:17:03.907485022-08:00
 imports:
 - name: github.com/asaskevich/govalidator
   version: ca5f9e638c83bac66bfac70ded5bded1503135a7
-- name: github.com/buger/goterm
-  version: d443b9114f9c050367638a536310fbec36a0de11
 - name: github.com/BurntSushi/toml
   version: bbd5bb678321a0d6e58f1099321dfa73391c1b6f
 - name: github.com/cenkalti/backoff
