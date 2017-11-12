@@ -1,9 +1,11 @@
 package sites
 
 import (
+	"bytes"
 	"fmt"
+	"os"
+	"text/tabwriter"
 
-	tm "github.com/buger/goterm"
 	"github.com/netlify/netlifyctl/commands/middleware"
 	"github.com/netlify/netlifyctl/context"
 	"github.com/spf13/cobra"
@@ -30,13 +32,15 @@ func listSites(ctx context.Context, cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	table := tm.NewTable(0, 10, 5, ' ', 0)
-	fmt.Fprintf(table, "SITE\tURL")
+	t := tabwriter.NewWriter(os.Stdout, 0, 10, 5, ' ', 0)
+	buffer := new(bytes.Buffer)
+
+	fmt.Fprintf(buffer, "Site\tUrl")
 	for _, s := range sites {
-		fmt.Fprintf(table, "\n%s\t%s", s.Name, s.URL)
+		fmt.Fprintf(buffer, "\n%s\t%s", s.Name, s.URL)
 	}
-	tm.Print(table)
-	tm.Flush()
+	buffer.WriteTo(t)
+	t.Flush()
 
 	return nil
 }

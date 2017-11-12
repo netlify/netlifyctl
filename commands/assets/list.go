@@ -1,9 +1,11 @@
 package assets
 
 import (
+	"bytes"
 	"fmt"
+	"os"
+	"text/tabwriter"
 
-	tm "github.com/buger/goterm"
 	"github.com/netlify/netlifyctl/context"
 	"github.com/netlify/open-api/go/plumbing/operations"
 	"github.com/spf13/cobra"
@@ -23,13 +25,15 @@ func listAssets(ctx context.Context, cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	table := tm.NewTable(0, 10, 5, ' ', 0)
-	fmt.Fprintf(table, "ID\tNAME\tVISIBILITY\tURL")
+	t := tabwriter.NewWriter(os.Stdout, 0, 10, 5, ' ', 0)
+	buffer := new(bytes.Buffer)
+
+	fmt.Fprintf(buffer, "Id\tName\tVisibility\tUrl")
 	for _, a := range assets {
-		fmt.Fprintf(table, "\n%s\t%s\t%s\t%s", a.ID, a.Name, a.Visibility, a.URL)
+		fmt.Fprintf(buffer, "\n%s\t%s\t%s\t%s", a.ID, a.Name, a.Visibility, a.URL)
 	}
-	tm.Print(table)
-	tm.Flush()
+	buffer.WriteTo(t)
+	t.Flush()
 
 	return nil
 }

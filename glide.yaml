@@ -4,7 +4,6 @@ import:
   version: v0.2.0
 - package: github.com/sirupsen/logrus
   version: v0.11.0
-- package: github.com/buger/goterm
 - package: github.com/go-openapi/errors
 - package: github.com/go-openapi/runtime
   version: 96511efa8f2190cf4dd04412c61a1a96546b36d9
