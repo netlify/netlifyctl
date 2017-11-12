@@ -1,7 +1,10 @@
 package middleware
 
 import (
+	"bytes"
 	"crypto/tls"
+	"fmt"
+	"io/ioutil"
 	"net"
 	"net/http"
 	"net/url"
@@ -22,7 +25,10 @@ import (
 	"github.com/netlify/netlifyctl/operations"
 )
 
-const defaultAPIPath = "/api/v1"
+const (
+	defaultAPIPath = "/api/v1"
+	debugLogFile   = "netlifyctl-debug.log"
+)
 
 type CommandFunc func(context.Context, *cobra.Command, []string) error
 type Middleware func(CommandFunc) CommandFunc
@@ -47,33 +53,47 @@ func NewRunFunc(f CommandFunc, mm []Middleware) func(*cobra.Command, []string) e
 
 func DebugMiddleware(cmd CommandFunc) CommandFunc {
 	return func(ctx context.Context, c *cobra.Command, args []string) error {
-		debug, err := c.Root().Flags().GetBool("debug")
-		if err != nil {
-			return cmd(ctx, c, args)
-		}
+		b := new(bytes.Buffer)
+		// Enable open-api debug mode and disable it after running the command.
+		os.Setenv("DEBUG", "1")
+		defer os.Unsetenv("DEBUG")
 
-		if debug {
-			// Enable open-api debug mode and disable it after running the command.
-			os.Setenv("DEBUG", "1")
-			defer os.Unsetenv("DEBUG")
-
-			// Enable debug logging
-			logrus.SetLevel(logrus.DebugLevel)
-			logrus.WithFields(logrus.Fields{"command": c.Use, "arguments": args}).Debug("PreRun")
-
-			// Show all set flags values
-			c.DebugFlags()
-		}
+		// Enable debug logging
+		logrus.SetOutput(b)
+		logrus.SetLevel(logrus.DebugLevel)
+		logrus.WithFields(logrus.Fields{"command": c.Use, "arguments": args}).Debug("PreRun")
 
 		// Run command
-		return cmd(ctx, c, args)
+		if err := cmd(ctx, c, args); err != nil {
+			logrus.WithError(err).Error("command failed")
+			if err := dumpDebug(b); err != nil {
+				return err
+			}
+			return fmt.Errorf("There was an error running this command.\nDebug log dumped to %sThis log includes full recordings of HTTP requests with credentials, be careful if you share it\n", debugLogFile)
+		}
+
+		dump, err := c.Root().Flags().GetBool("debug")
+		if err != nil {
+			return err
+		}
+		if dump {
+			if err := dumpDebug(b); err != nil {
+				return err
+			}
+			fmt.Printf("=> Debug log dumped to %s\n", debugLogFile)
+			fmt.Println("=> This log includes full recordings of HTTP requests with credentials, be careful if you share it")
+		}
+
+		return nil
 	}
 }
 
 func LoggingMiddleware(cmd CommandFunc) CommandFunc {
 	return func(ctx context.Context, c *cobra.Command, args []string) error {
-		ctx = apiContext.WithLogger(ctx, logrus.NewEntry(logrus.StandardLogger()))
-		logrus.Debugf("setup logger middleware: %v", logrus.StandardLogger().Level)
+		entry := logrus.NewEntry(logrus.StandardLogger())
+		entry.Debugf("setup logger middleware: %v", entry.Level)
+		ctx = apiContext.WithLogger(ctx, entry)
+
 		return cmd(ctx, c, args)
 	}
 }
@@ -131,6 +151,10 @@ func ClientMiddleware(cmd CommandFunc) CommandFunc {
 			transport = apiClient.NewWithClient("api.netlify.com", "", []string{"https"}, httpClient())
 		}
 
+		logger := apiContext.GetLogger(ctx)
+		transport.SetDebug(true)
+		transport.SetLogger(logger)
+
 		client := porcelain.New(transport, strfmt.Default)
 		ctx = context.WithClient(ctx, client)
 
@@ -185,4 +209,8 @@ func httpClient() *http.Client {
 	}
 
 	return &http.Client{Transport: tr}
+}
+
+func dumpDebug(b *bytes.Buffer) error {
+	return ioutil.WriteFile(debugLogFile, b.Bytes(), 0644)
 }

@@ -6,8 +6,8 @@ import:
   version: v0.11.0
 - package: github.com/buger/goterm
 - package: github.com/go-openapi/errors
-  version: 03cfca65330da08a5a440053faf994a3c682b5bf
 - package: github.com/go-openapi/runtime
+  version: 96511efa8f2190cf4dd04412c61a1a96546b36d9
   subpackages:
   - client
 - package: github.com/go-openapi/strfmt
