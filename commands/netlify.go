@@ -16,6 +16,7 @@ import (
 
 var (
 	configFile string
+	dump       bool
 	endpoint   string
 
 	rootCmd = &cobra.Command{
@@ -32,6 +33,7 @@ func Execute() {
 	rootCmd.PersistentFlags().StringVarP(&endpoint, "endpoint", "E", "https://api.netlify.com", "default API endpoint")
 	rootCmd.PersistentFlags().StringVarP(&configFile, "config", "C", configuration.DefaultConfigFileName, "configuration file")
 	rootCmd.PersistentFlags().StringVarP(&auth.AccessToken, "access-token", "A", "", "access token for Netlify's API")
+	rootCmd.PersistentFlags().BoolVarP(&dump, "debug", "D", false, "dump debug tracing, even if there are no errors")
 
 	rootCmd.PersistentFlags().BoolVarP(&operations.AssumeYes, "yes", "y", false, "automatic yes to confirmation prompts")
 

@@ -66,8 +66,21 @@ func DebugMiddleware(cmd CommandFunc) CommandFunc {
 		// Run command
 		if err := cmd(ctx, c, args); err != nil {
 			logrus.WithError(err).Error("command failed")
-			ioutil.WriteFile(debugLogFile, b.Bytes(), 0644)
+			if err := dumpDebug(b); err != nil {
+				return err
+			}
 			return fmt.Errorf("There was an error running this command.\nSee the debug log in %s\n", debugLogFile)
+		}
+
+		dump, err := c.Root().Flags().GetBool("debug")
+		if err != nil {
+			return err
+		}
+		if dump {
+			if err := dumpDebug(b); err != nil {
+				return err
+			}
+			fmt.Printf("See the debug log in %s\n", debugLogFile)
 		}
 
 		return nil
@@ -189,4 +202,8 @@ func httpClient() *http.Client {
 	}
 
 	return &http.Client{Transport: tr}
+}
+
+func dumpDebug(b *bytes.Buffer) error {
+	return ioutil.WriteFile(debugLogFile, b.Bytes(), 0644)
 }
