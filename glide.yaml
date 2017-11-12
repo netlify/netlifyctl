@@ -12,8 +12,8 @@ import:
   - client
 - package: github.com/go-openapi/strfmt
 - package: github.com/netlify/open-api
+  version: f72da496bf29c350c9c9a246f3676f8c13d5c6a8
   vcs: git
-  version: 7f676b8947f434c100e248ebb5864c042d7bd2e8
   subpackages:
   - go/models
   - go/porcelain
@@ -21,3 +21,12 @@ import:
 - package: github.com/spf13/cobra
 - package: github.com/skratchdot/open-golang
 - package: github.com/mitchellh/go-homedir
+- package: gopkg.in/src-d/go-git.v4
+- package: github.com/github/hub
+  subpackages:
+  - github
+- package: github.com/google/go-github
+  version: 35c06c17eff17d6ba18c6d8c5a84827f8ecf8679
+- package: github.com/xanzy/go-gitlab
+- package: golang.org/x/sys
+  version: 1e2299c37cc91a509f1b12369872d27be0ce98a6

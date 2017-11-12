@@ -1,5 +1,5 @@
-hash: ea8706ba4cd07f999c2a584c18793e68d2bc06d0da9a4769f7430533a082b24a
-updated: 2017-10-09T22:23:33.937175156-07:00
+hash: 2b0a7a022fca1e07fadb5f050471d92bb2eee56cba6270bac6213b6d34b68690
+updated: 2017-11-11T16:02:00.378022522-08:00
 imports:
 - name: github.com/asaskevich/govalidator
   version: ca5f9e638c83bac66bfac70ded5bded1503135a7
@@ -9,6 +9,19 @@ imports:
   version: bbd5bb678321a0d6e58f1099321dfa73391c1b6f
 - name: github.com/cenkalti/backoff
   version: 61ba96c4d1002f22e06acb8e34a7650611125a63
+- name: github.com/fhs/go-netrc
+  version: 4ffed54ee5c32ebfb1b8c7c72fc90bb08dc3ff43
+  subpackages:
+  - netrc
+- name: github.com/github/hub
+  version: 5ce945e74713efe782cc10dc2fc08ea0b4fe099d
+  subpackages:
+  - cmd
+  - git
+  - github
+  - ui
+  - utils
+  - version
 - name: github.com/go-openapi/analysis
   version: 8ed83f2ea9f00f945516462951a288eaa68bf0d6
 - name: github.com/go-openapi/errors
@@ -31,20 +44,50 @@ imports:
   version: f3f9494671f93fcff853e3c6e9e948b3eb71e590
 - name: github.com/go-openapi/validate
   version: dc8a684882cf70c9a529887104340f44e0e138e5
+- name: github.com/golang/protobuf
+  version: ab9f9a6dab164b7d1246e0e688b0ab7b94d8553e
+  subpackages:
+  - proto
+- name: github.com/google/go-github
+  version: 35c06c17eff17d6ba18c6d8c5a84827f8ecf8679
+  subpackages:
+  - github
+- name: github.com/google/go-querystring
+  version: 53e6ce116135b80d037921a7fdd5138cf32d7a8a
+  subpackages:
+  - query
 - name: github.com/inconshreveable/mousetrap
   version: 76626ae9c91c4f2a10f34cad8ce83ea42c93bb75
+- name: github.com/jbenet/go-context
+  version: d14ea06fba99483203c19d92cfcd13ebe73135f4
+  subpackages:
+  - io
+- name: github.com/jingweno/go-sawyer
+  version: 1999ae5763d678f3ce1112cf1fda7c7e9cf2aadf
+  subpackages:
+  - hypermedia
+  - mediaheader
+  - mediatype
+- name: github.com/jtacoma/uritemplates
+  version: 307ae868f90f4ee1b73ebe4596e0394237dacce8
+- name: github.com/kballard/go-shellquote
+  version: cd60e84ee657ff3dc51de0b4f55dd299a3e136f2
 - name: github.com/mailru/easyjson
   version: 2a92e673c9a6302dd05c3a691ae1f24aef46457d
   subpackages:
   - buffer
   - jlexer
   - jwriter
+- name: github.com/mattn/go-colorable
+  version: ad5389df28cdac544c99bd7b9161a0b5b6ca9d1b
+- name: github.com/mattn/go-isatty
+  version: a5cdd64afdee435007ee3e9f6ed4684af949d568
 - name: github.com/mitchellh/go-homedir
   version: b8bc1bf767474819792c23f32d8286a45736f1c6
 - name: github.com/mitchellh/mapstructure
   version: db1efb556f84b25a0a13a04aad883943538ad2e0
 - name: github.com/netlify/open-api
-  version: 7f676b8947f434c100e248ebb5864c042d7bd2e8
+  version: f72da496bf29c350c9c9a246f3676f8c13d5c6a8
   vcs: git
   subpackages:
   - go/models
@@ -52,10 +95,18 @@ imports:
   - go/plumbing/operations
   - go/porcelain
   - go/porcelain/context
+- name: github.com/octokit/go-octokit
+  version: 812e91dfbd64051c1ec72c48feda0278727e8a4e
+  subpackages:
+  - octokit
 - name: github.com/PuerkitoBio/purell
   version: fd18e053af8a4ff11039269006e8037ff374ce0e
 - name: github.com/PuerkitoBio/urlesc
   version: de5bf2ad457846296e2031421a34e2568e304e35
+- name: github.com/sergi/go-diff
+  version: 2fc9cd33b5f86077aa3e0f442fa0476a9fa9a1dc
+  subpackages:
+  - diffmatchpatch
 - name: github.com/sirupsen/logrus
   version: d26492970760ca5d33129d2d799e34be5c4782eb
 - name: github.com/skratchdot/open-golang
@@ -66,27 +117,115 @@ imports:
   version: fcd0c5a1df88f5d6784cb4feead962c3f3d0b66c
 - name: github.com/spf13/pflag
   version: 9ff6c6923cfffbcd502984b8e0c80539a94968b7
+- name: github.com/src-d/gcfg
+  version: f187355171c936ac84a82793659ebb4936bc1c23
+  subpackages:
+  - scanner
+  - token
+  - types
+- name: github.com/xanzy/go-gitlab
+  version: 32211f6ae06b961bf512cf18e8b58c5a7ea4727f
+- name: github.com/xanzy/ssh-agent
+  version: ba9c9e33906f58169366275e3450db66139a31a9
+- name: golang.org/x/crypto
+  version: 687d4b818545e443c8ba223cbef20b1721afd4db
+  subpackages:
+  - curve25519
+  - ed25519
+  - ed25519/internal/edwards25519
+  - ssh
+  - ssh/agent
+  - ssh/knownhosts
+  - ssh/terminal
 - name: golang.org/x/net
   version: d379faa25cbdc04d653984913a2ceb43b0bc46d7
   subpackages:
   - context
   - context/ctxhttp
   - idna
+- name: golang.org/x/oauth2
+  version: 9a379c6b3e95a790ffc43293c2a78dee0d7b6e20
+  subpackages:
+  - internal
 - name: golang.org/x/sys
-  version: e48874b42435b4347fc52bdee0424a52abc974d7
+  version: 1e2299c37cc91a509f1b12369872d27be0ce98a6
   subpackages:
   - unix
+  - windows
 - name: golang.org/x/text
   version: f28f36722d5ef2f9655ad3de1f248e3e52ad5ebd
   subpackages:
   - transform
   - unicode/norm
   - width
+- name: google.golang.org/appengine
+  version: d9a072cfa7b9736e44311ef77b3e09d804bfa599
+  subpackages:
+  - internal
+  - internal/base
+  - internal/datastore
+  - internal/log
+  - internal/remote_api
+  - internal/urlfetch
+  - urlfetch
 - name: gopkg.in/mgo.v2
   version: 3f83fa5005286a7fe593b055f0d7771a7dce4655
   subpackages:
   - bson
   - internal/json
+- name: gopkg.in/src-d/go-billy.v3
+  version: c329b7bc7b9d24905d2bc1b85bfa29f7ae266314
+  subpackages:
+  - helper/chroot
+  - helper/polyfill
+  - osfs
+  - util
+- name: gopkg.in/src-d/go-git.v4
+  version: f9879dd043f84936a1f8acb8a53b74332a7ae135
+  subpackages:
+  - config
+  - internal/revision
+  - plumbing
+  - plumbing/cache
+  - plumbing/filemode
+  - plumbing/format/config
+  - plumbing/format/diff
+  - plumbing/format/gitignore
+  - plumbing/format/idxfile
+  - plumbing/format/index
+  - plumbing/format/objfile
+  - plumbing/format/packfile
+  - plumbing/format/pktline
+  - plumbing/object
+  - plumbing/protocol/packp
+  - plumbing/protocol/packp/capability
+  - plumbing/protocol/packp/sideband
+  - plumbing/revlist
+  - plumbing/storer
+  - plumbing/transport
+  - plumbing/transport/client
+  - plumbing/transport/file
+  - plumbing/transport/git
+  - plumbing/transport/http
+  - plumbing/transport/internal/common
+  - plumbing/transport/server
+  - plumbing/transport/ssh
+  - storage
+  - storage/filesystem
+  - storage/filesystem/internal/dotgit
+  - storage/memory
+  - utils/binary
+  - utils/diff
+  - utils/ioutil
+  - utils/merkletrie
+  - utils/merkletrie/filesystem
+  - utils/merkletrie/index
+  - utils/merkletrie/internal/frame
+  - utils/merkletrie/noder
+- name: gopkg.in/warnings.v0
+  version: 8a331561fe74dadba6edfc59f3be66c22c3b065d
+- name: gopkg.in/yaml.v1
+  version: 9f9df34309c04878acc86042b16630b0f696e1de
 - name: gopkg.in/yaml.v2
   version: a3f3340b5840cee44f372bddb5880fcbc419b46a
 testImports: []

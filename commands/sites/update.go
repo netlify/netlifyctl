@@ -92,7 +92,8 @@ func (c *siteUpdateCmd) updateSite(ctx context.Context, cmd *cobra.Command, args
 		site.ForceSsl = true
 	}
 
-	updated, err := client.UpdateSite(ctx, site)
+	setup := &models.SiteSetup{Site: *site}
+	updated, err := client.UpdateSite(ctx, setup)
 	if err != nil {
 		return err
 	}

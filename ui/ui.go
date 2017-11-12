@@ -1,4 +1,4 @@
-package operations
+package ui
 
 import (
 	"bufio"
@@ -9,7 +9,11 @@ import (
 
 const options = " (yes/no) "
 
-func askForConfirmation(message string) bool {
+func Error(err error) {
+	fmt.Errorf("%v", err)
+}
+
+func AskForConfirmation(message string) bool {
 	var response string
 	fmt.Print("=> " + message + options)
 	_, err := fmt.Scanln(&response)
@@ -24,11 +28,11 @@ func askForConfirmation(message string) bool {
 		return false
 	default:
 		fmt.Println("=> Please type `yes` or `no` and then press enter")
-		return askForConfirmation(message)
+		return AskForConfirmation(message)
 	}
 }
 
-func AskForInput(message, defaultValue string, validators ...Validator) (string, error) {
+func AskForInput(message, defaultValue string, validators ...func(string) error) (string, error) {
 	if len(defaultValue) > 0 {
 		fmt.Printf("=> %s (default: %s) ", message, defaultValue)
 	} else {
