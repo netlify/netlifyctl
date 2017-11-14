@@ -11,6 +11,7 @@ import (
 	"github.com/netlify/netlifyctl/commands/middleware"
 	"github.com/netlify/netlifyctl/configuration"
 	"github.com/netlify/netlifyctl/context"
+	"github.com/netlify/netlifyctl/operations"
 	"github.com/netlify/netlifyctl/ui"
 	netlify "github.com/netlify/open-api/go/porcelain"
 	"github.com/spf13/cobra"
@@ -50,12 +51,13 @@ func (dc *deployCmd) deploySite(ctx context.Context, cmd *cobra.Command, args []
 		conf.Settings.ID = dc.siteID
 	}
 
-	fmt.Println("=> Domain ready, deploying assets")
+	obs := operations.NewDeployObserver()
 
 	client := context.GetClient(ctx)
 	options := netlify.DeployOptions{
-		SiteID: conf.Settings.ID,
-		Dir:    baseDeploy(cmd, conf),
+		Observer: obs,
+		SiteID:   conf.Settings.ID,
+		Dir:      baseDeploy(cmd, conf),
 	}
 
 	draft, err := cmd.Flags().GetBool("draft")
@@ -87,7 +89,14 @@ func (dc *deployCmd) deploySite(ctx context.Context, cmd *cobra.Command, args []
 		}
 		d = ready
 	}
-	fmt.Printf("=> Done, your website is live in %s\n", d.URL)
+
+	obs.Finish()
+
+	u := d.URL
+	if d.Context != "production" {
+		d.DeploySslURL
+	}
+	fmt.Printf("Deploy done, your can see it live in %s  %s\n", u, ui.WorldCheck())
 
 	return nil
 }
@@ -101,22 +110,29 @@ func baseDeploy(cmd *cobra.Command, conf *configuration.Configuration) string {
 	if bd != "" {
 		return bd
 	}
+
 	s := conf.Settings
-	var path = s.Path
+	path := s.Path
+
+	if path == "" && conf.Build.Publish != "" {
+		path = conf.Build.Publish
+	}
+
 	if path == "" {
 		path, err = ui.AskForInput("What path would you like deployed?", ".")
 		if err != nil {
 			logrus.WithError(err).Fatal("Failed to get deploy path")
 		}
 
-		s.Path = path
 		logrus.Debugf("Got new path from the user %s", s.Path)
 	}
 
-	if !strings.HasPrefix(s.Path, "/") {
-		path = filepath.Join(conf.Root(), s.Path)
+	if !strings.HasPrefix(path, "/") {
+		path = filepath.Join(conf.Root(), path)
 		logrus.Debugf("Relative path detected, going to deploy: '%s'", path)
 	}
+
+	s.Path = path
 
 	return path
 }

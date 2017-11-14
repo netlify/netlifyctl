@@ -16,8 +16,13 @@ type Settings struct {
 	Path string
 }
 
+type BuildConf struct {
+	Publish string
+}
+
 type Configuration struct {
 	Settings Settings
+	Build    BuildConf
 	root     string
 }
 

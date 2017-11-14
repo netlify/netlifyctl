@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"os"
 	"strings"
+
+	"github.com/fatih/color"
 )
 
 const options = " (yes/no) "
@@ -66,4 +68,16 @@ func AskForInput(message, defaultValue string, validators ...func(string) error)
 	}
 
 	return response, nil
+}
+
+func DoneCheck() string {
+	return color.GreenString("✔")
+}
+
+func ErrorCheck() string {
+	return color.RedString("✘")
+}
+
+func WorldCheck() string {
+	return color.GreenString("🌎")
 }
