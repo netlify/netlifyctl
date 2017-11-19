@@ -29,3 +29,4 @@ import:
 - package: github.com/xanzy/go-gitlab
 - package: golang.org/x/sys
   version: 1e2299c37cc91a509f1b12369872d27be0ce98a6
+- package: github.com/briandowns/spinner

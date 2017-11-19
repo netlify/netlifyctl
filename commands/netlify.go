@@ -11,7 +11,7 @@ import (
 
 	"github.com/netlify/netlifyctl/auth"
 	"github.com/netlify/netlifyctl/configuration"
-	"github.com/netlify/netlifyctl/operations"
+	"github.com/netlify/netlifyctl/ui"
 )
 
 var (
@@ -35,7 +35,7 @@ func Execute() {
 	rootCmd.PersistentFlags().StringVarP(&auth.AccessToken, "access-token", "A", "", "access token for Netlify's API")
 	rootCmd.PersistentFlags().BoolVarP(&dump, "debug", "D", false, "dump debug tracing, even if there are no errors")
 
-	rootCmd.PersistentFlags().BoolVarP(&operations.AssumeYes, "yes", "y", false, "automatic yes to confirmation prompts")
+	rootCmd.PersistentFlags().BoolVarP(&ui.AssumeYes, "yes", "y", false, "automatic yes to confirmation prompts")
 
 	addCommands()
 	if c, err := rootCmd.ExecuteC(); err != nil {

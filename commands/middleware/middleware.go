@@ -184,12 +184,10 @@ func ChooseSiteConf(ctx context.Context, cmd *cobra.Command) (*configuration.Con
 	if err != nil {
 		return nil, err
 	}
-	client := context.GetClient(ctx)
-
 	if conf.Settings.ID == "" {
 		logrus.Debug("Querying for existing sites")
 		// we don't know the site - time to try and get its id
-		site, err := operations.ChooseOrCreateSite(client, ctx)
+		site, err := operations.ChooseOrCreateSite(ctx, cmd)
 
 		// Ensure that the site ID is always saved,
 		// even when there is a provision error.

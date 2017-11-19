@@ -14,8 +14,8 @@ type manualConfigurator struct {
 }
 
 func (c manualConfigurator) SetupDeployKey(ctx context.Context, deployKey *models.DeployKey) error {
-	fmt.Println("\n=> Give this Netlify SSH public key access to your repository:\n\n")
-	fmt.Printf("%s\n\n", deployKey.PublicKey)
+	fmt.Println("\nGive this Netlify SSH public key access to your repository:\n\n")
+	ui.Bold("%s\n\n", deployKey.PublicKey)
 
 	if !ui.AskForConfirmation("Continue?") {
 		os.Exit(0)
@@ -24,8 +24,8 @@ func (c manualConfigurator) SetupDeployKey(ctx context.Context, deployKey *model
 }
 
 func (c manualConfigurator) SetupWebHook(ctx context.Context, site *models.Site) error {
-	fmt.Printf("\n=> Configure the following webhook for your repository:\n\n")
-	fmt.Printf("    %s\n\n", site.DeployHook)
+	fmt.Printf("\nConfigure the following webhook for your repository:\n\n")
+	ui.Bold("    %s\n\n", site.DeployHook)
 
 	if !ui.AskForConfirmation("Continue?") {
 		os.Exit(0)

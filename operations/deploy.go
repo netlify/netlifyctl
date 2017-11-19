@@ -2,20 +2,18 @@ package operations
 
 import (
 	"fmt"
-	"time"
 
-	"github.com/briandowns/spinner"
 	"github.com/netlify/netlifyctl/ui"
 	"github.com/netlify/open-api/go/models"
 	"github.com/netlify/open-api/go/porcelain"
 )
 
-const progressColor = "white"
+const progressColor = "blue"
 
 type DeployObserver struct {
-	walkerSpinner *spinner.Spinner
-	deltaSpinner  *spinner.Spinner
-	uploadSpinner *spinner.Spinner
+	walkerSpinner *ui.TaskTracker
+	deltaSpinner  *ui.TaskTracker
+	uploadSpinner *ui.TaskTracker
 
 	total    int
 	delta    int
@@ -27,61 +25,53 @@ type DeployObserver struct {
 
 func NewDeployObserver() *DeployObserver {
 	return &DeployObserver{
-		walkerSpinner: spinner.New(spinner.CharSets[39], 300*time.Millisecond),
-		deltaSpinner:  spinner.New(spinner.CharSets[39], 300*time.Millisecond),
-		uploadSpinner: spinner.New(spinner.CharSets[39], 300*time.Millisecond),
+		walkerSpinner: ui.NewTaskTracker(),
+		deltaSpinner:  ui.NewTaskTracker(),
+		uploadSpinner: ui.NewTaskTracker(),
 		uploadedC:     make(chan *porcelain.FileBundle),
 		uploadedD:     make(chan bool),
 	}
 }
 
 func (o *DeployObserver) OnSetupWalk() error {
-	o.walkerSpinner.Prefix = "Counting objects .... "
-	o.walkerSpinner.Color(progressColor)
-	o.walkerSpinner.Start()
+	o.walkerSpinner.Start("Counting objects .... ")
 	return nil
 }
 
 func (o *DeployObserver) OnSuccessfulStep(*porcelain.FileBundle) error {
 	o.total += 1
-	o.walkerSpinner.Prefix = fmt.Sprintf("Counting objects: %d ", o.total)
+	o.walkerSpinner.Step(fmt.Sprintf("Counting objects: %d ", o.total))
 	return nil
 }
 
 func (o *DeployObserver) OnSuccessfulWalk(df *models.DeployFiles) error {
-	o.walkerSpinner.FinalMSG = fmt.Sprintf("Counting objects: %d total objects  %s\n", o.total, ui.DoneCheck())
-	o.walkerSpinner.Stop()
+	o.walkerSpinner.Success(fmt.Sprintf("Counting objects: %d total objects", o.total))
 	return nil
 }
 
 func (o *DeployObserver) OnFailedWalk() {
-	o.walkerSpinner.FinalMSG = fmt.Sprintf("Counting objects  %s\n", ui.ErrorCheck())
-	o.walkerSpinner.Stop()
+	o.walkerSpinner.Failure("Counting objects")
 }
 
 func (o *DeployObserver) OnSetupDelta(*models.DeployFiles) error {
-	o.deltaSpinner.Prefix = "Resolving deltas .... "
-	o.deltaSpinner.Color(progressColor)
-	o.deltaSpinner.Start()
+	o.deltaSpinner.Start("Resolving deltas .... ")
 	return nil
 }
 
 func (o *DeployObserver) OnSuccessfulDelta(df *models.DeployFiles, d *models.Deploy) error {
 	o.delta = len(d.Required) + len(d.RequiredFunctions)
 
-	o.deltaSpinner.FinalMSG = fmt.Sprintf("Resolving deltas: %d objects to upload  %s\n", o.delta, ui.DoneCheck())
-	o.deltaSpinner.Stop()
+	msg := fmt.Sprintf("Resolving deltas: %d objects to upload", o.delta)
+	o.deltaSpinner.Success(msg)
 
 	go o.listenUploads()
-	o.uploadSpinner.Prefix = fmt.Sprintf("Uploading objects: %d/%d ", o.uploaded, o.delta)
-	o.uploadSpinner.Color(progressColor)
-	o.uploadSpinner.Start()
+	msg = fmt.Sprintf("Uploading objects: %d/%d ", o.uploaded, o.delta)
+	o.uploadSpinner.Start(msg)
 	return nil
 }
 
 func (o *DeployObserver) OnFailedDelta(*models.DeployFiles) {
-	o.deltaSpinner.FinalMSG = fmt.Sprintf("Resolving deltas  %s\n", ui.ErrorCheck())
-	o.deltaSpinner.Stop()
+	o.deltaSpinner.Failure("Resolving deltas")
 }
 
 func (o *DeployObserver) OnSetupUpload(f *porcelain.FileBundle) error {
@@ -95,14 +85,12 @@ func (o *DeployObserver) OnSuccessfulUpload(f *porcelain.FileBundle) error {
 
 func (o *DeployObserver) OnFailedUpload(*porcelain.FileBundle) {
 	o.uploadedD <- true
-	o.uploadSpinner.FinalMSG = fmt.Sprintf("Uploading objects  %s\n", ui.ErrorCheck())
-	o.uploadSpinner.Stop()
+	o.uploadSpinner.Failure("Uploading objects")
 }
 
 func (o *DeployObserver) Finish() {
 	o.uploadedD <- true
-	o.uploadSpinner.FinalMSG = fmt.Sprintf("Uploading objects: %d/%d done  %s\n", o.uploaded, o.delta, ui.DoneCheck())
-	o.uploadSpinner.Stop()
+	o.uploadSpinner.Success(fmt.Sprintf("Uploading objects: %d/%d done", o.uploaded, o.delta))
 }
 
 func (o *DeployObserver) listenUploads() {
@@ -110,7 +98,7 @@ func (o *DeployObserver) listenUploads() {
 		select {
 		case <-o.uploadedC:
 			o.uploaded += 1
-			o.uploadSpinner.Prefix = fmt.Sprintf("Uploading objects: %d/%d ", o.uploaded, o.delta)
+			o.uploadSpinner.Step(fmt.Sprintf("Uploading objects: %d/%d ", o.uploaded, o.delta))
 		case <-o.uploadedD:
 			return
 		}

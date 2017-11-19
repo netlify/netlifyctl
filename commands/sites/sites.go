@@ -13,9 +13,10 @@ import (
 
 func Setup(middlewares []middleware.Middleware) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "site",
-		Short: "Handle site operations",
-		Long:  "Handle site operations",
+		Use:     "site",
+		Aliases: []string{"sites", "s"},
+		Short:   "Handle site operations",
+		Long:    "Handle site operations",
 	}
 
 	cmd.AddCommand(setupUpdateCommand(middlewares))
