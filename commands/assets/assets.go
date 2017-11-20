@@ -10,9 +10,10 @@ import (
 
 func Setup(middlewares []middleware.Middleware) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "assets",
-		Short: "List assets attached to a site",
-		Long:  "List assets attached to a site",
+		Use:     "assets",
+		Aliases: []string{"asset", "a"},
+		Short:   "List assets attached to a site",
+		Long:    "List assets attached to a site",
 	}
 	cmd.PersistentFlags().StringP("site-id", "s", "", "site id")
 

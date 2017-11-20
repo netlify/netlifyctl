@@ -1,13 +1,11 @@
 package sites
 
 import (
-	"errors"
-	"fmt"
-
 	"github.com/netlify/netlifyctl/commands/middleware"
 	"github.com/netlify/netlifyctl/configuration"
 	"github.com/netlify/netlifyctl/context"
 	"github.com/netlify/netlifyctl/operations"
+	"github.com/netlify/netlifyctl/ui"
 	"github.com/netlify/open-api/go/models"
 	"github.com/spf13/cobra"
 )
@@ -43,8 +41,8 @@ func (c *siteCreateCmd) createSite(ctx context.Context, cmd *cobra.Command, args
 		return err
 	}
 	if conf.Settings.ID != "" {
-		if !operations.ConfirmOverwriteSite(cmd) {
-			return errors.New("Canceled")
+		if !ui.ConfirmOverwriteSite() {
+			return nil
 		}
 	}
 
@@ -57,13 +55,11 @@ func (c *siteCreateCmd) createSite(ctx context.Context, cmd *cobra.Command, args
 	}
 	client := context.GetClient(ctx)
 
-	fmt.Println("Creating site")
 	site, err = operations.CreateSite(client, ctx, site)
 
 	if err == nil {
 		conf.Settings.ID = site.ID
 		configuration.Save(configFile, conf)
-		fmt.Printf("=> Done, create website with %s\n", site.ID)
 	}
 
 	return err

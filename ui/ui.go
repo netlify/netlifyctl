@@ -1,13 +1,15 @@
 package ui
 
 import (
-	"bufio"
 	"fmt"
-	"os"
 	"strings"
+
+	"github.com/fatih/color"
 )
 
 const options = " (yes/no) "
+
+var AssumeYes bool
 
 func Error(err error) {
 	fmt.Errorf("%v", err)
@@ -15,8 +17,10 @@ func Error(err error) {
 
 func AskForConfirmation(message string) bool {
 	var response string
-	fmt.Print("=> " + message + options)
+
+	fmt.Print(message + options)
 	_, err := fmt.Scanln(&response)
+
 	if err != nil {
 		return false
 	}
@@ -27,21 +31,19 @@ func AskForConfirmation(message string) bool {
 	case response[0] == 'n' || response[0] == 'N':
 		return false
 	default:
-		fmt.Println("=> Please type `yes` or `no` and then press enter")
 		return AskForConfirmation(message)
 	}
 }
 
-func AskForInput(message, defaultValue string, validators ...func(string) error) (string, error) {
+func AskForInput(message, defaultValue string) (string, error) {
 	if len(defaultValue) > 0 {
-		fmt.Printf("=> %s (default: %s) ", message, defaultValue)
+		fmt.Printf("%s (default: %s) ", message, defaultValue)
 	} else {
-		fmt.Printf("=> %s ", message)
+		fmt.Printf("%s ", message)
 	}
 
-	reader := bufio.NewReader(os.Stdin)
-	response, err := reader.ReadString('\n')
-
+	var response string
+	_, err := fmt.Scan(&response)
 	if err != nil {
 		return response, err
 	}
@@ -56,14 +58,53 @@ func AskForInput(message, defaultValue string, validators ...func(string) error)
 		return response, nil
 	}
 
-	for _, v := range validators {
-		if v != nil {
-			if err := v(response); err != nil {
-				fmt.Println(err)
-				return AskForInput(message, defaultValue, validators...)
-			}
-		}
+	return response, nil
+}
+
+func DoneCheck() string {
+	return color.GreenString("✔")
+}
+
+func ErrorCheck() string {
+	return color.RedString("✘")
+}
+
+func WorldCheck() string {
+	return color.GreenString("🌎")
+}
+
+func Bold(msg string, args ...interface{}) {
+	c := color.New(color.Bold)
+	c.Printf(msg, args...)
+}
+
+func ConfirmCreateSite() bool {
+	if AssumeYes {
+		return true
 	}
 
-	return response, nil
+	return AskForConfirmation("We cannot find your site, do you want to create a new one?")
+}
+
+func ConfirmOverwriteSite() bool {
+	if AssumeYes {
+		return true
+	}
+
+	return AskForConfirmation("There's already a site ID stored for this folder. Ignore and create a new site?")
+}
+
+func Track(process, success string, task func() error) (err error) {
+	tt := NewTaskTracker()
+	defer func() {
+		if err != nil {
+			tt.Failure(process)
+		} else {
+			tt.Success(success)
+		}
+	}()
+
+	tt.Start(process)
+	err = task()
+	return
 }

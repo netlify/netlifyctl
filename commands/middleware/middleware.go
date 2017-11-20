@@ -9,6 +9,8 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"os/signal"
+	"syscall"
 	"time"
 
 	apiClient "github.com/go-openapi/runtime/client"
@@ -63,6 +65,24 @@ func DebugMiddleware(cmd CommandFunc) CommandFunc {
 		logrus.SetLevel(logrus.DebugLevel)
 		logrus.WithFields(logrus.Fields{"command": c.Use, "arguments": args}).Debug("PreRun")
 
+		dump, err := c.Root().Flags().GetBool("debug")
+		if err != nil {
+			return err
+		}
+
+		sigs := make(chan os.Signal, 1)
+		signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
+
+		go func() {
+			<-sigs
+			if dump {
+				dumpDebug(b)
+				fmt.Printf("\nDebug log dumped to %s\n", debugLogFile)
+				fmt.Println("This log includes full recordings of HTTP requests with credentials, be careful if you share it")
+			}
+			os.Exit(0)
+		}()
+
 		// Run command
 		if err := cmd(ctx, c, args); err != nil {
 			logrus.WithError(err).Error("command failed")
@@ -72,16 +92,12 @@ func DebugMiddleware(cmd CommandFunc) CommandFunc {
 			return fmt.Errorf("There was an error running this command.\nDebug log dumped to %sThis log includes full recordings of HTTP requests with credentials, be careful if you share it\n", debugLogFile)
 		}
 
-		dump, err := c.Root().Flags().GetBool("debug")
-		if err != nil {
-			return err
-		}
 		if dump {
 			if err := dumpDebug(b); err != nil {
 				return err
 			}
-			fmt.Printf("=> Debug log dumped to %s\n", debugLogFile)
-			fmt.Println("=> This log includes full recordings of HTTP requests with credentials, be careful if you share it")
+			fmt.Printf("Debug log dumped to %s\n", debugLogFile)
+			fmt.Println("This log includes full recordings of HTTP requests with credentials, be careful if you share it")
 		}
 
 		return nil
@@ -168,12 +184,10 @@ func ChooseSiteConf(ctx context.Context, cmd *cobra.Command) (*configuration.Con
 	if err != nil {
 		return nil, err
 	}
-	client := context.GetClient(ctx)
-
 	if conf.Settings.ID == "" {
 		logrus.Debug("Querying for existing sites")
 		// we don't know the site - time to try and get its id
-		site, err := operations.ChooseOrCreateSite(client, ctx)
+		site, err := operations.ChooseOrCreateSite(ctx, cmd)
 
 		// Ensure that the site ID is always saved,
 		// even when there is a provision error.

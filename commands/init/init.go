@@ -42,10 +42,12 @@ func initSite(ctx context.Context, cmd *cobra.Command, args []string) error {
 		c = ec
 	}
 
-	client := context.GetClient(ctx)
-	site, err := operations.ChooseOrCreateSite(client, ctx)
+	site, err := operations.ChooseOrCreateSite(ctx, cmd)
 	if err != nil {
 		return err
+	}
+	if site == nil {
+		return nil
 	}
 
 	dir, err := ui.AskForInput("Directory to deploy (blank for current dir):", ".")
@@ -62,7 +64,7 @@ func initSite(ctx context.Context, cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	fmt.Println("\n=> Configuring Continuous Deployment:\n")
+	fmt.Println("\nConfiguration:\n")
 	fmt.Printf("    Repository: %s\n", host.Remote)
 	fmt.Printf("    Production branch: %s\n", info.Branch)
 	fmt.Printf("    Publishing directory: %s\n", dir)
@@ -72,38 +74,41 @@ func initSite(ctx context.Context, cmd *cobra.Command, args []string) error {
 		return nil
 	}
 
-	key, err := client.CreateDeployKey(ctx)
+	err = ui.Track("Configuring Continuous Deployment ... ", "Success! Whenever you push to git, Netlify will build and deploy your site", func() error {
+		client := context.GetClient(ctx)
+		key, err := client.CreateDeployKey(ctx)
+		if err != nil {
+			return err
+		}
+
+		if err := c.SetupDeployKey(ctx, key); err != nil {
+			return err
+		}
+
+		info.DeployKeyID = key.ID
+		if dir != "" {
+			info.Dir = dir
+		}
+		if buildCmd != "" {
+			info.Cmd = buildCmd
+		}
+
+		setup := &models.SiteSetup{
+			Site: *site,
+			Repo: info,
+		}
+		uSite, err := client.UpdateSite(ctx, setup)
+		if err != nil {
+			return err
+		}
+
+		return c.SetupWebHook(ctx, uSite)
+	})
 	if err != nil {
 		return err
 	}
 
-	if err := c.SetupDeployKey(ctx, key); err != nil {
-		return err
-	}
-
-	info.DeployKeyID = key.ID
-	if dir != "" {
-		info.Dir = dir
-	}
-	if buildCmd != "" {
-		info.Cmd = buildCmd
-	}
-
-	setup := &models.SiteSetup{
-		Site: *site,
-		Repo: info,
-	}
-	uSite, err := client.UpdateSite(ctx, setup)
-	if err != nil {
-		return err
-	}
-
-	if err := c.SetupWebHook(ctx, uSite); err != nil {
-		return err
-	}
-
-	fmt.Println("\nSuccess! Whenever you push to git, Netlify will build and deploy your site:\n")
-	fmt.Printf("    %s\n", uSite.URL)
+	ui.Bold("    %s\n", site.SslURL)
 
 	return nil
 }

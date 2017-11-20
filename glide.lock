@@ -1,12 +1,16 @@
-hash: 5c33c94f1ff991464539629c6a98d5f00115845d08e5fb36cb5704df910cfa44
-updated: 2017-11-12T14:17:03.907485022-08:00
+hash: 798d282a6e6c2b4b8309186f046c2c5936e19ca1c70ba5efe53a195bce1b23a2
+updated: 2017-11-19T13:58:21.229843232-08:00
 imports:
 - name: github.com/asaskevich/govalidator
   version: ca5f9e638c83bac66bfac70ded5bded1503135a7
+- name: github.com/briandowns/spinner
+  version: 48dbb65d7bd5c74ab50d53d04c949f20e3d14944
 - name: github.com/BurntSushi/toml
   version: bbd5bb678321a0d6e58f1099321dfa73391c1b6f
 - name: github.com/cenkalti/backoff
   version: 61ba96c4d1002f22e06acb8e34a7650611125a63
+- name: github.com/fatih/color
+  version: 5df930a27be2502f99b292b7cc09ebad4d0891f4
 - name: github.com/fhs/go-netrc
   version: 4ffed54ee5c32ebfb1b8c7c72fc90bb08dc3ff43
   subpackages:
@@ -83,15 +87,17 @@ imports:
   - jlexer
   - jwriter
 - name: github.com/mattn/go-colorable
-  version: ad5389df28cdac544c99bd7b9161a0b5b6ca9d1b
+  version: 5411d3eea5978e6cdc258b30de592b60df6aba96
+  repo: https://github.com/mattn/go-colorable
 - name: github.com/mattn/go-isatty
-  version: a5cdd64afdee435007ee3e9f6ed4684af949d568
+  version: 57fdcb988a5c543893cc61bce354a6e24ab70022
+  repo: https://github.com/mattn/go-isatty
 - name: github.com/mitchellh/go-homedir
   version: b8bc1bf767474819792c23f32d8286a45736f1c6
 - name: github.com/mitchellh/mapstructure
   version: db1efb556f84b25a0a13a04aad883943538ad2e0
 - name: github.com/netlify/open-api
-  version: f72da496bf29c350c9c9a246f3676f8c13d5c6a8
+  version: 13e84171f6e5bcb8663fb50ffa1e38a6f1b0b851
   vcs: git
   subpackages:
   - go/models
