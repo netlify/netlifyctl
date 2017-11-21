@@ -89,7 +89,7 @@ func DebugMiddleware(cmd CommandFunc) CommandFunc {
 			if err := dumpDebug(b); err != nil {
 				return err
 			}
-			return fmt.Errorf("There was an error running this command.\nDebug log dumped to %sThis log includes full recordings of HTTP requests with credentials, be careful if you share it\n", debugLogFile)
+			return fmt.Errorf("There was an error running this command.\nDebug log dumped to %s\nThis log includes full recordings of HTTP requests with credentials, be careful if you share it", debugLogFile)
 		}
 
 		if dump {
