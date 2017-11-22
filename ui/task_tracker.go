@@ -22,7 +22,6 @@ type TaskTracker struct {
 func NewTaskTracker() *TaskTracker {
 	if Term {
 		s := spinner.New(progressIndicator, 300*time.Millisecond)
-		s.Color(progressColor)
 		return &TaskTracker{s}
 	}
 	return &TaskTracker{}
@@ -31,7 +30,7 @@ func NewTaskTracker() *TaskTracker {
 func (t *TaskTracker) Start(msg string) {
 	if t.isTerm() {
 		t.s.Prefix = msg
-		t.s.Start()
+		t.s.Color(progressColor)
 	} else {
 		fmt.Println(msg)
 	}
