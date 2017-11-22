@@ -16,6 +16,10 @@ func Error(err error) {
 }
 
 func AskForConfirmation(message string) bool {
+	if AssumeYes {
+		return true
+	}
+
 	var response string
 
 	fmt.Print(message + options)
@@ -79,18 +83,10 @@ func Bold(msg string, args ...interface{}) {
 }
 
 func ConfirmCreateSite() bool {
-	if AssumeYes {
-		return true
-	}
-
 	return AskForConfirmation("We cannot find your site, do you want to create a new one?")
 }
 
 func ConfirmOverwriteSite() bool {
-	if AssumeYes {
-		return true
-	}
-
 	return AskForConfirmation("There's already a site ID stored for this folder. Ignore and create a new site?")
 }
 
