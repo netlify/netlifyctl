@@ -54,26 +54,28 @@ func (dc *deployCmd) deploySite(ctx context.Context, cmd *cobra.Command, args []
 		conf.Settings.ID = dc.siteID
 	}
 
-	obs := operations.NewDeployObserver()
-
-	client := context.GetClient(ctx)
-	options := netlify.DeployOptions{
-		Observer: obs,
-		SiteID:   conf.Settings.ID,
-		Dir:      baseDeploy(cmd, conf),
-	}
-
 	draft, err := cmd.Flags().GetBool("draft")
 	if err != nil {
 		logrus.WithError(err).Fatal("Failed to get string flag: 'draft'")
 	}
-	options.IsDraft = draft
 
 	fs, err := cmd.Flags().GetString("functions")
 	if err != nil {
 		logrus.WithError(err).Fatal("Failed to get string flag: 'functions'")
 	}
-	options.FunctionsDir = fs
+
+	dir := baseDeploy(cmd, conf)
+
+	obs := operations.NewDeployObserver()
+
+	client := context.GetClient(ctx)
+	options := netlify.DeployOptions{
+		Observer:     obs,
+		SiteID:       conf.Settings.ID,
+		Dir:          dir,
+		IsDraft:      draft,
+		FunctionsDir: fs,
+	}
 
 	logrus.WithFields(logrus.Fields{
 		"site":  options.SiteID,

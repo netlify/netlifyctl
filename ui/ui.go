@@ -1,7 +1,9 @@
 package ui
 
 import (
+	"bufio"
 	"fmt"
+	"os"
 	"strings"
 
 	"github.com/fatih/color"
@@ -46,8 +48,8 @@ func AskForInput(message, defaultValue string) (string, error) {
 		fmt.Printf("%s ", message)
 	}
 
-	var response string
-	_, err := fmt.Scan(&response)
+	reader := bufio.NewReader(os.Stdin)
+	response, err := reader.ReadString('\n')
 	if err != nil {
 		return response, err
 	}
