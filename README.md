@@ -8,14 +8,6 @@ to interact with Netlify's API.
 
 ## Installation
 
-### Source
-
-netlifyctl can be installed from source:
-
-```sh
-$ go get github.com/netlify/netlifyctl
-```
-
 ### Binary Distribution
 
 #### GitHub Releases
@@ -27,6 +19,14 @@ Prebuilt [binaries are available for osx and linux](https://github.com/netlify/n
 ```sh
 brew tap netlify/netlifyctl
 brew install netlifyctl
+```
+
+### Source
+
+netlifyctl can be installed from source:
+
+```sh
+$ go get github.com/netlify/netlifyctl
 ```
 
 ## Usage
