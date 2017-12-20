@@ -2,3 +2,5 @@
 vendor/
 netlifyctl
 *.tar.gz
+builds
+releases

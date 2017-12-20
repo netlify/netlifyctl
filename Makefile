@@ -1,4 +1,4 @@
-.PONY: all build deps image test
+.PONY: all build deps image release test
 
 help: ## Show this help.
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {sub("\\\\n",sprintf("\n%22c"," "), $$2);printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -29,6 +29,20 @@ package_linux: package
 
 package_windows: override os=windows ## Package Windows binary.
 package_windows: package
+
+release: ## Upload release to GitHub releases.
+	mkdir -p builds/darwin-${TAG}
+	GOOS=darwin GOARCH=$(arch) go build -ldflags "-X github.com/netlify/netlifyctl/commands.Version=`git rev-parse HEAD`" -o builds/darwin-${TAG}/netlifyctl
+	mkdir -p builds/linux-${TAG}
+	GOOS=linux GOARCH=$(arch) go build -ldflags "-X github.com/netlify/netlifyctl/commands.Version=`git rev-parse HEAD`" -o builds/linux-${TAG}/netlifyctl
+	mkdir -p builds/windows-${TAG}
+	GOOS=windows GOARCH=$(arch) go build -ldflags "-X github.com/netlify/netlifyctl/commands.Version=`git rev-parse HEAD`" -o builds/windows-${TAG}/netlifyctl.exe
+	@rm -rf releases/${TAG}
+	mkdir -p releases/${TAG}
+	tar -czf releases/${TAG}/netlifyctl-darwin-$(arch)-${TAG}.tar.gz -C builds/darwin-${TAG} netlifyctl
+	tar -czf releases/${TAG}/netlifyctl-linux-$(arch)-${TAG}.tar.gz -C builds/linux-${TAG} netlifyctl
+	zip -j releases/${TAG}/netlifyctl-windows-$(arch)-${TAG}.zip builds/windows-${TAG}/netlifyctl.exe
+	@hub release create -a releases/${TAG}/netlifyctl-darwin-$(arch)-${TAG}.tar.gz -a releases/${TAG}/netlifyctl-linux-$(arch)-${TAG}.tar.gz -a releases/${TAG}/netlifyctl-windows-$(arch)-${TAG}.tar.gz v${TAG}
 
 test: ## Run tests.
 	go test -v `go list ./... | grep -v /vendor/`
