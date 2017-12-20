@@ -1,9 +1,9 @@
 [![Build Status](https://travis-ci.org/netlify/netlifyctl.svg?branch=master)](https://travis-ci.org/netlify/netlifyctl)
 # Introduction
 
-netlifyctl is a proof of concept to rewrite Netlify's CLI in Go.
-It uses the [OpenAPI](https://github.com/netlify/open-api) definitions
-to interact with Netlify's API.
+Netlify's CLI to manage and deploy sites on Netlify without leaving your terminal.
+
+It uses the [OpenAPI](https://github.com/netlify/open-api) definitions to interact with Netlify's API.
 
 
 ## Installation
@@ -12,7 +12,7 @@ to interact with Netlify's API.
 
 #### GitHub Releases
 
-Prebuilt [binaries are available for osx and linux](https://github.com/netlify/netlifyctl/releases). Other architectures available upon request to support@netlify.com.
+Prebuilt [binaries are available for Windows, OS X and Linux](https://github.com/netlify/netlifyctl/releases).
 
 #### Homebrew
 
@@ -43,28 +43,33 @@ or to get details on a subcommand:
 netlifyctl site update --help
 ```
 
-### Quickstart
+## Quickstart
 
-1. create an API token for your deploys here: https://app.netlify.com/applications (and save it)
-2. find your site ID - most easily done at the bottom of your site's settings page
-3. do one deploy manually, which will create a new config file (or add to an existing one): `netlify.toml`. You'll want to run this command on a system with both your code checked out AND a browser to interact with (for login purposes).
+1. Use `netlifyctl login` to create an API token for your personal use. This command requires you to have access to a browser. Your access token will be stored in %HOME%/.config/netlify when you run the command directly.
 
-```sh
-netlifyctl -A YOURAPITOKEN deploy
-```
+2. Use `netlifyctl sites` to display the list of sites you have access to.
 
-...and the interactive guides will take your site ID and deploy path and incorporate them into that config file.
+3. Use `netlifyctl deploy` to deploy changes on a site. This command must run from the root directory where you have your site's source code. The interactive guides will take your site ID and deploy path and incorporate them into that config file.
 
-Thereafter, you can run unattended and headless (though you should check the return code from running, in case there is some error):
+Thereafter, you can run unattended and headless using the flag `-y` to auto confirm the current settings: `netlifyctl -y deploy`.
 
-```sh
-netlifyctl -y -A YOURAPITOKEN deploy
-```
+## Debugging
+
+Netlifyctl generates debug logs with all the request and response interations when there is an error running any command. Those logs are stored in a file called `netlifyctl-debug.log` in the directory where you ran the command. These logs include your access token for the API, make sure you don't share them with anyone without masking those first.
+
+You can force the CLI to generate these logs even when there are no errors with the `-D` flag: `netlifyctl -D deploy`.
 
 ### Logging in & creating authentication tokens via a browser instead of the command line
 
-We use the package https://github.com/skratchdot/open-golang to support browser-based auth with netlify if you want to use that path instead via `netlifyctl login`.  The client portion of the authentication token will then be available in ~/.config/netlify
+You can get an access token from https://app.netlify.com/applications. Once you've created it, you can store it in your computer. The default location where netlifyctl tries to find this token is within your home directory, inside a file called `netlify` within a directory called `.config`. The path in a Unix system looks like `~/.config/netlify`. This file uses JSON formatting, you can see an example below:
 
+```json
+{
+  "access_token": "my secret access token"
+}
+```
+
+You can also set this token with the flag `-A` in each command call if you don't want to store it in a file: `netlifyctl -A "my secret access token" deploy`.
 
 ## Contributions and Bug Reports
 
