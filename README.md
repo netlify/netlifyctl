@@ -47,7 +47,7 @@ netlifyctl site update --help
 
 1. Use `netlifyctl login` to create an API token for your personal use. This command requires you to have access to a browser. Your access token will be stored in %HOME%/.config/netlify when you run the command directly.
 
-2. Use `netlifyctl sites` to display the list of sites you have access to.
+2. Use `netlifyctl site` to display the list of sites you have access to.
 
 3. Use `netlifyctl deploy` to deploy changes on a site. This command must run from the root directory where you have your site's source code. The interactive guides will take your site ID and deploy path and incorporate them into that config file.
 
