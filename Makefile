@@ -42,7 +42,7 @@ release: ## Upload release to GitHub releases.
 	tar -czf releases/${TAG}/netlifyctl-darwin-$(arch)-${TAG}.tar.gz -C builds/darwin-${TAG} netlifyctl
 	tar -czf releases/${TAG}/netlifyctl-linux-$(arch)-${TAG}.tar.gz -C builds/linux-${TAG} netlifyctl
 	zip -j releases/${TAG}/netlifyctl-windows-$(arch)-${TAG}.zip builds/windows-${TAG}/netlifyctl.exe
-	@hub release create -a releases/${TAG}/netlifyctl-darwin-$(arch)-${TAG}.tar.gz -a releases/${TAG}/netlifyctl-linux-$(arch)-${TAG}.tar.gz -a releases/${TAG}/netlifyctl-windows-$(arch)-${TAG}.tar.gz v${TAG}
+	@hub release create -a releases/${TAG}/netlifyctl-darwin-$(arch)-${TAG}.tar.gz -a releases/${TAG}/netlifyctl-linux-$(arch)-${TAG}.tar.gz -a releases/${TAG}/netlifyctl-windows-$(arch)-${TAG}.zip v${TAG}
 
 test: ## Run tests.
 	go test -v `go list ./... | grep -v /vendor/`
