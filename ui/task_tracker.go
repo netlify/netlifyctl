@@ -37,7 +37,11 @@ func (t *TaskTracker) Start(msg string) {
 }
 
 func (t *TaskTracker) Step(msg string) {
-	t.s.Prefix = msg
+	if t.isTerm() {
+		t.s.Prefix = msg
+	} else {
+		fmt.Println(msg)
+	}
 }
 
 func (t *TaskTracker) Success(msg string) {
