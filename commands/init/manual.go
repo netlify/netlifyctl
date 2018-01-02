@@ -34,13 +34,13 @@ func (c manualConfigurator) SetupWebHook(ctx context.Context, site *models.Site)
 	return nil
 }
 
-func (c manualConfigurator) RepoInfo(ctx context.Context) (*models.RepoSetup, error) {
+func (c manualConfigurator) RepoInfo(ctx context.Context) (*models.RepoInfo, error) {
 	branch := c.gitProvider.CurrentBranch
 
-	return &models.RepoSetup{
+	return &models.RepoInfo{
 		Provider:        "manual",
-		Repo:            c.gitProvider.Remote,
-		Branch:          branch,
+		RepoPath:        c.gitProvider.Remote,
+		RepoBranch:      branch,
 		AllowedBranches: []string{branch},
 	}, nil
 	return nil, nil

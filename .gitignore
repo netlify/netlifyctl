@@ -4,3 +4,4 @@ netlifyctl
 *.tar.gz
 builds
 releases
+_vendor*

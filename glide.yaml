@@ -11,7 +11,7 @@ import:
   - client
 - package: github.com/go-openapi/strfmt
 - package: github.com/netlify/open-api
-  version: 13e84171f6e5bcb8663fb50ffa1e38a6f1b0b851
+  version: 307bc9561f802719e125e91135ac5440b6fd1f6d
   vcs: git
   subpackages:
   - go/models
@@ -30,3 +30,7 @@ import:
 - package: golang.org/x/sys
   version: 1e2299c37cc91a509f1b12369872d27be0ce98a6
 - package: github.com/briandowns/spinner
+- package: github.com/Azure/go-autorest
+  version: ~9.6.0
+  subpackages:
+  - autorest

@@ -63,18 +63,18 @@ func (c *gitlabConfigurator) SetupWebHook(ctx context.Context, site *models.Site
 	return err
 }
 
-func (c *gitlabConfigurator) RepoInfo(ctx context.Context) (*models.RepoSetup, error) {
+func (c *gitlabConfigurator) RepoInfo(ctx context.Context) (*models.RepoInfo, error) {
 	project, _, err := c.client.Projects.GetProject(c.repoPath)
 	if err != nil {
 		return nil, err
 	}
 
 	branch := project.DefaultBranch
-	return &models.RepoSetup{
+	return &models.RepoInfo{
 		ID:              int64(project.ID),
 		Provider:        "gitlab",
-		Repo:            project.Path,
-		Branch:          branch,
+		RepoPath:        project.Path,
+		RepoBranch:      branch,
 		AllowedBranches: []string{branch},
 	}, nil
 }
