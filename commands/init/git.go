@@ -22,7 +22,7 @@ var gitSSHURL = regexp.MustCompile("\\w+@([^:]+):([^.]+)(\\.git)?")
 type configurator interface {
 	SetupDeployKey(context.Context, *models.DeployKey) error
 	SetupWebHook(context.Context, *models.Site) error
-	RepoInfo(ctx context.Context) (*models.RepoSetup, error)
+	RepoInfo(ctx context.Context) (*models.RepoInfo, error)
 }
 
 type gitRepo struct {

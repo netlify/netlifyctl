@@ -85,18 +85,18 @@ func (c *githubConfigurator) SetupWebHook(ctx context.Context, site *models.Site
 	return nil
 }
 
-func (c *githubConfigurator) RepoInfo(ctx context.Context) (*models.RepoSetup, error) {
+func (c *githubConfigurator) RepoInfo(ctx context.Context) (*models.RepoInfo, error) {
 	repo, _, err := c.client.Repositories.Get(ctx, c.owner, c.repo)
 	if err != nil {
 		return nil, err
 	}
 
 	branch := *repo.DefaultBranch
-	return &models.RepoSetup{
+	return &models.RepoInfo{
 		ID:              int64(*repo.ID),
 		Provider:        "github",
-		Repo:            *repo.FullName,
-		Branch:          branch,
+		RepoPath:        *repo.FullName,
+		RepoBranch:      branch,
 		AllowedBranches: []string{branch},
 	}, nil
 }
