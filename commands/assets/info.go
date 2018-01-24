@@ -2,6 +2,7 @@ package assets
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 
 	"github.com/netlify/netlifyctl/commands/middleware"
@@ -31,14 +32,14 @@ func (c *assetsShowCmd) showAssets(ctx context.Context, cmd *cobra.Command, args
 		return fmt.Errorf("missing asset ids to show")
 	}
 
-	siteId, err := siteIdForCommand(ctx, cmd)
-	if err != nil {
-		return err
+	conf := context.GetSiteConfig(ctx)
+	if conf.Settings.ID == "" {
+		return errors.New("Failed to load site configuration")
 	}
 
 	client := context.GetClient(ctx)
 	for i, arg := range args {
-		params := operations.NewGetSiteAssetInfoParams().WithSiteID(siteId).WithAssetID(arg)
+		params := operations.NewGetSiteAssetInfoParams().WithSiteID(conf.Settings.ID).WithAssetID(arg)
 
 		asset, err := client.ShowSiteAssetInfo(ctx, params, c.withSignature)
 		if err != nil {

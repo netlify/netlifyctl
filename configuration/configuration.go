@@ -13,16 +13,17 @@ const DefaultConfigFileName = "netlify.toml"
 
 type Settings struct {
 	ID   string
-	Path string
+	Path string `toml:"path,omitempty"`
 }
 
-type BuildConf struct {
-	Publish string
+type Context struct {
+	Publish   string
+	Functions string
 }
 
 type Configuration struct {
 	Settings Settings
-	Build    BuildConf
+	Build    Context
 	root     string
 }
 

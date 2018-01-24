@@ -10,12 +10,6 @@ import (
 )
 
 func addCommands() {
-	loginMiddleware := []middleware.Middleware{
-		middleware.DebugMiddleware,
-		middleware.LoggingMiddleware,
-		middleware.NoAuthMiddleware,
-		middleware.ClientMiddleware,
-	}
 	middlewares := []middleware.Middleware{
 		middleware.DebugMiddleware,
 		middleware.LoggingMiddleware,
@@ -23,10 +17,19 @@ func addCommands() {
 		middleware.ClientMiddleware,
 	}
 
-	rootCmd.AddCommand(deploy.Setup(middlewares))
-	rootCmd.AddCommand(assets.Setup(middlewares))
+	loginMiddlewares := []middleware.Middleware{
+		middleware.DebugMiddleware,
+		middleware.LoggingMiddleware,
+		middleware.NoAuthMiddleware,
+		middleware.ClientMiddleware,
+	}
+
+	siteMiddlewares := append(middlewares, middleware.SiteConfigMiddleware)
+
+	rootCmd.AddCommand(deploy.Setup(siteMiddlewares))
+	rootCmd.AddCommand(assets.Setup(siteMiddlewares))
 	rootCmd.AddCommand(sites.Setup(middlewares))
-	rootCmd.AddCommand(login.Setup(loginMiddleware))
 	rootCmd.AddCommand(initC.Setup(middlewares))
+	rootCmd.AddCommand(login.Setup(loginMiddlewares))
 	rootCmd.AddCommand(versionCmd)
 }

@@ -11,7 +11,7 @@ import:
   - client
 - package: github.com/go-openapi/strfmt
 - package: github.com/netlify/open-api
-  version: 03902f6dc39f38fad4e84a1c641a607549a8625f
+  version: 253f7b82796a1ae133a48060365a82ec42baaae0
   vcs: git
   subpackages:
   - go/models
