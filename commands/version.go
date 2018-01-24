@@ -6,13 +6,27 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var Version string
+const unknown = "unknown"
+
+var (
+	SHA     string
+	Version string
+)
 
 var versionCmd = &cobra.Command{
-	Run: showVersion,
-	Use: "version",
+	Run:     showVersion,
+	Use:     "version",
+	Aliases: []string{"v"},
 }
 
 func showVersion(cmd *cobra.Command, args []string) {
-	fmt.Println(Version)
+	v := Version
+	if v == "" {
+		v = unknown
+	}
+	s := SHA
+	if s == "" {
+		s = unknown
+	}
+	fmt.Printf("Version: %s\nGit SHA: %s\n", v, s)
 }

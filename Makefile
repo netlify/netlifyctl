@@ -10,7 +10,7 @@ arch = amd64
 
 build: test
 	@echo "Making netlifyctl for $(os)/$(arch)"
-	GOOS=$(os) GOARCH=$(arch) go build -ldflags "-X github.com/netlify/netlifyctl/commands.Version=`git rev-parse HEAD`"
+	GOOS=$(os) GOARCH=$(arch) go build -ldflags "-X github.com/netlify/netlifyctl/commands.Version=${TAG} -X github.com/netlify/netlifyctl/commands.SHA=`git rev-parse HEAD`"
 
 build_linux: override os=linux ## Build the binary for Linux hosts.
 build_linux: build
@@ -32,11 +32,11 @@ package_windows: package
 
 release: ## Upload release to GitHub releases.
 	mkdir -p builds/darwin-${TAG}
-	GOOS=darwin GOARCH=$(arch) go build -ldflags "-X github.com/netlify/netlifyctl/commands.Version=`git rev-parse HEAD`" -o builds/darwin-${TAG}/netlifyctl
+	GOOS=darwin GOARCH=$(arch) go build -ldflags "-X github.com/netlify/netlifyctl/commands.Version=${TAG} -X github.com/netlify/netlifyctl/commands.SHA=`git rev-parse HEAD`" -o builds/darwin-${TAG}/netlifyctl
 	mkdir -p builds/linux-${TAG}
-	GOOS=linux GOARCH=$(arch) go build -ldflags "-X github.com/netlify/netlifyctl/commands.Version=`git rev-parse HEAD`" -o builds/linux-${TAG}/netlifyctl
+	GOOS=linux GOARCH=$(arch) go build -ldflags "-X github.com/netlify/netlifyctl/commands.Version=${TAG} -X github.com/netlify/netlifyctl/commands.SHA=`git rev-parse HEAD`" -o builds/linux-${TAG}/netlifyctl
 	mkdir -p builds/windows-${TAG}
-	GOOS=windows GOARCH=$(arch) go build -ldflags "-X github.com/netlify/netlifyctl/commands.Version=`git rev-parse HEAD`" -o builds/windows-${TAG}/netlifyctl.exe
+	GOOS=windows GOARCH=$(arch) go build -ldflags "-X github.com/netlify/netlifyctl/commands.Version=${TAG} -X github.com/netlify/netlifyctl/commands.SHA=`git rev-parse HEAD`" -o builds/windows-${TAG}/netlifyctl.exe
 	@rm -rf releases/${TAG}
 	mkdir -p releases/${TAG}
 	tar -czf releases/${TAG}/netlifyctl-darwin-$(arch)-${TAG}.tar.gz -C builds/darwin-${TAG} netlifyctl
