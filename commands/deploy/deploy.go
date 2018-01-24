@@ -1,6 +1,7 @@
 package deploy
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/sirupsen/logrus"
@@ -45,13 +46,9 @@ func Setup(middlewares []middleware.Middleware) *cobra.Command {
 }
 
 func (dc *deployCmd) deploySite(ctx context.Context, cmd *cobra.Command, args []string) error {
-	conf, err := middleware.ChooseSiteConf(ctx, cmd)
-	if err != nil {
-		return err
-	}
-
-	if dc.siteID != "" {
-		conf.Settings.ID = dc.siteID
+	conf := context.GetSiteConfig(ctx)
+	if conf.Settings.ID == "" {
+		return errors.New("Failed to load site configuration")
 	}
 
 	draft, err := cmd.Flags().GetBool("draft")
@@ -62,6 +59,9 @@ func (dc *deployCmd) deploySite(ctx context.Context, cmd *cobra.Command, args []
 	fs, err := cmd.Flags().GetString("functions")
 	if err != nil {
 		logrus.WithError(err).Fatal("Failed to get string flag: 'functions'")
+	}
+	if fs == "" && conf.Build.Functions != "" {
+		fs = conf.Build.Functions
 	}
 
 	dir := baseDeploy(cmd, conf)

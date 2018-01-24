@@ -2,6 +2,7 @@ package assets
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -42,9 +43,9 @@ func (c *assetsAddCmd) AddAsset(ctx context.Context, cmd *cobra.Command, args []
 		return fmt.Errorf("missing asset paths to upload")
 	}
 
-	siteId, err := siteIdForCommand(ctx, cmd)
-	if err != nil {
-		return err
+	conf := context.GetSiteConfig(ctx)
+	if conf.Settings.ID == "" {
+		return errors.New("Failed to load site configuration")
 	}
 
 	dups := make(map[string]os.FileInfo)
@@ -61,14 +62,14 @@ func (c *assetsAddCmd) AddAsset(ctx context.Context, cmd *cobra.Command, args []
 		dups[arg] = fi
 	}
 
-	params := operations.NewCreateSiteAssetParams().WithSiteID(siteId)
+	params := operations.NewCreateSiteAssetParams().WithSiteID(conf.Settings.ID)
 	if c.private {
 		visibility := privateAssetVisibility
 		params = params.WithVisibility(&visibility)
 	}
 
 	for fp, fi := range dups {
-		asset, err := c.uploadAsset(ctx, siteId, fp, fi, params)
+		asset, err := c.uploadAsset(ctx, conf.Settings.ID, fp, fi, params)
 		if err != nil {
 			fmt.Printf("%s upload failed: %v", fp, err)
 			break

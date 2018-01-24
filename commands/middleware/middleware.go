@@ -178,30 +178,42 @@ func ClientMiddleware(cmd CommandFunc) CommandFunc {
 	}
 }
 
-func ChooseSiteConf(ctx context.Context, cmd *cobra.Command) (*configuration.Configuration, error) {
-	var configFile = cmd.Root().Flag("config").Value.String()
-	var conf, err = configuration.Load(configFile)
-	if err != nil {
-		return nil, err
-	}
-	if conf.Settings.ID == "" {
-		logrus.Debug("Querying for existing sites")
-		// we don't know the site - time to try and get its id
-		site, err := operations.ChooseOrCreateSite(ctx, cmd)
-
-		// Ensure that the site ID is always saved,
-		// even when there is a provision error.
-		if site != nil {
-			conf.Settings.ID = site.ID
-			configuration.Save(configFile, conf)
+func SiteConfigMiddleware(cmd CommandFunc) CommandFunc {
+	return func(ctx context.Context, c *cobra.Command, args []string) error {
+		var siteId string
+		if siteIdFlag := c.Flag("site-id"); siteIdFlag != nil {
+			siteId = siteIdFlag.Value.String()
 		}
 
+		configFile := c.Root().Flag("config").Value.String()
+		conf, err := configuration.Load(configFile)
 		if err != nil {
-			return nil, err
+			return err
 		}
-	}
+		if siteId != "" && conf.Settings.ID != siteId {
+			conf.Settings.ID = siteId
+		}
 
-	return conf, nil
+		if conf.Settings.ID == "" {
+			logrus.Debug("Querying for existing sites")
+			// we don't know the site - time to try and get its id
+			site, err := operations.ChooseOrCreateSite(ctx, c)
+
+			// Ensure that the site ID is always saved,
+			// even when there is a provision error.
+			if site != nil {
+				conf.Settings.ID = site.ID
+				configuration.Save(configFile, conf)
+			}
+
+			if err != nil {
+				return err
+			}
+		}
+		ctx = context.WithSiteConfig(ctx, conf)
+
+		return cmd(ctx, c, args)
+	}
 }
 
 func httpClient() *http.Client {

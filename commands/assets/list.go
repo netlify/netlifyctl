@@ -2,6 +2,7 @@ package assets
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"os"
 	"text/tabwriter"
@@ -13,13 +14,12 @@ import (
 
 func listAssets(ctx context.Context, cmd *cobra.Command, args []string) error {
 	client := context.GetClient(ctx)
-
-	siteId, err := siteIdForCommand(ctx, cmd)
-	if err != nil {
-		return err
+	conf := context.GetSiteConfig(ctx)
+	if conf.Settings.ID == "" {
+		return errors.New("Failed to load site configuration")
 	}
 
-	params := operations.NewListSiteAssetsParams().WithSiteID(siteId)
+	params := operations.NewListSiteAssetsParams().WithSiteID(conf.Settings.ID)
 	assets, err := client.ListSiteAssets(ctx, params)
 	if err != nil {
 		return err

@@ -1,6 +1,7 @@
 package sites
 
 import (
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -8,7 +9,6 @@ import (
 
 	"github.com/BurntSushi/toml"
 	"github.com/netlify/netlifyctl/commands/middleware"
-	"github.com/netlify/netlifyctl/configuration"
 	"github.com/netlify/netlifyctl/context"
 	"github.com/netlify/open-api/go/models"
 	"github.com/spf13/cobra"
@@ -50,17 +50,19 @@ func setupUpdateCommand(middlewares []middleware.Middleware) *cobra.Command {
 	ccmd.Flags().StringVarP(&cmd.password, "password", "p", "", "site's access password")
 	ccmd.Flags().BoolVarP(&cmd.forceTLS, "force-tls", "t", false, "force TLS connections")
 
-	return middleware.SetupCommand(ccmd, cmd.updateSite, middlewares)
+	siteMiddlewares := append(middlewares, middleware.SiteConfigMiddleware)
+
+	return middleware.SetupCommand(ccmd, cmd.updateSite, siteMiddlewares)
 }
 
 func (c *siteUpdateCmd) updateSite(ctx context.Context, cmd *cobra.Command, args []string) error {
-	siteId, err := configuration.SiteIdForCommand(cmd)
-	if err != nil {
-		return err
+	conf := context.GetSiteConfig(ctx)
+	if conf.Settings.ID == "" {
+		return errors.New("Failed to load site configuration")
 	}
 
 	client := context.GetClient(ctx)
-	site, err := client.GetSite(ctx, siteId)
+	site, err := client.GetSite(ctx, conf.Settings.ID)
 	if err != nil {
 		return err
 	}
