@@ -65,6 +65,8 @@ func DebugMiddleware(cmd CommandFunc) CommandFunc {
 		logrus.SetLevel(logrus.DebugLevel)
 		logrus.WithFields(logrus.Fields{"command": c.Use, "arguments": args}).Debug("PreRun")
 
+		logrus.Debug("configure debug middleware")
+
 		dump, err := c.Root().Flags().GetBool("debug")
 		if err != nil {
 			return err
@@ -106,6 +108,7 @@ func DebugMiddleware(cmd CommandFunc) CommandFunc {
 
 func LoggingMiddleware(cmd CommandFunc) CommandFunc {
 	return func(ctx context.Context, c *cobra.Command, args []string) error {
+		logrus.Debug("configure logging middleware")
 		entry := logrus.NewEntry(logrus.StandardLogger())
 		entry.Debugf("setup logger middleware: %v", entry.Level)
 		ctx = apiContext.WithLogger(ctx, entry)
@@ -116,6 +119,7 @@ func LoggingMiddleware(cmd CommandFunc) CommandFunc {
 
 func AuthMiddleware(cmd CommandFunc) CommandFunc {
 	return func(ctx context.Context, c *cobra.Command, args []string) error {
+		logrus.Debug("configure auth middleware")
 		creds := auth.ClientCredentials()
 		logrus.WithField("credentials", creds).Debug("setup credentials")
 
@@ -127,6 +131,7 @@ func AuthMiddleware(cmd CommandFunc) CommandFunc {
 
 func NoAuthMiddleware(cmd CommandFunc) CommandFunc {
 	return func(ctx context.Context, c *cobra.Command, args []string) error {
+		logrus.Debug("configure no auth middleware")
 		creds := auth.NoCredentials()
 		logrus.WithField("credentials", creds).Debug("setup credentials")
 
@@ -138,6 +143,7 @@ func NoAuthMiddleware(cmd CommandFunc) CommandFunc {
 
 func ClientMiddleware(cmd CommandFunc) CommandFunc {
 	return func(ctx context.Context, c *cobra.Command, args []string) error {
+		logrus.Debug("configure client middleware")
 		var transport *apiClient.Runtime
 
 		if endpoint := c.Flag("endpoint"); endpoint != nil {
@@ -180,6 +186,7 @@ func ClientMiddleware(cmd CommandFunc) CommandFunc {
 
 func SiteConfigMiddleware(cmd CommandFunc) CommandFunc {
 	return func(ctx context.Context, c *cobra.Command, args []string) error {
+		logrus.Debug("configure site middleware")
 		var siteId string
 		if siteIdFlag := c.Flag("site-id"); siteIdFlag != nil {
 			siteId = siteIdFlag.Value.String()
