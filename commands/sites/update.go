@@ -50,7 +50,7 @@ func setupUpdateCommand(middlewares []middleware.Middleware) *cobra.Command {
 	ccmd.Flags().StringVarP(&cmd.password, "password", "p", "", "site's access password")
 	ccmd.Flags().BoolVarP(&cmd.forceTLS, "force-tls", "t", false, "force TLS connections")
 
-	siteMiddlewares := append(middlewares, middleware.SiteConfigMiddleware)
+	siteMiddlewares := append([]middleware.Middleware{middleware.SiteConfigMiddleware}, middlewares...)
 
 	return middleware.SetupCommand(ccmd, cmd.updateSite, siteMiddlewares)
 }

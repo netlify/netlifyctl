@@ -11,20 +11,20 @@ import (
 
 func addCommands() {
 	middlewares := []middleware.Middleware{
-		middleware.DebugMiddleware,
-		middleware.LoggingMiddleware,
-		middleware.AuthMiddleware,
 		middleware.ClientMiddleware,
+		middleware.AuthMiddleware,
+		middleware.LoggingMiddleware,
+		middleware.DebugMiddleware,
 	}
 
 	loginMiddlewares := []middleware.Middleware{
-		middleware.DebugMiddleware,
-		middleware.LoggingMiddleware,
-		middleware.NoAuthMiddleware,
 		middleware.ClientMiddleware,
+		middleware.NoAuthMiddleware,
+		middleware.LoggingMiddleware,
+		middleware.DebugMiddleware,
 	}
 
-	siteMiddlewares := append(middlewares, middleware.SiteConfigMiddleware)
+	siteMiddlewares := append([]middleware.Middleware{middleware.SiteConfigMiddleware}, middlewares...)
 
 	rootCmd.AddCommand(deploy.Setup(siteMiddlewares))
 	rootCmd.AddCommand(assets.Setup(siteMiddlewares))
