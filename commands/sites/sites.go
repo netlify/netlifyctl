@@ -36,9 +36,9 @@ func listSites(ctx context.Context, cmd *cobra.Command, args []string) error {
 	t := tabwriter.NewWriter(os.Stdout, 0, 10, 5, ' ', 0)
 	buffer := new(bytes.Buffer)
 
-	fmt.Fprintf(buffer, "Site\tUrl")
+	fmt.Fprintf(buffer, "Site\tUrl\n")
 	for _, s := range sites {
-		fmt.Fprintf(buffer, "\n%s\t%s", s.Name, s.URL)
+		fmt.Fprintf(buffer, "%s\t%s\n", s.Name, s.URL)
 	}
 	buffer.WriteTo(t)
 	t.Flush()
