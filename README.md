@@ -55,7 +55,7 @@ Thereafter, you can run unattended and headless using the flag `-y` to auto conf
 
 ## Debugging
 
-Netlifyctl generates debug logs with all the request and response interations when there is an error running any command. Those logs are stored in a file called `netlifyctl-debug.log` in the directory where you ran the command. These logs include your access token for the API, make sure you don't share them with anyone without masking those first.
+Netlifyctl generates debug logs with all the request and response interations when there is an error running any command. Those logs are stored in a file called `netlifyctl-debug.log` in the directory where you ran the command. These logs include your access token for the API! Please **make sure you don't share them with anyone without masking those first.**
 
 You can force the CLI to generate these logs even when there are no errors with the `-D` flag: `netlifyctl -D deploy`.
 
@@ -75,7 +75,7 @@ You can also set this token with the flag `-A` in each command call if you don't
 
 Contributions are welcome via Pull Request.
 
-Bug Reports are welcome as Issues filed on this repository, but feel free to chat with support@netlify.com about issues too!
+Bug Reports are welcome as Issues filed on this repository, but feel free to chat with [support@netlify.com](mailto:support@netlify.com) about issues as well - often we'll have faster advice to help you succeed.
 
 
 ## License
