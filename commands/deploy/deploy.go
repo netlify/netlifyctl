@@ -3,11 +3,10 @@ package deploy
 import (
 	"errors"
 	"fmt"
+	"path/filepath"
 
 	"github.com/sirupsen/logrus"
-
-	"path/filepath"
-	"strings"
+	"github.com/spf13/cobra"
 
 	"github.com/netlify/netlifyctl/commands/middleware"
 	"github.com/netlify/netlifyctl/configuration"
@@ -15,7 +14,6 @@ import (
 	"github.com/netlify/netlifyctl/operations"
 	"github.com/netlify/netlifyctl/ui"
 	netlify "github.com/netlify/open-api/go/porcelain"
-	"github.com/spf13/cobra"
 )
 
 type deployCmd struct {
@@ -133,7 +131,7 @@ func baseDeploy(cmd *cobra.Command, conf *configuration.Configuration) string {
 		logrus.Debugf("Got new path from the user %s", s.Path)
 	}
 
-	if !strings.HasPrefix(path, "/") {
+	if !filepath.IsAbs(path) {
 		path = filepath.Join(conf.Root(), path)
 		logrus.Debugf("Relative path detected, going to deploy: '%s'", path)
 	}
