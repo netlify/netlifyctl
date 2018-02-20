@@ -75,6 +75,7 @@ func (dc *deployCmd) deploySite(ctx context.Context, cmd *cobra.Command, args []
 		Dir:          dir,
 		IsDraft:      draft,
 		FunctionsDir: fs,
+		Title:        dc.title,
 	}
 
 	logrus.WithFields(logrus.Fields{
