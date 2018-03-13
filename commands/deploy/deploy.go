@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"path/filepath"
+	"time"
 
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -17,12 +18,13 @@ import (
 )
 
 type deployCmd struct {
-	base      string
-	title     string
-	functions string
-	siteID    string
-	siteName  string
-	draft     bool
+	base          string
+	title         string
+	functions     string
+	siteID        string
+	siteName      string
+	draft         bool
+	preProcessSec int
 }
 
 func Setup(middlewares []middleware.Middleware) *cobra.Command {
@@ -39,7 +41,7 @@ func Setup(middlewares []middleware.Middleware) *cobra.Command {
 	ccmd.Flags().StringVarP(&cmd.functions, "functions", "f", "", "function directory to deploy")
 	ccmd.Flags().StringVarP(&cmd.siteID, "site-id", "s", "", "explicitly set a site id instead of relying on configuration")
 	ccmd.Flags().StringVarP(&cmd.siteName, "name", "n", "", "search a site by its name instead of relying on configuration")
-
+	ccmd.Flags().IntVarP(&cmd.preProcessSec, "preprocess", "p", "", "the preprocessing timeout measured in seconds. Default is 5 minutes.")
 	return middleware.SetupCommand(ccmd, cmd.deploySite, middlewares)
 }
 
@@ -74,6 +76,9 @@ func (dc *deployCmd) deploySite(ctx context.Context, cmd *cobra.Command, args []
 		IsDraft:      draft,
 		FunctionsDir: fs,
 		Title:        dc.title,
+	}
+	if dc.preProcessSec > 0 {
+		options.PreProcessTimeout = time.Second * dc.preProcessSec
 	}
 
 	logrus.WithFields(logrus.Fields{
