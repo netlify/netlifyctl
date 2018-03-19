@@ -41,7 +41,7 @@ func Setup(middlewares []middleware.Middleware) *cobra.Command {
 	ccmd.Flags().StringVarP(&cmd.functions, "functions", "f", "", "function directory to deploy")
 	ccmd.Flags().StringVarP(&cmd.siteID, "site-id", "s", "", "explicitly set a site id instead of relying on configuration")
 	ccmd.Flags().StringVarP(&cmd.siteName, "name", "n", "", "search a site by its name instead of relying on configuration")
-	ccmd.Flags().IntVarP(&cmd.preProcessSec, "preprocess", "p", "", "the preprocessing timeout measured in seconds. Default is 5 minutes.")
+	ccmd.Flags().IntVarP(&cmd.preProcessSec, "preprocess", "p", 300, "the preprocessing timeout measured in seconds. Default is 5 minutes.")
 	return middleware.SetupCommand(ccmd, cmd.deploySite, middlewares)
 }
 
@@ -78,7 +78,7 @@ func (dc *deployCmd) deploySite(ctx context.Context, cmd *cobra.Command, args []
 		Title:        dc.title,
 	}
 	if dc.preProcessSec > 0 {
-		options.PreProcessTimeout = time.Second * dc.preProcessSec
+		options.PreProcessTimeout = time.Second * time.Duration(dc.preProcessSec)
 	}
 
 	logrus.WithFields(logrus.Fields{
@@ -92,7 +92,7 @@ func (dc *deployCmd) deploySite(ctx context.Context, cmd *cobra.Command, args []
 	}
 
 	if len(d.Required) > 0 {
-		ready, err := client.WaitUntilDeployReady(ctx, d)
+		ready, err := client.WaitUntilDeployReady(ctx, d, options.PreProcessTimeout)
 		if err != nil {
 			return err
 		}
