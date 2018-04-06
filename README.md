@@ -1,10 +1,10 @@
 [![Build Status](https://travis-ci.org/netlify/netlifyctl.svg?branch=master)](https://travis-ci.org/netlify/netlifyctl)
+
 # Introduction
 
 Netlify's CLI to manage and deploy sites on Netlify without leaving your terminal.
 
 It uses the [OpenAPI](https://github.com/netlify/open-api) definitions to interact with Netlify's API.
-
 
 ## Installation
 
@@ -23,10 +23,13 @@ brew install netlifyctl
 
 ### Source
 
-netlifyctl can be installed from source:
+Use the following commands to install `netlifyctl` from source:
 
 ```sh
-$ go get github.com/netlify/netlifyctl
+go get -d github.com/netlify/netlifyctl
+cd $GOPATH/src/github.com/netlify/netlifyctl
+make deps build
+go install
 ```
 
 ## Usage
@@ -45,11 +48,11 @@ netlifyctl site update --help
 
 ## Quickstart
 
-1. Use `netlifyctl login` to create an API token for your personal use. This command requires you to have access to a browser. Your access token will be stored in %HOME%/.config/netlify when you run the command directly.
+1.  Use `netlifyctl login` to create an API token for your personal use. This command requires you to have access to a browser. Your access token will be stored in %HOME%/.config/netlify when you run the command directly.
 
-2. Use `netlifyctl sites` to display the list of sites you have access to.
+2.  Use `netlifyctl sites` to display the list of sites you have access to.
 
-3. Use `netlifyctl deploy` to deploy changes on a site. This command must run from the root directory where you have your site's source code. The interactive guides will take your site ID and deploy path and incorporate them into that config file.
+3.  Use `netlifyctl deploy` to deploy changes on a site. This command must run from the root directory where you have your site's source code. The interactive guides will take your site ID and deploy path and incorporate them into that config file.
 
 Thereafter, you can run unattended and headless using the flag `-y` to auto confirm the current settings: `netlifyctl -y deploy`.
 
@@ -76,7 +79,6 @@ You can also set this token with the flag `-A` in each command call if you don't
 Contributions are welcome via Pull Request.
 
 Bug Reports are welcome as Issues filed on this repository, but feel free to chat with [support@netlify.com](mailto:support@netlify.com) about issues as well - often we'll have faster advice to help you succeed.
-
 
 ## License
 
