@@ -64,7 +64,7 @@ func initSite(ctx context.Context, cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	fmt.Println("\nConfiguration:\n")
+	fmt.Printf("\nConfiguration:\n\n")
 	fmt.Printf("    Repository: %s\n", host.Remote)
 	fmt.Printf("    Production branch: %s\n", info.RepoBranch)
 	fmt.Printf("    Publishing directory: %s\n", dir)

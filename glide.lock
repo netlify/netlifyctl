@@ -1,5 +1,5 @@
-hash: 1aa53246787be1810d16169aed3cb6ead34be17f9b1b4c5de76de3800172e82b
-updated: 2018-02-20T14:03:41.948834-05:00
+hash: 1a79ef482fcb51771f046346b390dacc3404edc7bdc519803485e153177ffc4c
+updated: 2018-03-09T16:24:35.053789429-08:00
 imports:
 - name: github.com/asaskevich/govalidator
   version: ca5f9e638c83bac66bfac70ded5bded1503135a7
@@ -118,6 +118,8 @@ imports:
   version: 812e91dfbd64051c1ec72c48feda0278727e8a4e
   subpackages:
   - octokit
+- name: github.com/pkg/errors
+  version: 30136e27e2ac8d167177e8a583aa4c3fea5be833
 - name: github.com/PuerkitoBio/purell
   version: fd18e053af8a4ff11039269006e8037ff374ce0e
 - name: github.com/PuerkitoBio/urlesc
@@ -251,4 +253,17 @@ imports:
   version: 9f9df34309c04878acc86042b16630b0f696e1de
 - name: gopkg.in/yaml.v2
   version: a3f3340b5840cee44f372bddb5880fcbc419b46a
-testImports: []
+testImports:
+- name: github.com/davecgh/go-spew
+  version: 8991bc29aa16c548c550c7ff78260e27b9ab7c73
+  subpackages:
+  - spew
+- name: github.com/pmezard/go-difflib
+  version: 792786c7400a136282c1664665ae0a8db921c6c2
+  subpackages:
+  - difflib
+- name: github.com/stretchr/testify
+  version: b89eecf5ca5db6d3ba60b237ffe3df7bafb7662f
+  subpackages:
+  - assert
+  - require

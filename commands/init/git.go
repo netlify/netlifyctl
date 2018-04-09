@@ -47,6 +47,10 @@ func getRepo() (*gitRepo, error) {
 		return nil, err
 	}
 
+	return getRepoFromPath(cwd)
+}
+
+func getRepoFromPath(cwd string) (*gitRepo, error) {
 	repo, err := git.PlainOpen(cwd)
 	if err != nil {
 		return nil, err
