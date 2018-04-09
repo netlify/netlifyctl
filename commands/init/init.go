@@ -31,9 +31,11 @@ func initSite(ctx context.Context, cmd *cobra.Command, args []string) error {
 		return err
 	}
 
+	tt := ui.NewTaskTracker()
 	var c configurator
 	if manual {
 		c = manualConfigurator{host}
+		tt = ui.NewTaskTrackerWithTerm(false)
 	} else {
 		ec, err := loadConfigurator(ctx, host.URL)
 		if err != nil {
@@ -74,7 +76,7 @@ func initSite(ctx context.Context, cmd *cobra.Command, args []string) error {
 		return nil
 	}
 
-	err = ui.Track("Configuring Continuous Deployment ... ", "Success! Whenever you push to git, Netlify will build and deploy your site", func() error {
+	err = ui.TrackWithTracker("Configuring Continuous Deployment ... ", "Success! Whenever you push to git, Netlify will build and deploy your site", tt, func() error {
 		client := context.GetClient(ctx)
 		key, err := client.CreateDeployKey(ctx)
 		if err != nil {

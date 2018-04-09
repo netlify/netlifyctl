@@ -92,8 +92,12 @@ func ConfirmOverwriteSite() bool {
 	return AskForConfirmation("There's already a site ID stored for this folder. Ignore and create a new site?")
 }
 
-func Track(process, success string, task func() error) (err error) {
+func Track(process, success string, task func() error) error {
 	tt := NewTaskTracker()
+	return TrackWithTracker(process, success, tt, task)
+}
+
+func TrackWithTracker(process, success string, tt *TaskTracker, task func() error) (err error) {
 	defer func() {
 		if err != nil {
 			tt.Failure(process)
