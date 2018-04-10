@@ -20,7 +20,11 @@ type TaskTracker struct {
 }
 
 func NewTaskTracker() *TaskTracker {
-	if Term {
+	return NewTaskTrackerWithTerm(Term)
+}
+
+func NewTaskTrackerWithTerm(term bool) *TaskTracker {
+	if term {
 		s := spinner.New(progressIndicator, 300*time.Millisecond)
 		return &TaskTracker{s}
 	}
