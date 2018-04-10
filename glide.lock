@@ -1,5 +1,5 @@
-hash: 93d59a2af96cd73c02d9e05729946b30deeba0ea1b680077616729e657646681
-updated: 2018-03-19T13:06:56.870149499-07:00
+hash: 7d45421642e50711cb6925a6c00b2e8f7bca5f36c1ae0c9a091031beb6c09e4f
+updated: 2018-04-10T07:32:27.567685511-07:00
 imports:
 - name: github.com/asaskevich/govalidator
   version: ca5f9e638c83bac66bfac70ded5bded1503135a7
@@ -119,7 +119,7 @@ imports:
   subpackages:
   - octokit
 - name: github.com/pkg/errors
-  version: 30136e27e2ac8d167177e8a583aa4c3fea5be833
+  version: 816c9085562cd7ee03e7f8188a1cfd942858cded
 - name: github.com/PuerkitoBio/purell
   version: fd18e053af8a4ff11039269006e8037ff374ce0e
 - name: github.com/PuerkitoBio/urlesc
@@ -263,7 +263,7 @@ testImports:
   subpackages:
   - difflib
 - name: github.com/stretchr/testify
-  version: b89eecf5ca5db6d3ba60b237ffe3df7bafb7662f
+  version: c679ae2cc0cb27ec3293fea7e254e47386f05d69
   subpackages:
   - assert
   - require
