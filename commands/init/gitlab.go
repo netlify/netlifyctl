@@ -2,10 +2,12 @@ package init
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"net/url"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 
 	"github.com/netlify/netlifyctl/context"
@@ -25,15 +27,21 @@ func newGitLabConfigurator(ctx context.Context, url *url.URL) (*gitlabConfigurat
 		return nil, err
 	}
 
-	password, err := getPassword()
+	password, err := getPassword(url.Host)
 	if err != nil {
 		return nil, err
 	}
 
-	session, _, err := getSession(&gitlab.GetSessionOptions{
-		Login:    gitlab.String(username),
-		Password: gitlab.String(password),
-	}, nil)
+	u := strings.TrimSpace(username)
+	p := strings.TrimSpace(password)
+	if u == "" || p == "" {
+		return nil, errors.New("Username and password cannot be blank")
+	}
+
+	session, _, err := getSession(url.String(), &gitlab.GetSessionOptions{
+		Login:    gitlab.String(u),
+		Password: gitlab.String(p),
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -95,7 +103,9 @@ func getUsername(host string) (string, error) {
 }
 
 // copied from GitHub's hub
-func getPassword() (string, error) {
+func getPassword(host string) (string, error) {
+	fmt.Printf("%s password: ", host)
+
 	stdin := int(syscall.Stdin)
 	initialTermState, err := terminal.GetState(stdin)
 	if err != nil {
@@ -126,8 +136,9 @@ func getPassword() (string, error) {
 	return string(passBytes), nil
 }
 
-func getSession(opt *gitlab.GetSessionOptions, options ...gitlab.OptionFunc) (*gitlab.Session, *gitlab.Response, error) {
-	client := &gitlab.Client{}
+func getSession(urlStr string, opt *gitlab.GetSessionOptions, options ...gitlab.OptionFunc) (*gitlab.Session, *gitlab.Response, error) {
+	client := gitlab.NewClient(nil, "")
+	client.SetBaseURL(urlStr)
 	req, err := client.NewRequest("POST", "session", opt, options)
 	if err != nil {
 		return nil, nil, err
