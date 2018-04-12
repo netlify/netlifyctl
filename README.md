@@ -74,6 +74,10 @@ You can get an access token from https://app.netlify.com/applications. Once you'
 
 You can also set this token with the flag `-A` in each command call if you don't want to store it in a file: `netlifyctl -A "my secret access token" deploy`.
 
+### Redirects/headers in the `netlify.toml` file does not work after deploy
+
+If the redirects/headers in the `netlify.toml` file don't work, this is because the `netlifyctl deploy` command doesn't automatically include the netlify.toml file in the deploy. You will need to manually copy the file to your publish directory before running the netlifyctl command.
+
 ## Contributions and Bug Reports
 
 Contributions are welcome via Pull Request.
