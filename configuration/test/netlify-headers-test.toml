@@ -1,0 +1,9 @@
+[settings]
+  id = "siteid"
+
+[[redirects]]
+  from = "/path"
+  to = "https://host"
+  status = 200
+  force = true
+  headers = {FOO = "BAR"}
