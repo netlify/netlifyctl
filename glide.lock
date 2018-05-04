@@ -1,5 +1,5 @@
-hash: 10f42289ff6bddd2c285c41e835387294c3c922514ba9fca45179600405ebd6e
-updated: 2018-04-21T12:46:57.091428301-04:00
+hash: cfc14f71c4de95df1399c7d3cae118dd2d1c3a7a5ebf2d13e3a05db7bb154873
+updated: 2018-05-03T17:08:11.974399446-07:00
 imports:
 - name: github.com/asaskevich/govalidator
   version: ca5f9e638c83bac66bfac70ded5bded1503135a7
@@ -12,7 +12,7 @@ imports:
 - name: github.com/briandowns/spinner
   version: 48dbb65d7bd5c74ab50d53d04c949f20e3d14944
 - name: github.com/BurntSushi/toml
-  version: bbd5bb678321a0d6e58f1099321dfa73391c1b6f
+  version: a368813c5e648fee92e5f6c30e3944ff9d5e8895
 - name: github.com/cenkalti/backoff
   version: 61ba96c4d1002f22e06acb8e34a7650611125a63
 - name: github.com/dgrijalva/jwt-go

@@ -21,10 +21,21 @@ type Context struct {
 	Functions string
 }
 
+type Redirect struct {
+	// TODO: This implementation is incomplete, but it allow us to test a few things already.
+	// This program doesn't really use the redirects for anything.
+	From    string
+	To      string
+	Status  int
+	Force   bool
+	Headers map[string]string
+}
+
 type Configuration struct {
-	Settings Settings
-	Build    Context
-	root     string
+	Settings  Settings
+	Build     Context
+	Redirects []Redirect
+	root      string
 }
 
 func (c Configuration) Root() string {
