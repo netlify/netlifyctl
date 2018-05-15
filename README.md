@@ -10,16 +10,27 @@ It uses the [OpenAPI](https://github.com/netlify/open-api) definitions to intera
 
 ### Binary Distribution
 
-#### GitHub Releases
-
-Prebuilt [binaries are available for Windows, OS X and Linux](https://github.com/netlify/netlifyctl/releases).
-
-#### Homebrew
+#### Homebrew (MacOS X)
 
 ```sh
 brew tap netlify/netlifyctl
 brew install netlifyctl
 ```
+
+The source for this tap is in [homebrew-netlifyctl](https://github.com/netlify/homebrew-netlifyctl)
+
+#### Scoop (Windows)
+
+```sh
+scoop bucket add netlifyctl https://github.com/netlify/scoop-netlifyctl
+scoop install netlifyctl
+```
+
+The source for this bucket is in [scoop-netlifyctl](https://github.com/netlify/scoop-netlifyctl)
+
+#### GitHub Releases
+
+Prebuilt [binaries are available for Windows, OS X and Linux](https://github.com/netlify/netlifyctl/releases).
 
 ### Source
 
