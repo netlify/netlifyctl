@@ -42,6 +42,10 @@ func AskForConfirmation(message string) bool {
 }
 
 func AskForInput(message, defaultValue string) (string, error) {
+	if AssumeYes && len(defaultValue) > 0 {
+		return defaultValue, nil
+	}
+
 	if len(defaultValue) > 0 {
 		fmt.Printf("%s (default: %s) ", message, defaultValue)
 	} else {
