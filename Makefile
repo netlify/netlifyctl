@@ -36,12 +36,12 @@ release: ## Upload release to GitHub releases.
 	mkdir -p builds/linux-${TAG}
 	GOOS=linux GOARCH=$(arch) CGO_ENABLED=0 go build -ldflags "-X github.com/netlify/netlifyctl/commands.Version=${TAG} -X github.com/netlify/netlifyctl/commands.SHA=`git rev-parse HEAD`" -o builds/linux-${TAG}/netlifyctl
 	mkdir -p builds/windows-${TAG}
-	GOOS=windows GOARCH=$(arch) CGO_ENABLED=0 go build -ldflags "-X github.com/netlify/netlifyctl/commands.Version=${TAG} -X github.com/netlify/netlifyctl/commands.SHA=`git rev-parse HEAD`" -o builds/windows-${TAG}/netlifyctl.exe
+	GOOS=windows GOARCH=$(arch) CGO_ENABLED=0 go build -ldflags "-X github.com/netlify/netlifyctl/commands.Version=${TAG} -X github.com/netlify/netlifyctl/commands.SHA=`git rev-parse HEAD`" -o builds/windows-${TAG}/netlifyctl
 	@rm -rf releases/${TAG}
 	mkdir -p releases/${TAG}
 	tar -czf releases/${TAG}/netlifyctl-darwin-$(arch)-${TAG}.tar.gz -C builds/darwin-${TAG} netlifyctl
 	tar -czf releases/${TAG}/netlifyctl-linux-$(arch)-${TAG}.tar.gz -C builds/linux-${TAG} netlifyctl
-	zip -j releases/${TAG}/netlifyctl-windows-$(arch)-${TAG}.zip builds/windows-${TAG}/netlifyctl.exe
+	zip -j releases/${TAG}/netlifyctl-windows-$(arch)-${TAG}.zip builds/windows-${TAG}/netlifyctl
 	@hub release create -a releases/${TAG}/netlifyctl-darwin-$(arch)-${TAG}.tar.gz -a releases/${TAG}/netlifyctl-linux-$(arch)-${TAG}.tar.gz -a releases/${TAG}/netlifyctl-windows-$(arch)-${TAG}.zip v${TAG}
 
 test: ## Run tests.
