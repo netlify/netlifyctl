@@ -1,9 +1,9 @@
-/download/latest/mac         https://github.com/netlify/netlifyctl/releases/download/v0.3.3/netlifyctl-darwin-amd64-0.3.3.tar.gz  302
-/download/latest/linux       https://github.com/netlify/netlifyctl/releases/download/v0.3.3/netlifyctl-linux-amd64-0.3.3.tar.gz   302
-/download/latest/windows     https://github.com/netlify/netlifyctl/releases/download/v0.3.3/netlifyctl-windows-amd64-0.3.3.zip    302
+/download/latest/mac         https://github.com/netlify/netlifyctl/releases/download/v0.3.4/netlifyctl-darwin-amd64-0.3.4.tar.gz  302
+/download/latest/linux       https://github.com/netlify/netlifyctl/releases/download/v0.3.4/netlifyctl-linux-amd64-0.3.4.tar.gz   302
+/download/latest/windows     https://github.com/netlify/netlifyctl/releases/download/v0.3.4/netlifyctl-windows-amd64-0.3.4.zip    302
 
-/download/latest/source-zip  https://github.com/netlify/netlifyctl/archive/v0.3.3.zip                                             302
-/download/latest/source-tar  https://github.com/netlify/netlifyctl/archive/v0.3.3.tar.gz                                          302
+/download/latest/source-zip  https://github.com/netlify/netlifyctl/archive/v0.3.4.zip                                             302
+/download/latest/source-tar  https://github.com/netlify/netlifyctl/archive/v0.3.4.tar.gz                                          302
 
 /download/*                  https://github.com/netlify/netlifyctl/releases
 /*                           https://github.com/netlify/netlifyctl
