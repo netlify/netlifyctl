@@ -17,6 +17,10 @@ func Error(err error) {
 	fmt.Errorf("%v", err)
 }
 
+func Warning(warn string) {
+	fmt.Printf("[WARNING] %v\n", warn)
+}
+
 func AskForConfirmation(message string) bool {
 	if AssumeYes {
 		return true

@@ -20,6 +20,7 @@ import (
 
 type deployCmd struct {
 	base          string
+	publish       string
 	title         string
 	functions     string
 	siteID        string
@@ -37,6 +38,7 @@ func Setup(middlewares []middleware.Middleware) *cobra.Command {
 		Long:    "Deploy your site",
 	}
 	ccmd.Flags().StringVarP(&cmd.base, "base-directory", "b", "", "directory to publish")
+	ccmd.Flags().StringVarP(&cmd.publish, "publish-directory", "p", "", "directory to publish")
 	ccmd.Flags().StringVarP(&cmd.title, "message", "m", "", "message for the deploy title")
 	ccmd.Flags().BoolVarP(&cmd.draft, "draft", "d", false, "draft deploy, not published in production")
 	ccmd.Flags().StringVarP(&cmd.functions, "functions", "f", "", "function directory to deploy")
@@ -130,7 +132,17 @@ func baseDeploy(cmd *cobra.Command, conf *configuration.Configuration) string {
 	}
 
 	if bd != "" {
+		ui.Warning("the base-directory behavior has been deprecated and it will be changed in 0.5.0 version, use the publish-directory flag instead")
 		return bd
+	}
+
+	pd, err := cmd.Flags().GetString("publish-directory")
+	if err != nil {
+		logrus.WithError(err).Fatal("Failed to get string flag: 'publish-directory'")
+	}
+
+	if pd != "" {
+		return pd
 	}
 
 	s := conf.Settings
