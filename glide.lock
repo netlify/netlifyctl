@@ -1,5 +1,5 @@
-hash: e20fa0b48f92ae6fd383d7fb95b4e4115ed67c1bcf72ece61bf9836b26ee6755
-updated: 2018-05-25T11:27:49.193849698-07:00
+hash: 4add27d76b5afb08ae56ab9b6ab9195ecc2ac53d1b1e75232c869a3f060d3b56
+updated: 2018-06-05T20:53:30.758083595-07:00
 imports:
 - name: github.com/asaskevich/govalidator
   version: ca5f9e638c83bac66bfac70ded5bded1503135a7
@@ -149,7 +149,7 @@ imports:
   - token
   - types
 - name: github.com/xanzy/go-gitlab
-  version: 32211f6ae06b961bf512cf18e8b58c5a7ea4727f
+  version: d86b5afe3258fb04818c6597a8a5045e56e0ad82
 - name: github.com/xanzy/ssh-agent
   version: ba9c9e33906f58169366275e3450db66139a31a9
 - name: golang.org/x/crypto

@@ -26,7 +26,6 @@ import:
   - github
 - package: github.com/google/go-github
   version: 35c06c17eff17d6ba18c6d8c5a84827f8ecf8679
-- package: github.com/xanzy/go-gitlab
 - package: golang.org/x/sys
   version: 1e2299c37cc91a509f1b12369872d27be0ce98a6
 - package: github.com/briandowns/spinner
@@ -35,6 +34,7 @@ import:
   subpackages:
   - autorest
 - package: github.com/pkg/errors
+- package: github.com/xanzy/go-gitlab
 testImport:
 - package: github.com/stretchr/testify
   subpackages:
