@@ -28,13 +28,18 @@ func newGitHubConfigurator(ctx context.Context, url *url.URL) (*githubConfigurat
 		return nil, err
 	}
 
-	parts := strings.SplitN(url.Path, "/", 2)
-
 	ts := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: h.AccessToken})
 	tc := oauth2.NewClient(ctx, ts)
 
+	client := github.NewClient(tc)
+	return newGitHubConfiguratorWithClient(ctx, url, client)
+}
+
+func newGitHubConfiguratorWithClient(ctx context.Context, url *url.URL, client *github.Client) (*githubConfigurator, error) {
+	parts := strings.SplitN(strings.TrimLeft(url.Path, "/"), "/", 2)
+
 	return &githubConfigurator{
-		client: github.NewClient(tc),
+		client: client,
 		owner:  parts[0],
 		repo:   parts[1],
 	}, nil

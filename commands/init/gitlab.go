@@ -22,6 +22,8 @@ type gitlabConfigurator struct {
 }
 
 func newGitLabConfigurator(ctx context.Context, url *url.URL) (*gitlabConfigurator, error) {
+	url = formatGitLabURL(url)
+
 	username, err := getUsername(url.Host)
 	if err != nil {
 		return nil, err
@@ -38,16 +40,13 @@ func newGitLabConfigurator(ctx context.Context, url *url.URL) (*gitlabConfigurat
 		return nil, errors.New("Username and password cannot be blank")
 	}
 
-	session, _, err := getSession(url.String(), &gitlab.GetSessionOptions{
-		Login:    gitlab.String(u),
-		Password: gitlab.String(p),
-	})
+	client, err := gitlab.NewBasicAuthClient(nil, url.Scheme+"://"+url.Host, u, p)
 	if err != nil {
 		return nil, err
 	}
 
 	return &gitlabConfigurator{
-		client:   gitlab.NewClient(nil, session.PrivateToken),
+		client:   client,
 		repoPath: url.Path,
 	}, nil
 }
@@ -81,7 +80,7 @@ func (c *gitlabConfigurator) RepoInfo(ctx context.Context) (*models.RepoInfo, er
 	return &models.RepoInfo{
 		ID:              int64(project.ID),
 		Provider:        "gitlab",
-		RepoPath:        project.Path,
+		RepoPath:        project.PathWithNamespace,
 		RepoBranch:      branch,
 		AllowedBranches: []string{branch},
 	}, nil
@@ -151,4 +150,11 @@ func getSession(urlStr string, opt *gitlab.GetSessionOptions, options ...gitlab.
 	}
 
 	return session, resp, err
+}
+
+func formatGitLabURL(u *url.URL) *url.URL {
+	u.Scheme = "https"
+	u.Path = strings.TrimRight(strings.TrimLeft(u.Path, "/"), ".git")
+
+	return u
 }
