@@ -1,11 +1,12 @@
 package deploy
 
 import (
-	"errors"
 	"fmt"
+	"os"
 	"path/filepath"
 	"time"
 
+	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 
@@ -65,6 +66,17 @@ func (dc *deployCmd) deploySite(ctx context.Context, cmd *cobra.Command, args []
 	}
 
 	dir := baseDeploy(cmd, conf)
+
+	if conf.ExistConfFile() && conf.Root() != dir {
+		cp, err := conf.CopyConfigFile(dir)
+		if err != nil {
+			return errors.Wrapf(err, "Error copying netlify.toml to the publish directory: %s", dir)
+		}
+
+		if cp != "" {
+			defer os.Remove(cp)
+		}
+	}
 
 	obs := operations.NewDeployObserver()
 

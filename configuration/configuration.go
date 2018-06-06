@@ -2,6 +2,7 @@ package configuration
 
 import (
 	"fmt"
+	"io"
 	"os"
 	"path/filepath"
 
@@ -36,10 +37,44 @@ type Configuration struct {
 	Build     Context
 	Redirects []Redirect
 	root      string
+	filePath  string
 }
 
 func (c Configuration) Root() string {
 	return c.root
+}
+
+func (c Configuration) ExistConfFile() bool {
+	_, err := os.Stat(c.confFilePath())
+	return err == nil
+}
+
+// CopyConfigFile will copy over the toml file if there isn't one already in the
+// publish path. That means a user can create the file there and we won't override it
+func (c Configuration) CopyConfigFile(pubPath string) (string, error) {
+	dest := filepath.Join(pubPath, c.filePath)
+	if _, err := os.Stat(dest); err == nil {
+		return "", nil // file exists, don't overwrite
+	}
+
+	f, err := os.Open(c.confFilePath())
+	if err != nil {
+		return "", err
+	}
+	defer func() { _ = f.Close() }()
+
+	w, err := os.Create(dest)
+	if err != nil {
+		return "", err
+	}
+	defer func() { _ = w.Close() }()
+
+	_, err = io.Copy(w, f)
+	return dest, err
+}
+
+func (c Configuration) confFilePath() string {
+	return filepath.Join(c.root, c.filePath)
 }
 
 func Exist(configFile string) bool {
@@ -61,6 +96,7 @@ func Load(configFile string) (*Configuration, error) {
 
 	var c Configuration
 	c.root = pwd
+	c.filePath = configFile
 
 	fi, err := os.Stat(configFile)
 	if err != nil {
