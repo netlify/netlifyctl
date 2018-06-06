@@ -1,5 +1,5 @@
-hash: 4add27d76b5afb08ae56ab9b6ab9195ecc2ac53d1b1e75232c869a3f060d3b56
-updated: 2018-06-05T20:53:30.758083595-07:00
+hash: f657a9aa24e0376ca1b19a34844b4b6bb320dd54416c56edbb290c4f315508f2
+updated: 2018-06-06T07:50:57.700878365-07:00
 imports:
 - name: github.com/asaskevich/govalidator
   version: ca5f9e638c83bac66bfac70ded5bded1503135a7
@@ -10,7 +10,8 @@ imports:
   - autorest/adal
   - autorest/date
 - name: github.com/briandowns/spinner
-  version: 48dbb65d7bd5c74ab50d53d04c949f20e3d14944
+  version: b2e0b668d1ae4a3959df7d1ed2c18927d65ad1e1
+  repo: https://github.com/calavera/spinner
 - name: github.com/BurntSushi/toml
   version: a368813c5e648fee92e5f6c30e3944ff9d5e8895
 - name: github.com/cenkalti/backoff

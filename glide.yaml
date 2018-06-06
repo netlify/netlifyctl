@@ -29,6 +29,8 @@ import:
 - package: golang.org/x/sys
   version: 1e2299c37cc91a509f1b12369872d27be0ce98a6
 - package: github.com/briandowns/spinner
+  version: b2e0b668d1ae4a3959df7d1ed2c18927d65ad1e1
+  repo: https://github.com/calavera/spinner
 - package: github.com/Azure/go-autorest
   version: ~9.6.0
   subpackages:
