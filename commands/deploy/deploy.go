@@ -38,7 +38,7 @@ func Setup(middlewares []middleware.Middleware) *cobra.Command {
 		Long:    "Deploy your site",
 	}
 	ccmd.Flags().StringVarP(&cmd.base, "base-directory", "b", "", "directory to publish")
-	ccmd.Flags().StringVarP(&cmd.publish, "publish-directory", "p", "", "directory to publish")
+	ccmd.Flags().StringVarP(&cmd.publish, "publish-directory", "P", "", "directory to publish")
 	ccmd.Flags().StringVarP(&cmd.title, "message", "m", "", "message for the deploy title")
 	ccmd.Flags().BoolVarP(&cmd.draft, "draft", "d", false, "draft deploy, not published in production")
 	ccmd.Flags().StringVarP(&cmd.functions, "functions", "f", "", "function directory to deploy")
