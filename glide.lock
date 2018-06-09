@@ -1,5 +1,5 @@
-hash: e652e53ba2b13a281d25693f32804bb013fd28484ceabe8645e791c15dae28c2
-updated: 2018-06-06T09:25:28.471720703-07:00
+hash: 96ee2ffd0a3f2f50c6af949d0d3d749976390bde7f9f8b658f0e622837f6362d
+updated: 2018-06-09T11:15:34.079536839-07:00
 imports:
 - name: github.com/asaskevich/govalidator
   version: ca5f9e638c83bac66bfac70ded5bded1503135a7
@@ -106,7 +106,7 @@ imports:
 - name: github.com/mitchellh/mapstructure
   version: db1efb556f84b25a0a13a04aad883943538ad2e0
 - name: github.com/netlify/open-api
-  version: 8d6640aaf521e9f615b35163c97acc9a8c4e706e
+  version: 09203f5c1873bd4124acdd7929651cb29d2bc3c2
   vcs: git
   subpackages:
   - go/models
