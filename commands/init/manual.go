@@ -47,7 +47,10 @@ func (c manualConfigurator) RepoInfo(ctx context.Context) (*models.RepoInfo, err
 			return nil, errors.Wrapf(err, "invalid repository url: %s", repoPath)
 		}
 		hp := strings.SplitN(p.Host, ":", 2)
-		repoPath = fmt.Sprintf("git@%s:%s.git", hp[0], strings.TrimPrefix(p.Path, "/"))
+		repoPath = fmt.Sprintf("git@%s:%s", hp[0], strings.TrimPrefix(p.Path, "/"))
+		if !strings.HasSuffix(repoPath, ".git") {
+			repoPath = fmt.Sprintf("%s.git", repoPath)
+		}
 	}
 
 	return &models.RepoInfo{
