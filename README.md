@@ -163,7 +163,7 @@ To deploy manually, run the following command from the base of your project dire
 netlifyctl deploy
 ```
 
-Netlifyctl will deploy the site using the configuration settings in a [netlify.toml file](/docs/netlify-toml-reference) stored at the base of your project directory. If this file doesn't exist, netlifyctl will prompt you for your site settings, then create a new `netlify.toml` file to store them.
+Netlifyctl will deploy the site using the configuration settings in a [netlify.toml file](https://www.netlify.com/docs/netlify-toml-reference/) stored at the base of your project directory. If this file doesn't exist, netlifyctl will prompt you for your site settings, then create a new `netlify.toml` file to store them.
 
 After the first deploy, you can run `netlifyctl deploy` again to update your site whenever you make changes. Only new and changed files will be uploaded.
 
