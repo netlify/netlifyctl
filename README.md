@@ -35,9 +35,9 @@ Because netlifyctl is released as an executable binary file, you can download, e
 
 You can download the latest version for your operating system directly from the following links:
 
-  - Linux: https://cli.netlify.com/download/latest/linux
-  - Mac: https://cli.netlify.com/download/latest/mac
-  - Windows: https://cli.netlify.com/download/latest/windows
+  - Linux: https://go-cli.netlify.com/download/latest/linux
+  - Mac: https://go-cli.netlify.com/download/latest/mac
+  - Windows: https://go-cli.netlify.com/download/latest/windows
 
 If you're working on a local machine with administrator permissions, you may want to add netlifyctl to your `PATH`, so that you can access it directly from any project folder. You could do this by extracting it to a directory that is already on your `PATH`. (For example, `/usr/local/bin` is a common choice for Mac and Linux.) Alternatively, you can extract the netlifyctl binary to a different folder, then follow your operating system instructions for adding a path to your `PATH` environment variable.
 
@@ -46,7 +46,7 @@ In cases where you can't or don't want to install globally, like in many Continu
 For example, you could run the following command to download and extract the binary file directly into the current directory in a Linux terminal:
 
 ```bash
-wget -qO- 'https://cli.netlify.com/download/latest/linux' | tar xz
+wget -qO- 'https://go-cli.netlify.com/download/latest/linux' | tar xz
 ```
 
 Then, to use netlifyctl in that directory, you would use the relative path to the binary: `./netlifyctl`. All `netlifyctl` commands in the rest of this document would follow the same pattern, for example:
