@@ -1,3 +1,7 @@
+# CLI telemetry endpoints
+/telemetry/track https://api.netlify-services.com/telemetry/track 200
+/telemetry/identify https://api.netlify-services.com/telemetry/identify 200
+
 /download/latest/mac         https://github.com/netlify/netlifyctl/releases/download/v0.4.0/netlifyctl-darwin-amd64-0.4.0.tar.gz  302
 /download/latest/linux       https://github.com/netlify/netlifyctl/releases/download/v0.4.0/netlifyctl-linux-amd64-0.4.0.tar.gz   302
 /download/latest/windows     https://github.com/netlify/netlifyctl/releases/download/v0.4.0/netlifyctl-windows-amd64-0.4.0.zip    302
