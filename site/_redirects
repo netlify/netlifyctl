@@ -10,4 +10,4 @@
 /download/latest/source-tar  https://github.com/netlify/netlifyctl/archive/v0.4.0.tar.gz                                          302
 
 /download/*                  https://github.com/netlify/netlifyctl/releases
-/*                           https://github.com/netlify/netlifyctl
+/*                           https://github.com/netlify/cli
