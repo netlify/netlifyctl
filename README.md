@@ -4,7 +4,7 @@
 
 Legacy command line interface for managing and deploying sites on Netlify without leaving your terminal. Built in Go, on Netlify's [OpenAPI](https://github.com/netlify/open-api) definitions to interact with Netlify's API.
 
-Netlify contiues to support this version, but active development has moved to our new [Node-based CLI](https://github.com/netlify/cli). Find the full documentation at [netlify.com/docs/cli](https://www.netlify.com/docs/cli).
+Netlify continues to support this version, but active development has moved to our new [Node-based CLI](https://github.com/netlify/cli). Find the full documentation at [netlify.com/docs/cli](https://www.netlify.com/docs/cli).
 
 ## Installation
 
